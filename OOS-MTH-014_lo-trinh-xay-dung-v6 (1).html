@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lộ trình xây dựng — Operating OS × Mora</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1A1916;--teal:#0F6E56;--amber:#854F0B;--cream:#FAF9F6;--linen:#E8DFD0;
+  --teal-d:#085041;--amber-d:#633806;--teal-m:#5DCAA5;--amber-m:#EF9F27;
+  --teal-l:#E1F5EE;--amber-l:#FAEEDA;--blue:#185FA5;--blue-l:#E8F0FA;
+  --w600:#8C7A62;
+  --g50:#FAFAF9;--g100:#F5F5F4;--g200:#E7E5E4;--g300:#D6D3D1;--g400:#A8A29E;--g500:#78716C;--g600:#57534E;--g700:#44403C;--g800:#292524;
+  --fd:'Cormorant Garamond',Georgia,serif;
+  --fb:'DM Sans',system-ui,sans-serif;
+  --fm:'DM Mono',monospace;
+  --r:4px;
+  --div:1px solid rgba(26,25,22,.12);
+  --div2:2px solid var(--teal);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--fb);background:var(--cream);color:var(--ink);font-size:15px;line-height:1.8;-webkit-font-smoothing:antialiased;hyphens:none}
+
+/* Header */
+.hdr{background:var(--ink);color:var(--cream);padding:56px 64px 40px}
+.hdr-tags{display:flex;gap:8px;margin-bottom:16px}
+.tag{font-family:var(--fm);font-size:10px;letter-spacing:.10em;text-transform:uppercase;padding:4px 12px;border-radius:100px;background:rgba(250,249,246,.08)}
+.tag-t{background:rgba(15,110,86,.25);color:var(--teal-l)}
+.hdr h1{font-family:var(--fd);font-size:36px;font-weight:300;line-height:1.2;letter-spacing:-.01em;margin-bottom:12px}
+.hdr h1 em{font-style:normal;color:var(--teal-m)}
+.hdr p{font-size:15px;color:var(--g300);max-width:700px;font-weight:300}
+
+/* Tabs */
+.tabs{display:flex;background:var(--ink);padding:0 64px;position:sticky;top:0;z-index:10;overflow-x:auto;border-bottom:1px solid rgba(250,249,246,.06)}
+.tabs button{font-family:var(--fm);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--g400);background:none;border:none;padding:16px 20px 14px;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:color .15s,border-color .15s}
+.tabs button:hover{color:var(--cream)}
+.tabs button.on{color:var(--cream);border-bottom-color:var(--teal)}
+.pane{display:none;padding:48px 64px 72px;max-width:1060px;margin:0 auto}
+.pane.on{display:block}
+
+/* Section title */
+h2{font-family:var(--fd);font-size:28px;font-weight:400;color:var(--ink);margin-bottom:4px}
+.label{font-family:var(--fm);font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.10em;color:var(--w600);display:block;margin-bottom:24px}
+
+/* Callout */
+.call{padding:20px 24px;border-radius:var(--r);margin-bottom:24px;font-size:15px;line-height:1.8}
+.call h4{font-family:var(--fm);font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.10em;margin-bottom:8px}
+.call-t{background:var(--teal-l);border-left:var(--div2);color:var(--teal-d)}
+.call-t h4{color:var(--teal-d)}
+.call-a{background:var(--amber-l);border-left:2px solid var(--amber);color:var(--amber-d)}
+.call-a h4{color:var(--amber-d)}
+
+/* Block */
+.blk{margin-bottom:20px;padding:20px 24px;border-radius:var(--r);border:var(--div);background:var(--g50)}
+.blk h4{font-family:var(--fm);font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.10em;color:var(--w600);margin-bottom:10px}
+.blk p{font-size:15px;color:var(--g700);line-height:1.8;margin-bottom:6px}
+.blk p:last-child{margin-bottom:0}
+.blk strong{color:var(--ink)}
+
+/* Phase card — inline, no collapse */
+.phase{display:grid;grid-template-columns:44px 1fr;gap:16px;margin-bottom:32px;padding-bottom:32px;border-bottom:var(--div)}
+.phase:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.dot{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:13px;font-weight:500;color:var(--cream);flex-shrink:0}
+.phase h3{font-family:var(--fd);font-size:22px;font-weight:400;color:var(--ink);margin-bottom:2px;line-height:1.3}
+.phase .sub{font-family:var(--fm);font-size:11px;color:var(--w600);letter-spacing:.02em;margin-bottom:16px}
+.phase .body{font-size:15px;color:var(--g700);line-height:1.8}
+
+/* Split */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.card{padding:20px 24px;border-radius:var(--r);border:var(--div);background:var(--g50)}
+.card h4{font-family:var(--fm);font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.10em;margin-bottom:12px;color:var(--w600)}
+.card-t{background:var(--teal-l);border-left:var(--div2);border-top:none;border-right:none;border-bottom:none}
+.card-t h4{color:var(--teal-d)}
+.card-a{background:var(--amber-l);border-left:2px solid var(--amber);border-top:none;border-right:none;border-bottom:none}
+.card-a h4{color:var(--amber-d)}
+.row{font-size:14px;color:var(--g700);padding:6px 0;border-bottom:var(--div);display:flex;align-items:baseline;gap:10px;line-height:1.75}
+.row:last-child{border-bottom:none}
+.d{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:8px}
+
+/* Convergence Map */
+.cmap{margin-bottom:24px}
+.cmap-head{display:grid;grid-template-columns:1fr 28px 1fr 28px 1fr;margin-bottom:8px;padding:0 4px}
+.cmap-head span{font-family:var(--fm);font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.10em;color:var(--w600)}
+.cmap-head .arr{color:var(--g300);text-align:center}
+.cmap-r{display:grid;grid-template-columns:1fr 28px 1fr 28px 1fr;margin-bottom:2px}
+.cmap-c{padding:16px 20px;border:var(--div);border-radius:var(--r);background:var(--g50)}
+.cmap-c h5{font-family:var(--fd);font-size:17px;font-weight:400;color:var(--ink);margin-bottom:4px;line-height:1.3}
+.cmap-c p{font-size:13px;color:var(--g600);line-height:1.7;margin:0}
+.cmap-c .tags{margin-bottom:8px}
+.cmap-a{display:flex;align-items:center;justify-content:center;color:var(--teal);font-size:16px;opacity:.45}
+.c-src{border-left:2px solid var(--teal);background:var(--cream)}
+.c-mid{background:var(--g50)}
+.c-dst{border-left:2px solid var(--amber);background:var(--cream)}
+.pill{font-family:var(--fm);font-size:10px;display:inline-block;padding:3px 10px;border-radius:100px;margin-right:4px;margin-bottom:4px;letter-spacing:.04em}
+
+/* Gate */
+.gates{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.gate{background:var(--g50);border:var(--div);border-radius:var(--r);padding:20px 24px;position:relative;overflow:hidden}
+.gate-id{font-family:var(--fm);font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.10em;color:var(--w600);margin-bottom:4px}
+.gate-t{font-family:var(--fd);font-size:17px;font-weight:400;color:var(--ink);line-height:1.35;margin-bottom:8px}
+.gate-m{font-size:14px;color:var(--g600);line-height:1.75}
+.gate-b{position:absolute;bottom:0;left:0;right:0;height:2px}
+
+/* Stakeholder */
+.stak{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
+.sk{padding:24px;border-radius:var(--r);border:var(--div);background:var(--g50)}
+.sk h4{font-family:var(--fd);font-size:20px;font-weight:400;color:var(--ink);margin-bottom:2px}
+.sk-role{font-family:var(--fm);font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--w600);margin-bottom:16px;display:block}
+.sk-item{font-size:14px;color:var(--g700);padding:8px 0;border-bottom:var(--div);line-height:1.75}
+.sk-item:last-child{border-bottom:none}
+.sk-item strong{color:var(--ink);font-weight:600}
+
+/* Divider */
+hr.sep{border:none;border-top:var(--div);margin:28px 0}
+
+.foot{padding:28px 64px;text-align:center;font-family:var(--fm);font-size:11px;color:var(--w600);border-top:var(--div);letter-spacing:.04em}
+
+@media(max-width:1024px){
+  .hdr,.tabs,.pane,.foot{padding-left:24px;padding-right:24px}
+  .gates,.split{grid-template-columns:1fr}.stak{grid-template-columns:1fr}
+  .cmap-r{grid-template-columns:1fr;gap:2px}
+  .cmap-head{display:none}
+  .cmap-a{padding:2px 0;transform:rotate(90deg);font-size:13px}
+  .cmap-c::before{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--w600);display:block;margin-bottom:4px}
+  .c-src::before{content:'Dự án khách hàng'}.c-mid::before{content:'Tài sản tích luỹ'}.c-dst::before{content:'Mora 2.0 sẽ dùng'}
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-tags"><span class="tag">Operating OS × Mora</span><span class="tag tag-t">Lộ trình xây dựng</span></div>
+  <h1>Nhận việc → Chuẩn hoá → <em>Mora 2.0</em> → OOS</h1>
+  <p>Ba giai đoạn tuyến tính. Mỗi giai đoạn tạo điều kiện cho giai đoạn tiếp theo. Mora 2.0 là minh chứng sống — và là sức nặng để OOS ra đời chính thức.</p>
+</div>
+
+<div class="tabs">
+  <button class="on" data-t="overview">Tổng quan</button>
+  <button data-t="phase1">① Nhận việc & Chuẩn hoá</button>
+  <button data-t="phase2">② Mora 2.0</button>
+  <button data-t="phase3">③ OOS ra đời</button>
+  <button data-t="stakeholders">Lợi ích các bên</button>
+  <button data-t="conditions">Điều kiện chuyển giai đoạn</button>
+</div>
+
+<!-- ═══ TỔNG QUAN ═══ -->
+<div class="pane on" id="overview">
+<h2>Ba giai đoạn tuyến tính</h2>
+<span class="label">Không giai đoạn nào bị bỏ qua</span>
+
+<div class="call call-t">
+  <h4>Nguyên tắc</h4>
+  Giai đoạn sau chỉ bắt đầu khi giai đoạn trước tạo đủ điều kiện — về năng lực, tài chính, và minh chứng thực tế.
+</div>
+
+<div class="phase">
+  <div><div class="dot" style="background:var(--teal)">①</div></div>
+  <div>
+    <h3>Nhận việc & chuẩn hoá chuỗi cung ứng</h3>
+    <div class="sub">Doanh thu từ ngày đầu · Xây nền tảng bằng dự án thật</div>
+    <div class="body">
+      <p>Nhận dự án từ khách hàng doanh nghiệp. Mỗi dự án hoàn thành tạo ra <strong>doanh thu</strong> để duy trì hoạt động, và <strong>hồ sơ chuỗi cung ứng</strong> — nhà cung cấp đã đánh giá, quy trình đã chuẩn hoá, benchmark giá và thời gian từ dữ liệu thật.</p>
+      <p style="margin-top:8px">Bốn mảng cần chuẩn hoá: sản xuất nội dung · thi công & fit-out · bao bì & nguyên liệu · sự kiện & kích hoạt. Mỗi mảng cần ít nhất 2 dự án thật để có đủ dữ liệu tin cậy.</p>
+    </div>
+  </div>
+</div>
+
+<div class="phase">
+  <div><div class="dot" style="background:var(--amber)">②</div></div>
+  <div>
+    <h3>Xây dựng Mora 2.0 — minh chứng sống</h3>
+    <div class="sub">Triển khai từ chuỗi cung ứng đã kiểm chứng · Case study trọn vẹn</div>
+    <div class="body">
+      <p>Mora 2.0 là dự án đầu tiên xây dựng hoàn toàn từ chuỗi cung ứng đã chuẩn hoá ở giai đoạn ①. Mỗi nhà cung cấp, mỗi quy trình, mỗi con số dự toán đều đến từ dữ liệu thật. Khi Mora 2.0 vận hành — cửa hàng đang chạy, khách hàng đang mua, hệ thống vận hành trọn vẹn — đây là thứ không slide nào thay thế được.</p>
+    </div>
+  </div>
+</div>
+
+<div class="phase">
+  <div><div class="dot" style="background:var(--blue)">③</div></div>
+  <div>
+    <h3>OOS ra đời chính thức</h3>
+    <div class="sub">Mora 2.0 = sức nặng · Kêu gọi vốn & mời các bên tham gia</div>
+    <div class="body">
+      <p>Với Mora 2.0 đang vận hành, OOS có đủ sức nặng để mời gọi: <strong>nhà đầu tư</strong> thấy mô hình chạy thật; <strong>nhân sự</strong> thấy cung đường tiêu chuẩn hoá; <strong>doanh nghiệp</strong> thấy hệ sinh thái chuỗi cung ứng đã kiểm chứng. OOS không ra đời từ ý tưởng — OOS ra đời từ bằng chứng.</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══ PHASE 1 ═══ -->
+<div class="pane" id="phase1">
+<h2>① Nhận việc & chuẩn hoá chuỗi cung ứng</h2>
+<span class="label">Mỗi dự án = doanh thu + chuẩn hoá 1 mảng</span>
+
+<div class="call call-t">
+  <h4>Mục tiêu kép</h4>
+  Mỗi dự án khách hàng tạo ra doanh thu để duy trì hoạt động, và hồ sơ chuỗi cung ứng — nhà cung cấp đã đánh giá, quy trình đã chuẩn hoá, dữ liệu benchmark. Không có giai đoạn nào chỉ chuẩn bị mà không có tiền.
+</div>
+
+<div class="cmap">
+  <div class="cmap-head">
+    <span>Dự án khách hàng</span><span class="arr"></span>
+    <span>Tài sản tích luỹ</span><span class="arr"></span>
+    <span>Mora 2.0 sẽ dùng</span>
+  </div>
+
+  <div class="cmap-r">
+    <div class="cmap-c c-src">
+      <h5>Sản xuất nội dung</h5>
+      <div class="tags"><span class="pill" style="background:var(--teal-l);color:var(--teal-d)">Client #1</span><span class="pill" style="background:var(--g100);color:var(--g600)">Dự án tiếp theo</span></div>
+      <p>Photo shoot · Corporate video<br>Social content · Lồng tiếng</p>
+    </div>
+    <div class="cmap-a">→</div>
+    <div class="cmap-c c-mid">
+      <h5>Production house đã đánh giá</h5>
+      <p>Nhiếp ảnh gia · Quay phim đã kiểm chứng<br>Brief mẫu · Checklist · Biểu phí chuẩn</p>
+    </div>
+    <div class="cmap-a">→</div>
+    <div class="cmap-c c-dst">
+      <h5>Nội dung trước khai trương</h5>
+      <p>Ảnh thương hiệu · Social build · Website<br>Tỷ lệ vàng · Ngôn ngữ hình ảnh Mora</p>
+    </div>
+  </div>
+
+  <div class="cmap-r">
+    <div class="cmap-c c-src">
+      <h5>Thi công & Fit-out</h5>
+      <div class="tags"><span class="pill" style="background:var(--blue-l);color:var(--blue)">Showroom</span><span class="pill" style="background:var(--g100);color:var(--g600)">Văn phòng</span></div>
+      <p>Nhà thầu · Vật liệu · Cơ điện<br>Nội thất thương mại · Biển hiệu</p>
+    </div>
+    <div class="cmap-a">→</div>
+    <div class="cmap-c c-mid">
+      <h5>Nhà thầu đã đánh giá xếp hạng</h5>
+      <p>Quy trình mua sắm vật liệu kiểm chứng<br>SOP thi công · An toàn · Benchmark thời gian</p>
+    </div>
+    <div class="cmap-a">→</div>
+    <div class="cmap-c c-dst">
+      <h5>Thi công cửa hàng Mora</h5>
+      <p>Xây dựng theo thông số giác quan<br>Travertine · Gỗ sồi · Đồng thau · Bê tông</p>
+    </div>
+  </div>
+
+  <div class="cmap-r">
+    <div class="cmap-c c-src">
+      <h5>Chuỗi cung ứng</h5>
+      <div class="tags"><span class="pill" style="background:var(--amber-l);color:var(--amber-d)">Packaging</span><span class="pill" style="background:var(--g100);color:var(--g600)">Procurement</span></div>
+      <p>Bao bì · Logistics · QC<br>Mua sắm · Quản lý nhà cung cấp</p>
+    </div>
+    <div class="cmap-a">→</div>
+    <div class="cmap-c c-mid">
+      <h5>Hệ thống đánh giá nhà cung cấp</h5>
+      <p>Xếp hạng Tier A/B/C · Phương án dự phòng<br>Spec bao bì mẫu · Benchmark MOQ</p>
+    </div>
+    <div class="cmap-a">→</div>
+    <div class="cmap-c c-dst">
+      <h5>Bao bì & nguyên liệu Mora</h5>
+      <p>Chai · Nắp · Hộp · Túi · Nhãn VDP<br>IFRA-certified · Đối tác nhà máy</p>
+    </div>
+  </div>
+
+  <div class="cmap-r">
+    <div class="cmap-c c-src">
+      <h5>Sự kiện & Kích hoạt</h5>
+      <div class="tags"><span class="pill" style="background:var(--g100);color:var(--g600)">Event corporate</span><span class="pill" style="background:var(--g100);color:var(--g600)">Product launch</span></div>
+      <p>Ra mắt · Roadshow · PR<br>Vận hành sự kiện · Influencer</p>
+    </div>
+    <div class="cmap-a">→</div>
+    <div class="cmap-c c-mid">
+      <h5>SOP sự kiện & danh sách nhà thầu</h5>
+      <p>Quy trình địa điểm · Nhân sự sự kiện<br>Danh sách PR · Đánh giá influencer</p>
+    </div>
+    <div class="cmap-a">→</div>
+    <div class="cmap-c c-dst">
+      <h5>Khai trương & kích hoạt Mora</h5>
+      <p>Xây dựng trước khai trương<br>Sự kiện mở cửa · Seeding influencer · PR</p>
+    </div>
+  </div>
+</div>
+
+<div class="call call-t">
+  <h4>Đọc sơ đồ</h4>
+  <strong style="color:var(--teal-d)">Cột trái</strong> — Dự án khách hàng: nguồn doanh thu và cơ hội kiểm chứng. <strong style="color:var(--teal-d)">Cột giữa</strong> — Tài sản tích luỹ: nền tảng chung dùng cho mọi dự án sau. <strong style="color:var(--teal-d)">Cột phải</strong> — Mora 2.0: mỗi phần map ngược về tài sản đã kiểm chứng, không phần nào xây từ đầu.
+</div>
+</div>
+
+<!-- ═══ PHASE 2 ═══ -->
+<div class="pane" id="phase2">
+<h2>② Mora 2.0 — Minh chứng sống</h2>
+<span class="label">Triển khai từ chuỗi cung ứng đã chuẩn hoá</span>
+
+<div class="call call-t">
+  <h4>Vai trò</h4>
+  Không phải dự án kinh doanh bán lẻ đơn thuần. Đây là minh chứng trọn vẹn — từ Codex đến Commerce — rằng phương pháp tiêu chuẩn hoá chuỗi cung ứng tạo ra kết quả thật. Nhà đầu tư, đối tác, khách hàng tiềm năng — đến tận nơi và kiểm chứng.
+</div>
+
+<div class="split">
+  <div class="card card-t">
+    <h4 style="color:var(--teal-d)">Mora 2.0 chứng minh</h4>
+    <div class="row"><span class="d" style="background:var(--teal)"></span><strong>Chuỗi cung ứng hoạt động</strong> — nhà cung cấp, vật liệu, quy trình đã kiểm chứng</div>
+    <div class="row"><span class="d" style="background:var(--teal)"></span><strong>Dự toán chính xác</strong> — chi phí, thời gian dựa trên benchmark thật</div>
+    <div class="row"><span class="d" style="background:var(--teal)"></span><strong>Hệ thống vận hành trọn vẹn</strong> — SOP, KPI, brand guidelines đã codified</div>
+    <div class="row"><span class="d" style="background:var(--teal)"></span><strong>Doanh thu thật</strong> — Mora 1.0: 1.8 tỷ/tháng, 80%+ gross margin</div>
+  </div>
+  <div class="card">
+    <h4 style="color:var(--amber-d)">Không thể thay thế bằng slide</h4>
+    <div class="row"><span class="d" style="background:var(--amber)"></span>Slide nói lý thuyết — Mora 2.0 là cửa hàng đang chạy</div>
+    <div class="row"><span class="d" style="background:var(--amber)"></span>Slide trình bày số — Mora 2.0 có P&L thật, kiểm chứng được</div>
+    <div class="row"><span class="d" style="background:var(--amber)"></span>Slide hứa hẹn quy trình — Mora 2.0 vận hành hàng ngày</div>
+    <div class="row"><span class="d" style="background:var(--amber)"></span>Bài học Mora 1.0: sản phẩm tốt nhưng thiếu hệ thống → mất công ty</div>
+  </div>
+</div>
+
+<div class="call call-a">
+  <h4>Lợi thế chi phí</h4>
+  Nhà cung cấp đã đàm phán giá. Vật liệu đã benchmark. Thời gian thi công đã dự báo. Chi phí khởi tạo thấp hơn 30–40% so với xây dựng mới — dựa trên dữ liệu thật.
+</div>
+</div>
+
+<!-- ═══ PHASE 3 ═══ -->
+<div class="pane" id="phase3">
+<h2>③ OOS ra đời chính thức</h2>
+<span class="label">Mora 2.0 = sức nặng → mời các bên tham gia</span>
+
+<div class="call call-t">
+  <h4>Tại sao OOS cần Mora 2.0 trước</h4>
+  Không ai tin vào phương pháp chưa có bằng chứng. Mora 2.0 đang vận hành = bằng chứng mà mọi bên liên quan kiểm chứng trực tiếp. Việc mời gọi tham gia dựa trên thực tế — không phải lời hứa.
+</div>
+
+<div class="split">
+  <div class="card">
+    <h4>Trước khi có Mora 2.0</h4>
+    <div class="row"><span class="d" style="background:var(--g400)"></span>"Tôi có phương pháp tiêu chuẩn hoá" — khó chứng minh</div>
+    <div class="row"><span class="d" style="background:var(--g400)"></span>"Phương pháp này tạo kết quả" — chưa minh chứng trọn vẹn</div>
+    <div class="row"><span class="d" style="background:var(--g400)"></span>Nhà đầu tư thấy: rủi ro cao, chưa proof of concept</div>
+  </div>
+  <div class="card card-t">
+    <h4 style="color:var(--teal-d)">Sau khi Mora 2.0 vận hành</h4>
+    <div class="row"><span class="d" style="background:var(--teal)"></span>"Đây là Mora — xây từ chuỗi cung ứng đã chuẩn hoá" — đến tận nơi mà xem</div>
+    <div class="row"><span class="d" style="background:var(--teal)"></span>"Doanh thu, chi phí, thời gian — có dữ liệu" — kiểm chứng được</div>
+    <div class="row"><span class="d" style="background:var(--teal)"></span>Nhà đầu tư thấy: mô hình chạy, dòng tiền rõ, mở rộng được</div>
+  </div>
+</div>
+
+<div class="blk">
+  <h4>OOS sẽ làm gì</h4>
+  <p><strong>Nhân rộng phương pháp:</strong> Chạy thật ở Mora → áp dụng cho thương hiệu khác.</p>
+  <p><strong>Mở rộng hệ sinh thái:</strong> Mỗi bên mới hưởng lợi từ chuỗi đã chuẩn hoá, đồng thời đóng góp ngược.</p>
+  <p><strong>Xây platform (khi đủ điều kiện):</strong> Số hoá quy trình kết nối. Chỉ khi volume đủ lớn.</p>
+</div>
+
+<div class="call call-a">
+  <h4>Vòng phản hồi</h4>
+  OOS nhận khách → dự án → chuỗi cung ứng tốt hơn → Mora mở rộng → thêm dữ liệu → methodology nâng cấp → thu hút khách mới. Hai sản phẩm bổ trợ cho nhau.
+</div>
+</div>
+
+<!-- ═══ LỢI ÍCH CÁC BÊN ═══ -->
+<div class="pane" id="stakeholders">
+<h2>Lợi ích cho các bên tham gia</h2>
+<span class="label">Mỗi bên đều mạnh hơn khi ở trong hệ sinh thái này</span>
+
+<div class="call call-t">
+  <h4>Nguyên tắc</h4>
+  Giá trị đến từ sự thuận tiện và chất lượng — không phải từ sự ràng buộc. Mỗi bên kiểm chứng lợi ích qua dữ liệu thật. Không ai bị khoá vào.
+</div>
+
+<div class="stak">
+  <div class="sk" style="border-top:2px solid var(--teal)">
+    <h4>Nhà đầu tư</h4>
+    <span class="sk-role">Dòng tiền · Minh bạch · Hệ sinh thái</span>
+    <div class="sk-item"><strong>Dòng tiền kiểm chứng:</strong> Giai đoạn ① có doanh thu dự án. Giai đoạn ② có doanh thu Mora. Giai đoạn ③ đa dạng nguồn thu. Mỗi giai đoạn đều có tiền thật.</div>
+    <div class="sk-item"><strong>Minh bạch tiến độ:</strong> Báo cáo điều kiện chuyển giai đoạn mỗi quý — dữ liệu thực, không phải lời hứa.</div>
+    <div class="sk-item"><strong>Hưởng lợi từ hệ sinh thái:</strong> Khi cần sản xuất nội dung, thi công, sự kiện — tiếp cận chuỗi cung ứng đã chuẩn hoá.</div>
+  </div>
+  <div class="sk" style="border-top:2px solid var(--blue)">
+    <h4>Nhân sự & Chuyên gia</h4>
+    <span class="sk-role">Tiêu chuẩn hoá · Đa dạng · Tự chủ</span>
+    <div class="sk-item"><strong>Cung đường tiêu chuẩn hoá:</strong> Brief chuẩn, checklist chất lượng, benchmark thời gian. Không phụ thuộc một người.</div>
+    <div class="sk-item"><strong>Nhiều bên tham gia:</strong> Nhiều khách hàng, nhiều dự án, nhiều ngành — tự chủ end-to-end.</div>
+    <div class="sk-item"><strong>Phát triển qua dự án:</strong> Mỗi dự án = kinh nghiệm ghi nhận. Chất lượng tăng → thu nhập tăng.</div>
+  </div>
+  <div class="sk" style="border-top:2px solid var(--amber)">
+    <h4>Doanh nghiệp hệ sinh thái</h4>
+    <span class="sk-role">Nền tảng chung · Giá tốt · Tham chiếu sống</span>
+    <div class="sk-item"><strong>Dùng ngay chuỗi đã kiểm chứng:</strong> Nhà cung cấp đã đánh giá, quy trình đã viết, phương án dự phòng có sẵn.</div>
+    <div class="sk-item"><strong>Giá tốt nhờ sản lượng chung:</strong> Nhiều bên dùng chung nhà cung cấp = đàm phán giá tốt hơn.</div>
+    <div class="sk-item"><strong>Mora là tham chiếu sống:</strong> Đến Mora — thấy, chạm, trải nghiệm hệ thống đang vận hành thật.</div>
+  </div>
+</div>
+</div>
+
+<!-- ═══ ĐIỀU KIỆN ═══ -->
+<div class="pane" id="conditions">
+<h2>Điều kiện chuyển giai đoạn</h2>
+<span class="label">Dựa trên điều kiện thực tế · Không dựa trên thời gian</span>
+
+<div class="call call-a">
+  <h4>Nguyên tắc</h4>
+  Không giai đoạn nào có deadline cố định. Chuyển khi đủ điều kiện. Nếu cần thêm thời gian, lộ trình dịch theo. Điều này bảo vệ chất lượng và lợi ích của mọi bên.
+</div>
+
+<div class="blk" style="background:var(--g100)"><h4 style="color:var(--ink);font-size:12px">Từ giai đoạn ① sang ② — Khi nào bắt đầu xây Mora 2.0</h4></div>
+
+<div class="gates">
+  <div class="gate"><div class="gate-id">Điều kiện A</div><div class="gate-t">≥ 3 mảng chuỗi cung ứng đạt chuẩn</div><div class="gate-m">Trong 4 mảng — ít nhất 3 đã có nhà cung cấp đánh giá xong, quy trình chuẩn hoá, dữ liệu benchmark từ ≥ 2 dự án.</div><div class="gate-b" style="background:var(--teal)"></div></div>
+  <div class="gate"><div class="gate-id">Điều kiện B</div><div class="gate-t">Tài chính đủ ≥ 6 tháng vận hành Mora</div><div class="gate-m">Từ doanh thu dự án hoặc cam kết đầu tư. Không dùng toàn bộ vốn lưu động. Ước tính theo MORA-FIN-010.</div><div class="gate-b" style="background:var(--blue)"></div></div>
+  <div class="gate"><div class="gate-id">Điều kiện C</div><div class="gate-t">Mạng lưới chuyên gia ≥ 5 người hoạt động</div><div class="gate-m">5 chuyên gia đã hoàn thành dự án, có điểm đánh giá, có lịch trống. Mora cần: thi công, nhiếp ảnh, bao bì, hương liệu, digital.</div><div class="gate-b" style="background:var(--teal)"></div></div>
+  <div class="gate"><div class="gate-id">Điều kiện D</div><div class="gate-t">Dự án khách hàng vẫn chạy khi founder tập trung Mora</div><div class="gate-m">Đồng sáng lập hoặc thành viên nòng cốt xử lý được. Mora cần founder tập trung hoàn toàn giai đoạn đầu.</div><div class="gate-b" style="background:var(--amber)"></div></div>
+</div>
+
+<div class="call call-t">
+  <h4>Quy tắc đánh giá</h4>
+  <strong style="color:var(--teal-d)">4/4 đạt:</strong> Bắt đầu xây Mora 2.0. Báo cáo kết quả cho nhà đầu tư và đội ngũ.<br>
+  <strong style="color:var(--teal-d)">3/4 đạt:</strong> Xác định điều kiện thiếu, tập trung nguồn lực. Chưa bắt đầu Mora.<br>
+  <strong style="color:var(--teal-d)">≤ 2 đạt:</strong> Tiếp tục nhận dự án. Đánh giá lại mỗi quý.
+</div>
+
+<hr class="sep">
+
+<div class="blk" style="background:var(--g100)"><h4 style="color:var(--ink);font-size:12px">Từ giai đoạn ② sang ③ — Khi nào OOS ra đời chính thức</h4></div>
+
+<div class="gates">
+  <div class="gate"><div class="gate-id">Điều kiện E</div><div class="gate-t">Mora 2.0 vận hành ổn định ≥ 3 tháng</div><div class="gate-m">Cửa hàng mở, có doanh thu, hệ thống vận hành chạy thật. Dữ liệu P&L, dòng tiền, KPI đủ trình bày cho nhà đầu tư.</div><div class="gate-b" style="background:var(--amber)"></div></div>
+  <div class="gate"><div class="gate-id">Điều kiện F</div><div class="gate-t">Case study Mora 2.0 đã document đầy đủ</div><div class="gate-m">Toàn bộ quá trình — từ chuẩn hoá chuỗi cung ứng đến khai trương và vận hành — ghi lại có hệ thống. Ai cũng đọc, hiểu, kiểm chứng được.</div><div class="gate-b" style="background:var(--teal)"></div></div>
+</div>
+
+<div class="call call-t">
+  <h4>Khi E + F đạt</h4>
+  OOS có đủ sức nặng để: kêu gọi vốn đầu tư chính thức, mời nhân sự và chuyên gia dài hạn, tiếp cận doanh nghiệp mới bằng minh chứng sống.
+</div>
+</div>
+
+<div class="foot">Operating OS × Mora · Lộ trình xây dựng · v1.0 · Tháng 4/2026</div>
+
+<script>
+document.querySelectorAll('.tabs button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('on'));
+    document.querySelectorAll('.pane').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    document.getElementById(b.dataset.t).classList.add('on');
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+});
+</script>
+</body>
+</html>
