@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Codex · Mora</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#FAF9F6;--ink:#1A1916;
+  --i60:rgba(26,25,22,.6);--i30:rgba(26,25,22,.3);--i12:rgba(26,25,22,.12);--i06:rgba(26,25,22,.06);
+  --teal:#0F6E56;--tl:#E1F5EE;--td:#085041;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+  --mono:'DM Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--ink);font-family:var(--serif);-webkit-font-smoothing:antialiased;line-height:1}
+
+/* ── COVER ── */
+.cover{min-height:100vh;display:flex;flex-direction:column;justify-content:space-between;padding:80px 72px 64px;border-bottom:1px solid var(--i12);max-width:1040px;margin:0 auto}
+@media(max-width:640px){.cover{padding:48px 28px 40px}}
+.cover-top{}
+.cover-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--i30);margin-bottom:20px}
+.cover-title{font-family:var(--serif);font-size:clamp(64px,10vw,120px);font-weight:300;line-height:1;letter-spacing:-.03em;color:var(--ink);margin-bottom:0}
+.cover-mid{padding:40px 0;max-width:520px}
+.cover-seed{font-family:var(--serif);font-size:clamp(18px,2.5vw,24px);font-weight:300;font-style:italic;line-height:1.6;color:var(--i60)}
+.cover-bottom{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px}
+.cover-author{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--i60)}
+.cover-states{display:flex;gap:24px}
+.state{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--i30)}
+.state.active{color:var(--teal)}
+
+/* ── CONTENT LAYOUT ── */
+.content{max-width:1040px;margin:0 auto}
+
+/* ── SECTION TYPES ── */
+/* Personal text section */
+.personal{padding:80px 72px;border-bottom:1px solid var(--i12)}
+@media(max-width:640px){.personal{padding:48px 28px}}
+.personal-header{display:flex;align-items:baseline;gap:24px;margin-bottom:60px;flex-wrap:wrap}
+.sec-num{font-family:var(--mono);font-size:10px;color:var(--i30);letter-spacing:.1em}
+.sec-title{font-family:var(--serif);font-size:14px;font-weight:400;color:var(--i60);letter-spacing:.04em}
+.personal-text{max-width:640px}
+.pt-para{font-size:clamp(17px,2vw,21px);font-weight:300;line-height:1.85;color:var(--ink);margin-bottom:32px}
+.pt-para em{font-style:italic;color:var(--i60)}
+.pt-para strong{font-weight:500;color:var(--ink)}
+
+/* Derived / Brand section */
+.derived{padding:72px 72px;border-bottom:1px solid var(--i12);background:var(--ink)}
+@media(max-width:640px){.derived{padding:48px 28px}}
+.derived-header{margin-bottom:56px}
+.d-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(250,249,246,.3);margin-bottom:12px}
+.d-title{font-family:var(--serif);font-size:clamp(28px,4vw,48px);font-weight:300;color:var(--cream);line-height:1.1;letter-spacing:-.01em}
+
+/* Invariants */
+.invariants{display:flex;flex-direction:column;gap:0}
+.inv{display:grid;grid-template-columns:200px 1fr;gap:0;border-top:1px solid rgba(250,249,246,.08)}
+.inv:last-child{border-bottom:1px solid rgba(250,249,246,.08)}
+.inv-left{padding:24px 0;padding-right:32px}
+.inv-num{font-family:var(--mono);font-size:9px;color:rgba(250,249,246,.25);letter-spacing:.08em;margin-bottom:8px}
+.inv-q{font-family:var(--serif);font-size:16px;font-weight:300;color:rgba(250,249,246,.5);line-height:1.4;font-style:italic}
+.inv-right{padding:24px 0 24px 32px;border-left:1px solid rgba(250,249,246,.08)}
+.inv-answer{font-family:var(--serif);font-size:clamp(15px,1.8vw,18px);font-weight:300;color:var(--cream);line-height:1.75;margin-bottom:10px}
+.inv-note{font-family:var(--sans);font-size:12px;color:rgba(250,249,246,.4);line-height:1.6}
+@media(max-width:640px){.inv{grid-template-columns:1fr}.inv-left{padding-bottom:0}.inv-right{border-left:none;padding-left:0;border-top:1px solid rgba(250,249,246,.08)}}
+
+/* Sequence */
+.sequence-sec{padding:72px 72px;border-bottom:1px solid var(--i12)}
+@media(max-width:640px){.sequence-sec{padding:48px 28px}}
+.seq-header{margin-bottom:52px}
+.seq-grid{display:flex;flex-direction:column;gap:0}
+.seq-row{display:grid;grid-template-columns:60px 1fr;gap:0;border-top:1px solid var(--i12);align-items:start}
+.seq-row:last-child{border-bottom:1px solid var(--i12)}
+.seq-arrow{padding:28px 0;font-family:var(--mono);font-size:18px;color:var(--i30);display:flex;align-items:flex-start}
+.seq-row:first-child .seq-arrow{font-size:12px;color:var(--teal)}
+.seq-content{padding:28px 0 28px 24px;border-left:1px solid var(--i12)}
+.seq-name{font-family:var(--serif);font-size:clamp(22px,3vw,32px);font-weight:300;color:var(--ink);margin-bottom:8px;line-height:1}
+.seq-def{font-family:var(--serif);font-size:clamp(15px,1.8vw,18px);font-weight:300;font-style:italic;color:var(--i60);margin-bottom:10px;line-height:1.6}
+.seq-body{font-family:var(--sans);font-size:13px;color:var(--i60);line-height:1.75;max-width:560px}
+.seq-connector{display:flex;align-items:center;gap:12px;padding:12px 0 12px 84px}
+.seq-conn-line{flex:1;height:1px;background:var(--tl)}
+.seq-conn-dot{width:6px;height:6px;border-radius:50%;background:var(--teal);flex-shrink:0}
+
+/* Closing */
+.closing{padding:80px 72px;display:flex;flex-direction:column;gap:60px}
+@media(max-width:640px){.closing{padding:48px 28px;gap:40px}}
+.manifesto{max-width:640px}
+.manifesto-line{font-family:var(--serif);font-size:clamp(18px,2.5vw,26px);font-weight:300;line-height:1.7;color:var(--ink)}
+.manifesto-line em{font-style:italic;color:var(--i60)}
+.ruling{border:none;border-top:2px solid var(--teal);margin:0;max-width:60px}
+.coda{display:flex;flex-direction:column;gap:12px}
+.coda-line{font-family:var(--serif);font-size:clamp(22px,3vw,36px);font-weight:300;font-style:italic;color:var(--i30);letter-spacing:-.01em;line-height:1.2}
+.coda-line.primary{color:var(--ink)}
+.closing-footer{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;padding-top:40px;border-top:1px solid var(--i12)}
+.cf-brand{font-family:var(--serif);font-size:22px;font-weight:300;letter-spacing:.12em;text-transform:uppercase;color:var(--ink)}
+.cf-meta{font-family:var(--mono);font-size:9px;color:var(--i30);letter-spacing:.08em;line-height:1.8;text-align:right}
+</style>
+</head>
+<body>
+
+<!-- ── COVER ── -->
+<div class="cover">
+  <div class="cover-top">
+    <div class="cover-eyebrow">Document Foundation · Mora · Không thay đổi trừ khi cuộc đời thay đổi</div>
+    <h1 class="cover-title">Codex</h1>
+  </div>
+  <div class="cover-mid">
+    <p class="cover-seed">Con người là hạt mầm có linh trí — được trao cho nhận biết để tìm được đất, nước, chất dinh dưỡng, và điều kiện để thăng hoa.</p>
+  </div>
+  <div class="cover-bottom">
+    <span class="cover-author">Thanh Thanh · Founder · Mora</span>
+    <div class="cover-states">
+      <span class="state active">Tự do</span>
+      <span class="state">→</span>
+      <span class="state active">Thoải mái</span>
+      <span class="state">→</span>
+      <span class="state active">Sẵn sàng</span>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- ── PERSONAL CODEX ── -->
+<div class="personal">
+  <div class="personal-header">
+    <span class="sec-num">I</span>
+    <span class="sec-title">Codex cá nhân — viết như nói, đúng với mình</span>
+  </div>
+  <div class="personal-text">
+
+    <p class="pt-para">Tôi sinh ra là một hạt mầm có linh trí.</p>
+
+    <p class="pt-para">Không phải để chứng minh điều gì. Không phải để chinh phục ai. Mà để tìm được đất đúng — bối cảnh đúng, điều kiện đúng, chất dinh dưỡng đúng — để có thể trở thành đúng những gì mình mang sẵn trong mình.</p>
+
+    <p class="pt-para">Tôi gọi trạng thái đó là <strong>tự do</strong>.</p>
+
+    <p class="pt-para">Không phải tự do vì không bị ràng buộc. Mà tự do vì tôi đã hiểu đủ — đủ để biết mình đang làm gì, tại sao, và nó dẫn đến đâu. Tự do là kết quả của sự hiểu biết được xây dựng có hệ thống, không có chỗ mù, không có gì được giả định mà chưa được kiểm chứng.</p>
+
+    <p class="pt-para">Khi đã tự do, mọi thứ xung quanh tôi bắt đầu được đặt đúng chỗ — mỗi quyết định có lý do đủ, mỗi tiêu chuẩn được xác thực bởi kinh nghiệm thật và bởi những gì nhân loại đã tích lũy trước tôi. Không có gì được đưa vào chỉ vì trông đẹp hay nghe hay. Mọi thứ phải thật. Và khi mọi thứ thật, tôi <strong>thoải mái</strong> — không phải vì cuộc đời dễ dàng, mà vì tôi không phải giả vờ bất cứ điều gì.</p>
+
+    <p class="pt-para">Và khi đã tự do và thoải mái, tôi <strong>sẵn sàng</strong> — có mặt hoàn toàn với khoảnh khắc đang xảy ra. Với người đang đứng trước mặt. Với thứ đang được tạo ra. Không bị kéo về quá khứ. Không bị kéo đến tương lai. Chỉ là đây, bây giờ, đầy đủ.</p>
+
+    <div style="height:48px;border-left:2px solid var(--i12);margin:48px 0 48px 2px"></div>
+
+    <p class="pt-para">Tôi nhìn vào thế giới xung quanh và thấy phần lớn nó đang vận hành bằng cách khai thác — nỗi sợ, ham muốn, bằng cấp giả, công dụng bịa đặt. Người ta bị bán thứ họ không cần, bằng cách khiến họ tin rằng mình thiếu thứ gì đó.</p>
+
+    <p class="pt-para">Tôi không thể sống trong thế giới đó. Và tôi không muốn xây dựng trong thế giới đó.</p>
+
+    <p class="pt-para">Nên tôi chọn xây dựng một thế giới khác — bắt đầu từ những thứ nhỏ nhất, cụ thể nhất, có thể chạm được. Một chai nước hoa. Một không gian. Một cuộc trò chuyện. Một khoảnh khắc khách hàng cảm thấy mình được đối xử như người có linh trí — không bị thao túng, không bị vội vã, không bị bán.</p>
+
+    <div style="height:48px;border-left:2px solid var(--i12);margin:48px 0 48px 2px"></div>
+
+    <p class="pt-para">Tôi có trước rồi mới trao đi.</p>
+
+    <p class="pt-para">Tôi không thể cho người khác thứ mình chưa sống qua. Nên mọi thứ tôi build — mọi tiêu chuẩn, mọi quy trình, mọi không gian — đều bắt đầu từ câu hỏi: <em>cái này có thật không? Tôi có thực sự tin vào nó không? Tôi có sống theo nó không?</em></p>
+
+    <p class="pt-para">Nếu có — tôi trao đi.</p>
+
+    <p class="pt-para">Nếu chưa — tôi đi học thêm, dù tốn bao nhiêu thời gian và tiền bạc.</p>
+
+    <div style="height:48px;border-left:2px solid var(--i12);margin:48px 0 48px 2px"></div>
+
+    <p class="pt-para">Thứ tôi muốn để lại không phải là một công ty. Không phải là một thương hiệu.</p>
+
+    <p class="pt-para">Mà là bằng chứng rằng có thể xây dựng dựa trên sự thật — và sự thật đó tạo ra thứ kế thừa được, tin tưởng được, và đủ lớn để người khác tiếp nối sau khi tôi không còn cần phải giải thích nữa.</p>
+
+    <p class="pt-para">Đó là di sản tôi muốn.</p>
+
+  </div>
+</div>
+
+<!-- ── THE SEQUENCE ── -->
+<div class="sequence-sec">
+  <div class="seq-header">
+    <div style="font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--i30);margin-bottom:12px">II</div>
+    <div style="font-family:var(--serif);font-size:clamp(24px,3.5vw,42px);font-weight:300;color:var(--ink);line-height:1.1">Ba trạng thái — theo trình tự không đảo ngược</div>
+  </div>
+  <div class="seq-grid">
+
+    <div class="seq-row">
+      <div class="seq-arrow"><span style="font-size:9px;font-family:var(--mono);color:var(--teal);letter-spacing:.06em">Nền móng</span></div>
+      <div class="seq-content">
+        <div class="seq-name">Tự do</div>
+        <div class="seq-def">Hiểu đủ để không còn mù</div>
+        <div class="seq-body">Không phải freedom as absence of constraint. Mà là freedom as mastery — tự do vì đã xây dựng đủ context để biết chính xác mình đang làm gì và tại sao. Tự do là kết quả của sự hiểu biết hệ thống, không có chỗ mù, không có gì được giả định mà chưa kiểm chứng. Đây là lý do tôi dành hết tiền để hiểu chuỗi cung ứng cà phê từ đầu đến cuối — không phải để kinh doanh cà phê, mà để không còn chỗ mù trong sự hiểu biết của mình về vận hành thật.</div>
+      </div>
+    </div>
+
+    <div class="seq-connector">
+      <div class="seq-conn-dot"></div>
+      <div class="seq-conn-line"></div>
+    </div>
+
+    <div class="seq-row">
+      <div class="seq-arrow">↓</div>
+      <div class="seq-content">
+        <div class="seq-name">Thoải mái</div>
+        <div class="seq-def">Mọi thứ đúng chỗ, có lý do đủ</div>
+        <div class="seq-body">Không phải tiện lợi hay dễ dàng. Mà là trạng thái khi mọi thứ xung quanh tôi được đặt đúng chỗ theo tiêu chuẩn được xác thực bởi hai nguồn song song: kinh nghiệm tích lũy cá nhân qua nhiều năm sống thật, và tiêu chuẩn tổ chức liên ngành toàn cầu được tích hợp theo nguồn lực từng thời điểm. Sự thoải mái đó không thể giả tạo được — vì nó là biểu hiện của sự thật đã được thiết kế, không phải decoration. Không có gì được đưa vào chỉ vì trông đẹp hay nghe hay.</div>
+      </div>
+    </div>
+
+    <div class="seq-connector">
+      <div class="seq-conn-dot"></div>
+      <div class="seq-conn-line"></div>
+    </div>
+
+    <div class="seq-row">
+      <div class="seq-arrow">↓</div>
+      <div class="seq-content">
+        <div class="seq-name">Sẵn sàng</div>
+        <div class="seq-def">Có mặt hoàn toàn với khoảnh khắc hiện tại</div>
+        <div class="seq-body">Trạng thái của người đã có tự do và thoải mái — họ không còn bị distract bởi nghi ngờ, thiếu hụt, hay cần chứng minh gì nữa. Họ có mặt hoàn toàn với khoảnh khắc đang xảy ra. Với người đang đứng trước mặt. Với thứ đang được tạo ra. Không bị kéo về quá khứ. Không bị kéo đến tương lai. Chỉ là đây, bây giờ, đầy đủ. Đây là thứ tôi dành cả đời này để sống cùng — và thứ Mora tạo ra điều kiện để khách hàng cảm nhận được trong 30 phút họ ở đây.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── BRAND INVARIANTS ── -->
+<div class="derived">
+  <div class="derived-header">
+    <div class="d-eyebrow">III · Mora — Derived từ Codex</div>
+    <h2 class="d-title">7 Invariants của thương hiệu<br><em style="opacity:.5;font-style:italic">Không thay đổi trừ khi Codex thay đổi</em></h2>
+  </div>
+  <div class="invariants">
+
+    <div class="inv">
+      <div class="inv-left">
+        <div class="inv-num">① The Tension</div>
+        <div class="inv-q">Gap nào tồn tại?</div>
+      </div>
+      <div class="inv-right">
+        <div class="inv-answer">Không gian Mora nói lên điều gì có thể — cao cấp nhưng tiếp cận được. Đây chính là câu trả lời sống cho gap đó.</div>
+        <div class="inv-note">Le Labo đẹp. Nhưng 7–10 triệu không phải ai cũng bỏ được. Mora mở ra một phân khúc mới: chất lượng nguyên liệu tương đương, trải nghiệm ngang, nhưng accessible với người Việt không cần compromise. Gap 5–7× về giá trong khi chất lượng nguyên liệu tương đương là moat thị trường — và là lý do Mora tồn tại.</div>
+      </div>
+    </div>
+
+    <div class="inv">
+      <div class="inv-left">
+        <div class="inv-num">② The Method</div>
+        <div class="inv-q">Làm bằng cách nào?</div>
+      </div>
+      <div class="inv-right">
+        <div class="inv-answer">Quy trình pha chế visible — khách thấy từng bước. Method không ẩn, method là show.</div>
+        <div class="inv-note">Staff giải thích từng bước trong lúc làm. Không im lặng, không lecture. Tone: conversational. Đây là craft — show the craft. Không giấu công cụ vào ngăn kéo như thể đây là magic trick. Video series: "How your perfume is made" là digital equivalent. FAQ page không chỉ trả lời "what" mà trả lời "why."</div>
+      </div>
+    </div>
+
+    <div class="inv">
+      <div class="inv-left">
+        <div class="inv-num">③ The Moat</div>
+        <div class="inv-q">Tại sao chỉ Mora?</div>
+      </div>
+      <div class="inv-right">
+        <div class="inv-answer">Certification visible ở counter. Personalisation ritual: không ai khác có chai này. Uniqueness = moat felt.</div>
+        <div class="inv-note">IFRA-certified không phải jargon — nó là proof. Social proof: real name on real bottle. UGC tự nói moat — không cần brand tự nói. Để copy Mora, phải copy được toàn bộ hệ thống tư duy tạo ra nó — không phải chỉ hình thức bên ngoài.</div>
+      </div>
+    </div>
+
+    <div class="inv">
+      <div class="inv-left">
+        <div class="inv-num">④ The Value</div>
+        <div class="inv-q">Ai được lợi gì?</div>
+      </div>
+      <div class="inv-right">
+        <div class="inv-answer">Gifting display prominent. Experience có thể shared: nhóm bạn cùng tới → mỗi người một chai riêng.</div>
+        <div class="inv-note">Gift guide content theo dịp: Valentine, sinh nhật, Tết. B2B landing page riêng: corporate gifting value prop. Value được framed rõ ràng theo người nhận — không phải người mua. Chai nước hoa là artifact của một trải nghiệm — bằng chứng vật lý rằng hành trình vừa xảy ra là thật.</div>
+      </div>
+    </div>
+
+    <div class="inv">
+      <div class="inv-left">
+        <div class="inv-num">⑤ The Belief</div>
+        <div class="inv-q">Tin vào điều gì?</div>
+      </div>
+      <div class="inv-right">
+        <div class="inv-answer">Không có discount sign trên sản phẩm. Staff từ chối đề xuất sản phẩm không phù hợp. Integrity visible hằng ngày.</div>
+        <div class="inv-note">Không chạy countdown timer giả. Không flash sale 7 ngày liên tiếp. Một cam kết không giữ được sẽ xóa toàn bộ những gì đã xây dựng. Mora tin rằng có thể xây dựng một thế giới dựa trên sự thật — và mỗi quyết định vận hành là bằng chứng cho niềm tin đó.</div>
+      </div>
+    </div>
+
+    <div class="inv">
+      <div class="inv-left">
+        <div class="inv-num">⑥ The Arc</div>
+        <div class="inv-q">Đang ở đâu, đến đâu?</div>
+      </div>
+      <div class="inv-right">
+        <div class="inv-answer">Không over-promise về scale. Flagship store quality thật sự. Nếu store 1, đừng pretend store 4.</div>
+        <div class="inv-note">About page honest về stage: "Chúng tôi là thương hiệu nhỏ, craft, đang lớn lên." Founder story visible — người thật, hành trình thật. Scale chỉ khi có thể giữ nguyên vẹn — tính toàn vẹn là chỉ số thành công. Scale = nhân rủi ro nếu foundation chưa đúng.</div>
+      </div>
+    </div>
+
+    <div class="inv">
+      <div class="inv-left">
+        <div class="inv-num">⑦ The Seed</div>
+        <div class="inv-q">Người mới cần gì đầu tiên?</div>
+      </div>
+      <div class="inv-right">
+        <div class="inv-answer">First-timer protocol: staff nhận ra → specific onboarding. Trial size visible tại cửa: entry point thấp = seed planted.</div>
+        <div class="inv-note">Homepage first 10 seconds must answer: "What is this place?" Fragrance quiz / discovery tool = digital seed experience. Câu hỏi đầu tiên của staff không phải "Bạn muốn gì?" mà là "Bạn đã từng đến Mora chưa?" — từ câu trả lời đó, mọi thứ còn lại được dẫn dắt.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── OPERATIONAL SEQUENCE ── -->
+<div class="sequence-sec">
+  <div class="seq-header">
+    <div style="font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--i30);margin-bottom:12px">IV</div>
+    <div style="font-family:var(--serif);font-size:clamp(24px,3.5vw,42px);font-weight:300;color:var(--ink);line-height:1.1">Chuỗi tạo ra di sản</div>
+  </div>
+  <div class="seq-grid">
+    <div class="seq-row">
+      <div class="seq-arrow"><span style="font-size:9px;font-family:var(--mono);color:var(--teal);letter-spacing:.06em">Khởi điểm</span></div>
+      <div class="seq-content">
+        <div class="seq-name">Sự thật</div>
+        <div class="seq-def">Được xây dựng có hệ thống, có tiêu chuẩn</div>
+        <div class="seq-body">Không phải sự thật cảm tính. Mà là sự thật được xác thực bởi kinh nghiệm thật và bởi tiêu chuẩn tổ chức liên ngành. Đây là nền móng không thể skip. Nếu sự thật chưa có — không có gì ở bên dưới là thật.</div>
+      </div>
+    </div>
+    <div class="seq-connector"><div class="seq-conn-dot"></div><div class="seq-conn-line"></div></div>
+    <div class="seq-row">
+      <div class="seq-arrow">↓</div>
+      <div class="seq-content">
+        <div class="seq-name">Tính kế thừa</div>
+        <div class="seq-def">Vì có nền móng thật, người khác có thể tiếp nối</div>
+        <div class="seq-body">Thứ không được document, không được codify, không được xây dựng có hệ thống — sẽ biến mất khi người tạo ra nó rời đi. Mora 1.0 là bằng chứng: không có SOP, không có governance, 12 stores vận hành 12 cách khác nhau. Tính kế thừa bắt đầu từ ngày 1, không phải khi cần scale.</div>
+      </div>
+    </div>
+    <div class="seq-connector"><div class="seq-conn-dot"></div><div class="seq-conn-line"></div></div>
+    <div class="seq-row">
+      <div class="seq-arrow">↓</div>
+      <div class="seq-content">
+        <div class="seq-name">Niềm tin</div>
+        <div class="seq-def">Không cần thuyết phục — người ta thấy</div>
+        <div class="seq-body">Khi sự thật được xây dựng đủ hệ thống và kế thừa được, niềm tin xuất hiện không phải vì marketing mà vì bằng chứng. Mora 1.0 đạt 1.8B/tháng tháng thứ 3 với 0đ paid acquisition — không phải vì quảng cáo tốt, mà vì người ta thấy và tin.</div>
+      </div>
+    </div>
+    <div class="seq-connector"><div class="seq-conn-dot"></div><div class="seq-conn-line"></div></div>
+    <div class="seq-row">
+      <div class="seq-arrow">↓</div>
+      <div class="seq-content">
+        <div class="seq-name">Di sản</div>
+        <div class="seq-def">Thứ còn lại sau khi không cần giải thích nữa</div>
+        <div class="seq-body">Không phải công ty. Không phải thương hiệu. Mà là bằng chứng rằng có thể xây dựng dựa trên sự thật — và sự thật đó đủ lớn để người khác tiếp nối. Đây là thứ tôi muốn để lại.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── ĐẠO MORA ── -->
+<div style="padding:72px 72px;border-bottom:1px solid var(--i12);background:var(--i06)">
+  <div style="font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--i30);margin-bottom:12px">V</div>
+  <div style="font-family:var(--serif);font-size:clamp(24px,3.5vw,42px);font-weight:300;color:var(--ink);line-height:1.1;margin-bottom:48px">Đạo Mora — Fractal manifestation</div>
+  <div style="max-width:720px">
+    <p style="font-family:var(--serif);font-size:clamp(15px,1.8vw,18px);font-weight:300;line-height:1.85;color:var(--ink);margin-bottom:24px">Codex này không chỉ là tuyên ngôn. Nó là nguyên lý fractal — cùng một pattern xuất hiện ở mọi tầng, mọi tỷ lệ. Từ social media post đến nhãn kho phía sau quầy. Không phải vì có rule bắt buộc, mà vì người tạo ra Mora không thể làm khác được.</p>
+    <div style="display:flex;flex-direction:column;gap:0;margin-top:32px">
+      <div style="display:flex;gap:20px;padding:14px 0;border-top:1px solid var(--i12);align-items:flex-start">
+        <div style="font-family:var(--mono);font-size:9px;color:var(--i30);min-width:80px;padding-top:3px;letter-spacing:.06em">Digital · Social</div>
+        <div style="font-size:13px;color:var(--i60);line-height:1.7;border-left:1px solid var(--i12);padding-left:20px">Mỗi tỷ lệ vàng, mỗi element trong hình đều xuất phát từ trải nghiệm thật tại cửa hàng. Không có gì được dàn dựng mà không tồn tại thật trong không gian vật lý.</div>
+      </div>
+      <div style="display:flex;gap:20px;padding:14px 0;border-top:1px solid var(--i12);align-items:flex-start">
+        <div style="font-family:var(--mono);font-size:9px;color:var(--i30);min-width:80px;padding-top:3px;letter-spacing:.06em">Vật lý · Cửa</div>
+        <div style="font-size:13px;color:var(--i60);line-height:1.7;border-left:1px solid var(--i12);padding-left:20px">Biển hiệu, hướng dẫn vào cửa hàng, cái chạm tay mở cửa, thông tin trên cửa — mỗi thứ được tính toán để người chưa vào lần nào không cảm thấy khó hiểu.</div>
+      </div>
+      <div style="display:flex;gap:20px;padding:14px 0;border-top:1px solid var(--i12);align-items:flex-start">
+        <div style="font-family:var(--mono);font-size:9px;color:var(--i30);min-width:80px;padding-top:3px;letter-spacing:.06em">Vật lý · Không gian</div>
+        <div style="font-size:13px;color:var(--i60);line-height:1.7;border-left:1px solid var(--i12);padding-left:20px">Cách bố trí quầy kệ, từng chi tiết trên kệ, từng chỗ ngồi — đều có story. Chạm vào đâu cũng thấy logic.</div>
+      </div>
+      <div style="display:flex;gap:20px;padding:14px 0;border-top:1px solid var(--i12);align-items:flex-start">
+        <div style="font-family:var(--mono);font-size:9px;color:var(--i30);min-width:80px;padding-top:3px;letter-spacing:.06em">Vận hành · Nhân sự</div>
+        <div style="font-size:13px;color:var(--i60);line-height:1.7;border-left:1px solid var(--i12);padding-left:20px">Mỗi SOP xuất hiện theo cấu trúc fractal tại vị trí làm việc. Hành trình hằng ngày, tác vụ vệ sinh, chuẩn bị kho, tiếp đón khách — tất cả mang tinh thần ritual, trang trọng, có chủ đích.</div>
+      </div>
+      <div style="display:flex;gap:20px;padding:14px 0;border-top:1px solid var(--i12);border-bottom:1px solid var(--i12);align-items:flex-start">
+        <div style="font-family:var(--mono);font-size:9px;color:var(--teal);min-width:80px;padding-top:3px;letter-spacing:.06em">Hậu trường · Kho</div>
+        <div style="font-size:13px;color:var(--ink);line-height:1.7;border-left:1px solid var(--teal);padding-left:20px">Nhãn tag kho, nhãn tác vụ vệ sinh — thứ khách hàng không bao giờ thấy — cũng theo tinh thần tương tự. Vì người làm ra nó thấy mỗi ngày. Và người làm ra nó chính là Mora.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CLOSING ── -->
+<div class="closing">
+  <div class="manifesto">
+    <p class="manifesto-line">Mora là thế giới duy nhất tại Việt Nam nơi một người có thể bước vào — chưa biết mình muốn gì — và rời đi với thứ được tạo ra hoàn toàn cho mình, trong một trải nghiệm mà mọi chi tiết đều nhất quán từ những gì họ đã thấy trước khi đến.</p>
+    <br>
+    <p class="manifesto-line"><em>Không phải vì quy trình tốt. Vì người tạo ra Mora không thể sống theo cách nào khác.</em></p>
+  </div>
+  <hr class="ruling">
+  <div class="coda">
+    <div class="coda-line primary">Tự do. Thoải mái. Sẵn sàng.</div>
+    <div class="coda-line">Sự thật trước. Mọi thứ còn lại sau.</div>
+  </div>
+  <div class="closing-footer">
+    <div class="cf-brand">Mora</div>
+    <div class="cf-meta">
+      Codex · Thanh Thanh · Founder<br>
+      Document Foundation · Không thay đổi trừ khi cuộc đời thay đổi<br>
+      Companion: Brand Guidelines v2.0 · Store Experience Design v1.0
+    </div>
+  </div>
+</div>
+
+</div>
+</body>
+</html>
