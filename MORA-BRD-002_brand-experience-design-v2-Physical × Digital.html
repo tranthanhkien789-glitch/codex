@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mora · Brand Experience Design Dossier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#FAF9F6;--ink:#1A1916;
+  --ink-60:rgba(26,25,22,.6);--ink-30:rgba(26,25,22,.3);
+  --ink-12:rgba(26,25,22,.12);--ink-06:rgba(26,25,22,.06);
+  --teal:#0F6E56;--teal-light:#E1F5EE;
+  --amber:#854F0B;--amber-light:#FAEEDA;
+  --blue:#185FA5;--blue-light:#E6F1FB;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+  --mono:'DM Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--ink);font-family:var(--sans);font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased}
+
+.hero{max-width:960px;margin:0 auto;padding:72px 40px 56px;border-bottom:1px solid var(--ink-12)}
+.hero-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-60);margin-bottom:20px}
+.hero-title{font-family:var(--serif);font-size:clamp(44px,7vw,80px);font-weight:300;line-height:1.03;letter-spacing:-.02em;margin-bottom:24px}
+.hero-title em{font-style:italic;color:var(--teal)}
+.hero-sub{font-size:15px;color:var(--ink-60);max-width:580px;line-height:1.75;margin-bottom:40px}
+.hero-meta{display:flex;gap:40px;padding-top:32px;border-top:1px solid var(--ink-12);flex-wrap:wrap}
+.meta-item{display:flex;flex-direction:column;gap:4px}
+.meta-val{font-family:var(--serif);font-size:26px;font-weight:300;color:var(--ink)}
+.meta-lbl{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-60)}
+
+.nav-wrap{position:sticky;top:0;z-index:100;background:var(--cream);border-bottom:1px solid var(--ink-12)}
+.nav-inner{max-width:960px;margin:0 auto;padding:0 40px;display:flex;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-btn{flex-shrink:0;padding:15px 18px;font-size:11px;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-60);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;transition:color .2s,border-color .2s;white-space:nowrap}
+.nav-btn:hover{color:var(--ink)}
+.nav-btn.active{color:var(--teal);border-bottom-color:var(--teal)}
+
+.content{max-width:960px;margin:0 auto;padding:64px 40px 100px}
+.section{display:none}
+.section.active{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+.eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-60);margin-bottom:10px}
+h2{font-family:var(--serif);font-size:clamp(32px,4.5vw,52px);font-weight:300;line-height:1.08;letter-spacing:-.01em;margin-bottom:16px}
+h2 em{font-style:italic;color:var(--teal)}
+h3{font-family:var(--serif);font-size:22px;font-weight:400;color:var(--ink);margin:44px 0 12px}
+h4{font-size:15px;font-weight:500;color:var(--ink);margin:28px 0 8px}
+.lead{font-family:var(--serif);font-size:17px;font-weight:300;line-height:1.75;font-style:italic;color:var(--ink);margin-bottom:28px;max-width:660px}
+.body-text{font-size:14px;color:var(--ink-60);line-height:1.75}
+hr{border:none;border-top:1px solid var(--ink-12);margin:44px 0}
+
+.stmt{border-left:2px solid var(--teal);padding:18px 24px;margin:20px 0;background:var(--teal-light)}
+.stmt p{font-family:var(--serif);font-size:16px;font-weight:300;line-height:1.75;color:var(--ink)}
+.warn{border-left:2px solid var(--amber);padding:14px 18px;margin:16px 0;background:var(--amber-light)}
+.warn p{font-size:13px;color:var(--amber);line-height:1.6}
+
+/* DNA translation table */
+.dna-table{width:100%;border-collapse:collapse;margin:20px 0}
+.dna-table th{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-60);padding:9px 14px;border-bottom:1px solid var(--ink-12);text-align:left;background:var(--ink-06);font-weight:400}
+.dna-table td{font-size:12px;padding:12px 14px;border-bottom:1px solid var(--ink-12);vertical-align:top;line-height:1.6;color:var(--ink)}
+.dna-table td.inv{font-weight:500;color:var(--ink);font-size:13px;width:120px}
+.dna-table td.physical{color:var(--ink-60)}
+.dna-table td.digital{color:var(--ink-60)}
+.dna-table td.check{text-align:center;font-family:var(--mono);font-size:11px;color:var(--teal);width:60px}
+.dna-table td span{color:var(--teal)}
+
+/* Sensory grid */
+.sense-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:20px 0}
+@media(max-width:640px){.sense-grid{grid-template-columns:1fr}}
+.sense-card{border:1px solid var(--ink-12);border-radius:4px;padding:18px 20px}
+.sense-icon{font-size:22px;margin-bottom:10px}
+.sense-name{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-60);margin-bottom:6px}
+.sense-spec{font-size:12px;font-family:var(--mono);color:var(--teal);margin-bottom:8px;line-height:1.5}
+.sense-body{font-size:12px;color:var(--ink-60);line-height:1.6}
+.sense-mirror{font-size:11px;color:var(--blue);margin-top:8px;padding-top:8px;border-top:1px solid var(--ink-12);line-height:1.5}
+.sense-mirror::before{content:"Digital mirror: ";color:var(--ink-30)}
+
+/* Zone cards */
+.zone-card{border:1px solid var(--ink-12);border-radius:4px;overflow:hidden;margin-bottom:16px}
+.zone-hd{background:var(--ink-06);padding:14px 20px;border-bottom:1px solid var(--ink-12);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.zone-num{font-family:var(--mono);font-size:10px;color:var(--ink-30)}
+.zone-title{font-size:14px;font-weight:500;color:var(--ink)}
+.zone-sub{font-size:12px;color:var(--ink-60);margin-left:auto;font-style:italic}
+.zone-body{padding:16px 20px}
+.zone-body p{font-size:13px;color:var(--ink-60);line-height:1.7;margin-bottom:12px}
+.zone-body p:last-child{margin-bottom:0}
+
+/* Chain */
+.chain{display:flex;flex-direction:column;gap:0;margin:16px 0}
+.ci{display:flex;gap:18px;padding:11px 0;border-top:1px solid var(--ink-12);align-items:flex-start}
+.ci:last-child{border-bottom:1px solid var(--ink-12)}
+.cn{font-family:var(--mono);font-size:10px;color:var(--ink-30);min-width:28px;padding-top:2px;flex-shrink:0}
+.ct{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:3px}
+.cd{font-size:12px;color:var(--ink-60);line-height:1.55}
+.cs{font-size:12px;color:var(--teal);font-style:italic;margin-top:4px;padding:5px 9px;background:var(--teal-light);border-radius:3px;line-height:1.5}
+
+/* Visual grammar */
+.grammar-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--ink-12);border-radius:4px;overflow:hidden;margin:16px 0}
+.gram-hd{background:var(--ink-06);padding:10px 14px;font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-60);border-bottom:1px solid var(--ink-12)}
+.gram-hd.right{border-left:1px solid var(--ink-12)}
+.gram-cell{padding:11px 14px;border-bottom:1px solid var(--ink-12);font-size:12px;line-height:1.6;color:var(--ink-60)}
+.gram-cell.right{border-left:1px solid var(--ink-12);color:var(--ink)}
+.gram-cell:last-child,.gram-cell:nth-last-child(2){border-bottom:none}
+.gram-dim{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-30);margin-bottom:4px}
+
+/* Platform cards */
+.platform-card{border:1px solid var(--ink-12);border-radius:4px;overflow:hidden;margin-bottom:16px}
+.platform-hd{background:var(--ink-06);padding:12px 20px;border-bottom:1px solid var(--ink-12);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.platform-name{font-size:14px;font-weight:500;color:var(--ink)}
+.platform-role{font-size:11px;color:var(--ink-60);font-style:italic}
+.platform-body{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0}
+@media(max-width:580px){.platform-body{grid-template-columns:1fr}}
+.pb-col{padding:14px 20px;border-right:1px solid var(--ink-12)}
+.pb-col:last-child{border-right:none}
+.pb-lbl{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-60);margin-bottom:8px}
+.pb-item{font-size:12px;color:var(--ink);margin-bottom:5px;line-height:1.5}
+.pb-item.no{color:var(--amber-light);text-decoration:none}
+.pb-no{font-size:12px;color:var(--amber);margin-bottom:5px}
+
+/* Content pillar */
+.pillar-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:16px 0}
+@media(max-width:580px){.pillar-grid{grid-template-columns:1fr}}
+.pillar-card{border-radius:4px;padding:18px 20px}
+.pillar-pct{font-family:var(--serif);font-size:36px;font-weight:300;margin-bottom:4px}
+.pillar-name{font-size:13px;font-weight:500;margin-bottom:8px}
+.pillar-body{font-size:12px;line-height:1.6}
+
+/* Journey map */
+.journey-map{width:100%;border-collapse:collapse;margin:20px 0}
+.journey-map th{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-60);padding:9px 12px;border-bottom:1px solid var(--ink-12);background:var(--ink-06);text-align:left;font-weight:400}
+.journey-map td{font-size:12px;padding:11px 12px;border-bottom:1px solid var(--ink-12);vertical-align:top;line-height:1.55;color:var(--ink)}
+.journey-map td.stage{font-weight:500;font-size:13px;width:120px}
+.journey-map td.muted{color:var(--ink-60);font-size:11px}
+.journey-map td.handoff{font-family:var(--mono);font-size:11px;text-align:center;color:var(--teal)}
+
+/* Consistency matrix */
+.consist-tbl{width:100%;border-collapse:collapse;margin:16px 0}
+.consist-tbl th{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-60);padding:9px 12px;border-bottom:1px solid var(--ink-12);background:var(--ink-06);text-align:left;font-weight:400}
+.consist-tbl td{font-size:12px;padding:10px 12px;border-bottom:1px solid var(--ink-12);vertical-align:top;line-height:1.5;color:var(--ink)}
+.consist-tbl td.level{font-family:var(--mono);font-size:11px}
+.consist-tbl td.level.rep{color:var(--teal)}
+.consist-tbl td.level.trans{color:var(--blue)}
+
+/* Audit checklist */
+.audit-list{display:flex;flex-direction:column;gap:0;margin:16px 0}
+.audit-item{display:grid;grid-template-columns:28px 1fr 80px 80px;gap:0;border-top:1px solid var(--ink-12);align-items:start}
+.audit-item:last-child{border-bottom:1px solid var(--ink-12)}
+.ai-num{padding:12px 0;font-family:var(--mono);font-size:10px;color:var(--ink-30)}
+.ai-text{padding:12px 14px;font-size:13px;color:var(--ink);line-height:1.5;border-left:1px solid var(--ink-12)}
+.ai-text span{font-size:11px;color:var(--ink-60);display:block;margin-top:2px}
+.ai-channel{padding:12px 10px;font-family:var(--mono);font-size:10px;color:var(--ink-60);border-left:1px solid var(--ink-12);text-align:center}
+.ai-freq{padding:12px 10px;font-family:var(--mono);font-size:10px;color:var(--ink-60);border-left:1px solid var(--ink-12);text-align:center}
+@media(max-width:600px){.audit-item{grid-template-columns:24px 1fr}.ai-channel,.ai-freq{display:none}}
+
+/* Authority table */
+.auth-tbl{width:100%;border-collapse:collapse;margin:16px 0}
+.auth-tbl th{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-60);padding:9px 14px;border-bottom:1px solid var(--ink-12);background:var(--ink-06);text-align:left;font-weight:400}
+.auth-tbl td{font-size:13px;padding:11px 14px;border-bottom:1px solid var(--ink-12);vertical-align:top;line-height:1.5;color:var(--ink)}
+.auth-tbl td.role{font-weight:500;width:180px}
+.auth-tbl td.muted{color:var(--ink-60);font-size:12px}
+
+/* Grid utilities */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+@media(max-width:600px){.g2,.g3{grid-template-columns:1fr}}
+.card{background:#fff;border:1px solid var(--ink-12);border-radius:4px;padding:18px 20px}
+.card-lbl{font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-60);margin-bottom:6px}
+.card-title{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:7px}
+.card-body{font-size:12px;color:var(--ink-60);line-height:1.6}
+.card.teal{border-color:var(--teal);background:var(--teal-light)}
+.card.amber{border-color:var(--amber);background:var(--amber-light)}
+
+.footer{max-width:960px;margin:0 auto;padding:40px;border-top:1px solid var(--ink-12);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-brand{font-family:var(--serif);font-size:20px;font-weight:300}
+.footer-note{font-family:var(--mono);font-size:10px;color:var(--ink-60);letter-spacing:.05em}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Mora · Brand Experience Design Dossier · v2.0</div>
+  <h1 class="hero-title">Physical × Digital —<br><em>Nhất quán</em></h1>
+  <p class="hero-sub">Cùng 1 DNA — 2 kênh biểu đạt. Codex là constant. Physical store và online là 2 ngôn ngữ khác nhau nói cùng 1 câu chuyện. Dossier này định nghĩa từng ngôn ngữ — và đảm bảo chúng không mâu thuẫn nhau tại bất kỳ touchpoint nào.</p>
+  <div class="hero-meta">
+    <div class="meta-item"><span class="meta-val">1 DNA</span><span class="meta-lbl">Nguồn gốc bất biến</span></div>
+    <div class="meta-item"><span class="meta-val">2 Kênh</span><span class="meta-lbl">Physical × Digital</span></div>
+    <div class="meta-item"><span class="meta-val">5 Giác quan</span><span class="meta-lbl">Physical sensory spec</span></div>
+    <div class="meta-item"><span class="meta-val">7 Stages</span><span class="meta-lbl">Customer journey map</span></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="nav-wrap">
+  <div class="nav-inner">
+    <button class="nav-btn active" onclick="sw('dna',this)">01 · Experience DNA</button>
+    <button class="nav-btn" onclick="sw('physical',this)">02 · Physical Store</button>
+    <button class="nav-btn" onclick="sw('digital',this)">03 · Online & Digital</button>
+    <button class="nav-btn" onclick="sw('bridge',this)">04 · Omnichannel Bridge</button>
+    <button class="nav-btn" onclick="sw('qa',this)">05 · QA & Governance</button>
+  </div>
+</nav>
+
+<main class="content">
+
+<!-- ══ 01 EXPERIENCE DNA ══ -->
+<div id="sec-dna" class="section active">
+  <div class="eyebrow">Phần 01</div>
+  <h2>Experience <em>DNA</em></h2>
+  <p class="lead">Trước khi thiết kế bất cứ touchpoint nào — physical hay digital — phải có 1 tài liệu duy nhất định nghĩa Mora cảm giác như thế nào, nói như thế nào, và trông như thế nào. Dossier này derive từ Codex — không phải từ mood board.</p>
+
+  <div class="stmt"><p>Nguyên lý cốt lõi: Codex không thay đổi. Channel thay đổi cách biểu đạt Codex. Nếu physical store và online cảm giác khác nhau, đó không phải vì chúng ở 2 kênh khác nhau — mà vì có 1 (hoặc cả 2) kênh chưa trace đúng về Codex.</p></div>
+
+  <hr>
+  <h3>A. Brand Personality Translation — 7 Codex Invariants</h3>
+  <p class="body-text" style="margin-bottom:16px">Từ Codex invariants → biểu đạt cụ thể trên từng kênh. Đây là bước quan trọng nhất và thường bị bỏ qua nhất khi thiết kế experience.</p>
+
+  <table class="dna-table">
+    <tr><th style="width:110px">Codex invariant</th><th>Physical store — biểu đạt</th><th>Online / Digital — biểu đạt</th><th style="width:60px">DNA</th></tr>
+    <tr>
+      <td class="inv">① The Tension<br><span style="font-size:11px;font-weight:400;color:var(--ink-60)">Gap nào tồn tại?</span></td>
+      <td class="physical">Không gian nói lên điều gì có thể — cao cấp nhưng tiếp cận được. Staff educate không push: <span>"Trước giờ bạn dùng nước hoa gì?"</span> — acknowledge gap.</td>
+      <td class="digital">Copy website nói thẳng về gap: <span>"Le Labo đẹp. Nhưng 8 triệu không phải ai cũng bỏ được."</span> Content: so sánh trải nghiệm, không phải so sánh sản phẩm.</td>
+      <td class="check">✓</td>
+    </tr>
+    <tr>
+      <td class="inv">② The Method<br><span style="font-size:11px;font-weight:400;color:var(--ink-60)">Làm bằng cách nào?</span></td>
+      <td class="physical">Quy trình pha chế visible — khách thấy từng bước. Method không ẩn, method là show. Staff giải thích từng bước trong lúc làm.</td>
+      <td class="digital">Video series: "How your perfume is made" — BTS của method. FAQ page không chỉ trả lời "what" mà trả lời "why." Methodology explained, không concealed.</td>
+      <td class="check">✓</td>
+    </tr>
+    <tr>
+      <td class="inv">③ The Moat<br><span style="font-size:11px;font-weight:400;color:var(--ink-60)">Tại sao chỉ Mora?</span></td>
+      <td class="physical">Certification visible tại counter — IFRA không phải jargon, là proof. Personalisation ritual: không ai khác có chai này. Uniqueness = moat felt.</td>
+      <td class="digital">Page "Tại sao IFRA matters" — education = authority. Social proof: real name on real bottle. UGC tự nói moat — không cần brand tự nói.</td>
+      <td class="check">✓</td>
+    </tr>
+    <tr>
+      <td class="inv">④ The Value<br><span style="font-size:11px;font-weight:400;color:var(--ink-60)">Ai được lợi gì?</span></td>
+      <td class="physical">Gifting display prominent — "For someone you love." Experience shareable: nhóm bạn cùng tới → mỗi người một chai riêng.</td>
+      <td class="digital">Gift guide content theo dịp: Valentine, sinh nhật, Tết. B2B landing page riêng: corporate gifting value prop. Value được framed rõ ràng theo người nhận.</td>
+      <td class="check">✓</td>
+    </tr>
+    <tr>
+      <td class="inv">⑤ The Belief<br><span style="font-size:11px;font-weight:400;color:var(--ink-60)">Tin vào điều gì?</span></td>
+      <td class="physical">Không có discount sign trên sản phẩm — belief: chất lượng không cần flash sale. Staff từ chối đề xuất sản phẩm không phù hợp. Integrity visible hằng ngày.</td>
+      <td class="digital">Không chạy countdown timer giả. Không flash sale 7 ngày liên tiếp. "What we don't do" page — beliefs expressed qua việc từ chối rõ ràng.</td>
+      <td class="check">✓</td>
+    </tr>
+    <tr>
+      <td class="inv">⑥ The Arc<br><span style="font-size:11px;font-weight:400;color:var(--ink-60)">Đang ở đâu, đến đâu?</span></td>
+      <td class="physical">Không over-promise về scale. Flagship store quality thật sự — nếu store 1, đừng pretend store 4. Authenticity = trust.</td>
+      <td class="digital">About page honest về stage: "Chúng tôi là thương hiệu nhỏ, craft, đang lớn lên." Founder story visible — người thật, hành trình thật.</td>
+      <td class="check">✓</td>
+    </tr>
+    <tr>
+      <td class="inv">⑦ The Seed<br><span style="font-size:11px;font-weight:400;color:var(--ink-60)">Người mới cần gì đầu tiên?</span></td>
+      <td class="physical">First-timer protocol: staff nhận ra → specific onboarding. Trial size visible tại cửa: entry point thấp = seed planted.</td>
+      <td class="digital">Homepage first 10 seconds must answer: "What is this place?" Fragrance quiz / discovery tool = digital seed experience: "Find your scent."</td>
+      <td class="check">✓</td>
+    </tr>
+  </table>
+
+  <hr>
+  <h3>B. Brand Voice & Tone Guide</h3>
+  <div class="grammar-grid">
+    <div class="gram-hd">Luôn luôn — như thế này</div>
+    <div class="gram-hd right">Không bao giờ — không thế này</div>
+    <div class="gram-cell"><div class="gram-dim">Cách nói</div>Nói chuyện như người — không phải marketing copy. Warm nhưng không sycophantic.</div>
+    <div class="gram-cell right"><div class="gram-dim">Tránh</div>"Sản phẩm tuyệt vời nhất trên thị trường." Corporate speak: "leverage synergies."</div>
+    <div class="gram-cell"><div class="gram-dim">Chi tiết</div>Cụ thể: tên hương, lý do cụ thể, ví dụ thật. Honest về giới hạn: "Chúng tôi chưa có ở Hà Nội."</div>
+    <div class="gram-cell right"><div class="gram-dim">Tránh</div>Emoji spam. Countdown timer giả: "Còn 2 người đang xem." "Mua ngay kẻo hết" — scarcity manipulation.</div>
+    <div class="gram-cell"><div class="gram-dim">Ngôn ngữ</div>Tiếng Việt tự nhiên — không Anh hoá quá mức. Câu ngắn. Đủ ý. Không padding.</div>
+    <div class="gram-cell right"><div class="gram-dim">Tránh</div>Copy dịch từ tiếng Anh word-for-word. Jargon không cần thiết.</div>
+  </div>
+
+  <h4>Brand personality</h4>
+  <div class="g3">
+    <div class="card"><div class="card-lbl">Craft</div><div class="card-title">Tỉ mỉ, không vội</div><div class="card-body">Mỗi chai, mỗi hình, mỗi câu chữ đều có sự chú tâm. Không phải perfectionism — là sự tôn trọng với người nhận.</div></div>
+    <div class="card"><div class="card-lbl">Honest</div><div class="card-title">Nói được làm được</div><div class="card-body">Không over-promise. Không hứa thứ chưa chắc. Khi có lỗi — thừa nhận trước khi ai hỏi.</div></div>
+    <div class="card"><div class="card-lbl">Local</div><div class="card-title">Vietnamese, not wannabe</div><div class="card-body">Dùng tiếng Việt tự nhiên. Reference context Việt Nam. Không pretend là brand nước ngoài.</div></div>
+    <div class="card"><div class="card-lbl">Knowledgeable</div><div class="card-title">Educate, không lecture</div><div class="card-body">Chia sẻ kiến thức vì muốn người khác hiểu — không phải để show off hoặc tạo intimidation.</div></div>
+    <div class="card"><div class="card-lbl">Intimate</div><div class="card-title">Mỗi người một trải nghiệm</div><div class="card-body">Không có giao tiếp "mass" — kể cả social post hay broadcast message đều phải feel như đang nói với một người.</div></div>
+    <div class="card"><div class="card-lbl">Accessible luxury</div><div class="card-title">Premium không phải xa xỉ</div><div class="card-body">Quality và craft cao — nhưng không tạo distance. Mora muốn được cảm thấy là nơi bạn thuộc về, không phải nơi bạn phải xứng đáng.</div></div>
+  </div>
+
+  <hr>
+  <h3>C. Visual DNA System</h3>
+  <h4>Constants — áp dụng cả 2 kênh</h4>
+  <table class="dna-table">
+    <tr><th>Element</th><th>Specification</th><th>Lý do</th></tr>
+    <tr><td class="inv">Colour palette</td><td>Warm neutrals: linen, cream, sage, terracotta. Brand accent: teal #0F6E56. Amber #854F0B cho emphasis. Không neon, không gradients lạ.</td><td class="muted">Warm neutrals = intimacy. Teal = truth và nature. Palette phải work ở cả print lẫn screen.</td></tr>
+    <tr><td class="inv">Typography</td><td>Display: Cormorant Garamond (serif, editorial). Body: DM Sans (clean, readable). Mono: DM Mono cho specs/codes.</td><td class="muted">Cormorant Garamond = craft heritage. DM Sans = clarity không pretentious. Pair này = Mora's voice in type.</td></tr>
+    <tr><td class="inv">Photography style</td><td>Close, intimate, natural light. Không studio trắng giả tạo. Ánh sáng: golden hour hoặc overcast diffused. Shadows: soft và warm.</td><td class="muted">Natural light = truth. Studio trắng = product catalog. Mora bán experience, không bán catalog.</td></tr>
+    <tr><td class="inv">Negative space</td><td>Breathing room = luxury signal. Không crowded. 40%+ negative space trong hình ảnh. Website: generous whitespace.</td><td class="muted">Crowded = anxious. Space = calm, intentional, high-end.</td></tr>
+    <tr><td class="inv">Material aesthetic</td><td>Glass, linen, matte black, brass, wood, stone. Không plastic, không glossy, không fake materials.</td><td class="muted">Materials phải have weight và texture — thứ có thể cảm nhận được ngay cả qua hình ảnh.</td></tr>
+    <tr><td class="inv">Human presence</td><td>Hands, not faces. Tay làm việc, tay cầm chai, cánh tay trong chuyển động. Faces: blur hoặc turned away.</td><td class="muted">Mystery = curiosity. Hands = craft. Faces đầy đủ = portrait, không phải brand.</td></tr>
+  </table>
+
+  <h4>Post-processing guide</h4>
+  <div class="g2">
+    <div class="card teal">
+      <div class="card-lbl">Đúng hướng</div>
+      <div class="card-body">+10 warmth. −5 saturation. +5 clarity. Ảnh trông như chụp — không như render. Shadows giữ nguyên, không fill quá. Highlights slightly desaturated.</div>
+    </div>
+    <div class="card amber">
+      <div class="card-lbl">Sai hướng</div>
+      <div class="card-body">Không filter preset mạnh. Không HDR. Không skin smoothing quá mức. Không oversaturate colours. Không heavy colour grading làm ảnh trông như phim điện ảnh.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 02 PHYSICAL STORE ══ -->
+<div id="sec-physical" class="section">
+  <div class="eyebrow">Phần 02</div>
+  <h2>Physical Store <em>Experience Design</em></h2>
+  <p class="lead">Cửa hàng không phải nơi chứa sản phẩm — là nơi brand DNA được thể hiện bằng 5 giác quan. Mỗi chi tiết trong store là quyết định thương hiệu, không phải quyết định nội thất.</p>
+
+  <hr>
+  <h3>A. Sensory Design System — 5 Giác quan</h3>
+
+  <div class="sense-grid">
+    <div class="sense-card">
+      <div class="sense-icon">👁</div>
+      <div class="sense-name">Thị giác</div>
+      <div class="sense-spec">2700–3000K warm white<br>Counter spotlight: 4000K focused<br>No fluorescent · Dimmer control</div>
+      <div class="sense-body">Display: max 80% filled. 20% negative space. Products breathe. Mỗi product có zone riêng, không chồng chéo.</div>
+      <div class="sense-mirror">Photography: same Kelvin temperature. Never studio white. Always product-in-context với natural light.</div>
+    </div>
+    <div class="sense-card">
+      <div class="sense-icon">👃</div>
+      <div class="sense-name">Khứu giác</div>
+      <div class="sense-spec">1 signature base scent · 15–20% intensity<br>Thay tối đa mỗi 4 giờ<br>Counter zone: scent-focused, không ambient</div>
+      <div class="sense-body">Ambient scent subtle, không overpowering. Khách smell product, không phải ambient. Clean air policy: không mùi thức ăn, không mùi người.</div>
+      <div class="sense-mirror">Mô tả hương bằng sensory language: "Như sáng sớm sau mưa" — không phải "Fresh, floral, woody."</div>
+    </div>
+    <div class="sense-card">
+      <div class="sense-icon">👂</div>
+      <div class="sense-name">Thính giác</div>
+      <div class="sense-spec">60–70 BPM · Acoustic/jazz/ambient<br>Volume: 45–50dB<br>Conversation audible xuyên nhạc</div>
+      <div class="sense-body">Cùng vibe dù peak hay slow. Không tăng tempo khi busy. Playlist đã approve — không improvise. Không radio.</div>
+      <div class="sense-mirror">Video content: background music matches store playlist. Same BPM, same mood. Không upbeat pop trên ritual video.</div>
+    </div>
+    <div class="sense-card">
+      <div class="sense-icon">✋</div>
+      <div class="sense-name">Xúc giác</div>
+      <div class="sense-spec">Counter: stone hoặc wood<br>Bottle weight: substantial, satisfying<br>Cap: resistance cảm giác precision</div>
+      <div class="sense-body">Paper bag: matte, thick — không phải plastic glossy. Tissue: fresh, không nhàu. Mọi thứ khách cầm phải feel like quality.</div>
+      <div class="sense-mirror">Packaging video: slow pour, hand holding bottle. Sound of cap closing. Make viewer feel the texture through screen.</div>
+    </div>
+    <div class="sense-card">
+      <div class="sense-icon">🌡</div>
+      <div class="sense-name">Nhiệt độ</div>
+      <div class="sense-spec">Store: 22–24°C<br>Slightly cool = luxury signal<br>Also: fragrance stability</div>
+      <div class="sense-body">Never warm/stuffy — triggers discomfort và hurries người ra. Clean air = trải nghiệm. Air quality là sensory element, không phải hygiene checkbox.</div>
+      <div class="sense-mirror">Visual "temperature": cool-toned backgrounds = fresh, deliberate. Warm gold accents = intimate. Balance trong từng hình.</div>
+    </div>
+  </div>
+
+  <hr>
+  <h3>B. Spatial Journey — 4 Zones</h3>
+
+  <div class="zone-card">
+    <div class="zone-hd"><span class="zone-num">Zone 1</span><span class="zone-title">Entrance — First 10 Seconds</span><span class="zone-sub">Không thể làm lại</span></div>
+    <div class="zone-body">
+      <p>Khách nhận 3 tín hiệu trong 10 giây đầu: <strong>scent → visual → greeting</strong>. Thứ tự này quan trọng. Scent là thứ não xử lý đầu tiên và nhanh nhất.</p>
+      <p>Ambient scent phải xuất hiện ngay tại ngưỡng cửa — không phải 2 mét bên trong. Visual anchor: 1 hero product hoặc brand statement visible từ ngoài. Greeting: sau 5 giây, không phải ngay lập tức. Temperature change từ nóng ngoài đường → mát trong store = relief signal.</p>
+      <p><strong>Design principle:</strong> Entrance không phải lobby — là sensory threshold. Bước qua cửa phải cảm giác như bước vào một thế giới khác. Mỗi element ở zone này được tính toán để tạo contrast với thế giới bên ngoài.</p>
+    </div>
+  </div>
+
+  <div class="zone-card">
+    <div class="zone-hd"><span class="zone-num">Zone 2</span><span class="zone-title">Discovery — Exploration Space</span><span class="zone-sub">Explore tự do · Staff facilitate, không follow</span></div>
+    <div class="zone-body">
+      <p>Display logic: entry → mid → anchor. Easy to complex. Không throw everything at once. Guided progression — nhưng không cưỡng bức.</p>
+      <p>Tester design: không phải "sniff everything." Guided: "Bắt đầu từ đây, theo thứ tự này." Educational material: brief, visual, không wall-of-text. Staff position: available nhưng không hover. Visible từ anywhere nhưng không block path.</p>
+      <p><strong>Intervention trigger:</strong> Tiếp cận khi khách dừng &gt;30 giây tại 1 sản phẩm hoặc pick up chai. Không bao giờ: "Bạn cần hỗ trợ gì không?" — câu này provoke "Không" reflex.</p>
+    </div>
+  </div>
+
+  <div class="zone-card">
+    <div class="zone-hd"><span class="zone-num">Zone 3</span><span class="zone-title">The Ritual Counter</span><span class="zone-sub">THE moment · Emotional peak</span></div>
+    <div class="zone-body">
+      <p>Đây là đích đến của toàn bộ journey. Mọi design decision trong store hướng đến khoảnh khắc này.</p>
+      <p><strong>Height:</strong> 90–95cm. Equal eye level = intimate, không transactional. <strong>Width:</strong> đủ để 2 người xem cùng lúc. <strong>Tools:</strong> visible — đây là craft, show the craft. <strong>Spotlight:</strong> 4000K focused, theatrical. No POS clutter — payment discrete.</p>
+      <p>Staff narrates while making. Let customer smell base ingredients before blending nếu thời gian cho phép. Pause before sealing — last personalisation moment. Engraving done in front of customer. Handover: 2 tay, eye contact, không vội. "Chai này chỉ có 1 người được đặt tên."</p>
+    </div>
+  </div>
+
+  <div class="zone-card">
+    <div class="zone-hd"><span class="zone-num">Zone 4</span><span class="zone-title">Exit — The Send-Off</span><span class="zone-sub">Last memory · Return trigger</span></div>
+    <div class="zone-body">
+      <p>Packaging moment: bag, tissue, ribbon — unhurried. Customer sees care in every fold. Đây không phải logistics — là continuation của ritual.</p>
+      <p>Photo spot gần exit: không phải selfie wall với logo — chỉ ánh sáng đẹp và một surface. Khách tự discover. CRM capture: "Để tôi nhắn bạn khi hương sắp cần refill." Return card trong túi: không phải voucher discount — là experience invitation cho lần sau.</p>
+      <p><strong>Farewell:</strong> Specific, không generic. "Chúc bạn enjoy lớp middle note của [tên hương]" — cho thấy bạn nhớ họ đã chọn gì.</p>
+    </div>
+  </div>
+
+  <hr>
+  <h3>C. Spatial Flow Diagram</h3>
+  <div style="background:var(--ink-06);border-radius:4px;padding:24px;margin:16px 0">
+    <div style="display:flex;align-items:center;gap:0;flex-wrap:wrap;justify-content:center">
+      <div style="text-align:center;padding:12px 20px">
+        <div style="font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-60);margin-bottom:8px">Zone 1</div>
+        <div style="font-family:var(--serif);font-size:18px;font-weight:400;color:var(--ink)">Entrance</div>
+        <div style="font-size:11px;color:var(--ink-60);margin-top:4px">Sensory threshold<br>10 seconds</div>
+      </div>
+      <div style="font-size:20px;color:var(--ink-30);padding:0 8px">→</div>
+      <div style="text-align:center;padding:12px 20px">
+        <div style="font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-60);margin-bottom:8px">Zone 2</div>
+        <div style="font-family:var(--serif);font-size:18px;font-weight:400;color:var(--ink)">Discovery</div>
+        <div style="font-size:11px;color:var(--ink-60);margin-top:4px">Explore + educate<br>Staff available</div>
+      </div>
+      <div style="font-size:20px;color:var(--ink-30);padding:0 8px">→</div>
+      <div style="text-align:center;padding:12px 20px;border:1px solid var(--teal);border-radius:4px;background:var(--teal-light)">
+        <div style="font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--teal);margin-bottom:8px">Zone 3</div>
+        <div style="font-family:var(--serif);font-size:18px;font-weight:400;color:var(--ink)">Counter Ritual</div>
+        <div style="font-size:11px;color:var(--ink-60);margin-top:4px">Emotional peak<br>Personalisation</div>
+      </div>
+      <div style="font-size:20px;color:var(--ink-30);padding:0 8px">→</div>
+      <div style="text-align:center;padding:12px 20px">
+        <div style="font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-60);margin-bottom:8px">Zone 4</div>
+        <div style="font-family:var(--serif);font-size:18px;font-weight:400;color:var(--ink)">Exit</div>
+        <div style="font-size:11px;color:var(--ink-60);margin-top:4px">Last memory<br>Return trigger</div>
+      </div>
+    </div>
+    <p style="text-align:center;font-size:12px;color:var(--ink-60);margin-top:16px;font-style:italic">Revenue logic trong layout: Zone 1–2 build desire. Zone 3 là conversion. Zone 4 build LTV.</p>
+  </div>
+
+  <hr>
+  <h3>D. Store Maintenance Standards</h3>
+  <div class="chain">
+    <div class="ci"><span class="cn">Hourly</span><div><div class="ct">Sensory check</div><div class="cd">Scent intensity, music volume, lighting. Reset về baseline nếu drift. Không làm khi có khách.</div></div></div>
+    <div class="ci"><span class="cn">After each tx</span><div><div class="ct">Counter reset</div><div class="cd">Counter sạch, tools về vị trí chuẩn, packaging replenished. Không để counter trông "đã dùng" giữa các khách.</div></div></div>
+    <div class="ci"><span class="cn">Daily · opening</span><div><div class="ct">Full dressing check</div><div class="cd">Mỗi sản phẩm đúng vị trí, không fingerprint, negative space maintained. Đứng ở vị trí của khách và nhìn vào — đây là standard check.</div></div></div>
+    <div class="ci"><span class="cn">Daily · closing</span><div><div class="ct">Reset + set for tomorrow</div><div class="cd">Không gian ở trạng thái "sẵn sàng mở cửa ngay" — không chỉ "đã dọn xong." Khác nhau về tinh thần.</div></div></div>
+    <div class="ci"><span class="cn">Weekly</span><div><div class="ct">Deep clean + inventory audit</div><div class="cd">Tất cả surfaces, fixtures, tools. Count inventory actual vs POS. Bất kỳ thứ gì hư, bẩn, hoặc không ở standard được replace ngay.</div></div></div>
+  </div>
+</div>
+
+<!-- ══ 03 ONLINE & DIGITAL ══ -->
+<div id="sec-digital" class="section">
+  <div class="eyebrow">Phần 03</div>
+  <h2>Online & Digital <em>Experience Design</em></h2>
+  <p class="lead">Digital không phải phiên bản rẻ hơn của physical. Digital là kênh tiếp cận 24/7, scale vô hạn, và tạo first impression cho phần lớn khách hàng mới. Nó phải mang cùng DNA — chỉ là qua màn hình.</p>
+
+  <div class="stmt"><p>Câu hỏi kiểm tra: "Nếu người này chỉ gặp Mora qua online mà không bao giờ đến store — họ có hiểu Mora là ai không? Họ có cảm thấy được tôn trọng không?" Nếu câu trả lời là không — digital experience chưa đủ.</p></div>
+
+  <hr>
+  <h3>A. Platform Design Guide</h3>
+
+  <div class="platform-card">
+    <div class="platform-hd"><span class="platform-name">Instagram / Social</span><span class="platform-role">Discovery · Desire · Social proof · Pre-visit context</span></div>
+    <div class="platform-body">
+      <div class="pb-col">
+        <div class="pb-lbl">Content types</div>
+        <div class="pb-item">Process video: blending ritual — slow, close, no voiceover</div>
+        <div class="pb-item">Name reveal: engraving close-up — UGC magnet</div>
+        <div class="pb-item">Ingredient story: single ingredient, 15–30 giây</div>
+        <div class="pb-item">Customer moment: real, unscripted, in store</div>
+        <div class="pb-item">Behind-the-scenes: sourcing, chuẩn bị, hậu trường</div>
+      </div>
+      <div class="pb-col">
+        <div class="pb-lbl">Design rules</div>
+        <div class="pb-item">Feed: warm palette nhất quán. Max 3 màu chủ đạo.</div>
+        <div class="pb-item">No text overlay trên ảnh product.</div>
+        <div class="pb-item">Caption: 1–3 câu. Story first, CTA sau (và subtle).</div>
+        <div class="pb-item">Stories: real-time, BTS, Q&A — unpolished là OK.</div>
+        <div class="pb-item">Tỷ lệ vàng trong mỗi ảnh hero.</div>
+      </div>
+      <div class="pb-col">
+        <div class="pb-lbl">Không bao giờ</div>
+        <div class="pb-no">Repost-only strategy</div>
+        <div class="pb-no">Generic "Swipe up to buy" mọi post</div>
+        <div class="pb-no">Aesthetic khác với store</div>
+        <div class="pb-no">Hình dàn dựng không tồn tại trong store</div>
+        <div class="pb-no">Countdown timer fake</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="platform-card">
+    <div class="platform-hd"><span class="platform-name">Website</span><span class="platform-role">Consideration · Intent · Credibility · Conversion</span></div>
+    <div class="platform-body">
+      <div class="pb-col">
+        <div class="pb-lbl">Homepage hierarchy</div>
+        <div class="pb-item">Above fold: brand promise 1 câu + visual. Not carousel.</div>
+        <div class="pb-item">Scroll 2: "How it works" — process visible</div>
+        <div class="pb-item">Scroll 3: Products — experience-framed, không catalogue</div>
+        <div class="pb-item">Scroll 4: Story / proof — who, why</div>
+        <div class="pb-item">Scroll 5: Gifting / B2B entry point</div>
+      </div>
+      <div class="pb-col">
+        <div class="pb-lbl">UX principles</div>
+        <div class="pb-item">Slow-paced UX = luxury signal. Không rush user.</div>
+        <div class="pb-item">Large typography, generous whitespace.</div>
+        <div class="pb-item">Product page: sensory language, không ingredient list.</div>
+        <div class="pb-item">Checkout: minimal friction, no surprise fees.</div>
+        <div class="pb-item">Thông tin đầy đủ: team, process, certifications.</div>
+      </div>
+      <div class="pb-col">
+        <div class="pb-lbl">Không bao giờ</div>
+        <div class="pb-no">Popup ngay khi vào trang</div>
+        <div class="pb-no">Auto-play video với sound</div>
+        <div class="pb-no">17 navigation items in menu</div>
+        <div class="pb-no">Countdown timer trên bất kỳ page nào</div>
+        <div class="pb-no">Stock scarcity fake ("Chỉ còn 2 sản phẩm")</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="platform-card">
+    <div class="platform-hd"><span class="platform-name">Zalo OA / Chat / DM</span><span class="platform-role">Retention · Relationship · Repeat purchase · CRM touchpoints</span></div>
+    <div class="platform-body">
+      <div class="pb-col">
+        <div class="pb-lbl">Message strategy</div>
+        <div class="pb-item">Broadcast: max 2×/tháng. Value-first: scent knowledge, không chỉ promo.</div>
+        <div class="pb-item">1-1 chat: response trong 2 giờ. Không automated-sounding.</div>
+        <div class="pb-item">CRM trigger Day 60: "Hương của bạn sắp hết chưa?"</div>
+        <div class="pb-item">Birthday: không giảm giá — offer: "Ưu tiên đặt hẹn ngày sinh nhật."</div>
+      </div>
+      <div class="pb-col">
+        <div class="pb-lbl">Voice trong chat</div>
+        <div class="pb-item">Warm, specific, không robot.</div>
+        <div class="pb-item">Dùng tên khách nếu có trong CRM.</div>
+        <div class="pb-item">"Lần trước bạn chọn…" — personalisation = loyalty.</div>
+        <div class="pb-item">Respond bằng ngôn ngữ của khách (tiếng Việt vs tiếng Anh).</div>
+      </div>
+      <div class="pb-col">
+        <div class="pb-lbl">Không bao giờ</div>
+        <div class="pb-no">Automated "Cảm ơn bạn đã liên hệ. Chúng tôi sẽ phản hồi sớm."</div>
+        <div class="pb-no">Broadcast quá 2×/tháng</div>
+        <div class="pb-no">Promo không liên quan đến purchase history</div>
+        <div class="pb-no">Response copy-paste không personalized</div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+  <h3>B. Content Architecture</h3>
+  <div class="pillar-grid">
+    <div class="pillar-card" style="background:var(--teal-light);border:1px solid var(--teal);border-radius:4px">
+      <div class="pillar-pct" style="color:var(--teal)">40%</div>
+      <div class="pillar-name" style="color:var(--teal)">Craft</div>
+      <div class="pillar-body" style="color:var(--ink-60)">Process, ingredients, behind-the-scenes. Educates + builds credibility. Đây là moat — người khác có sản phẩm, không ai có craft story của Mora.</div>
+    </div>
+    <div class="pillar-card" style="background:var(--ink-06);border:1px solid var(--ink-12);border-radius:4px">
+      <div class="pillar-pct" style="color:var(--ink)">35%</div>
+      <div class="pillar-name" style="color:var(--ink)">Story</div>
+      <div class="pillar-body" style="color:var(--ink-60)">Customer stories, founder journey, brand beliefs. Builds emotional connection. Story là thứ people share — không phải product specs.</div>
+    </div>
+    <div class="pillar-card" style="background:var(--amber-light);border:1px solid var(--amber);border-radius:4px">
+      <div class="pillar-pct" style="color:var(--amber)">25%</div>
+      <div class="pillar-name" style="color:var(--amber)">Product</div>
+      <div class="pillar-body" style="color:var(--ink-60)">Specific products, scent descriptions, gifting. Direct commercial — nhưng experience-framed, không catalogue. Bán context, không bán specs.</div>
+    </div>
+  </div>
+
+  <h4>Scent description language — cách viết về hương</h4>
+  <div class="grammar-grid">
+    <div class="gram-hd">Không — đây là ingredient list</div>
+    <div class="gram-hd right">Có — đây là sensory story</div>
+    <div class="gram-cell"><div class="gram-dim">Technical</div>"Top note: bergamot. Middle: jasmine. Base: sandalwood." — Người mua không có frame để hiểu điều này.</div>
+    <div class="gram-cell right"><div class="gram-dim">Sensory</div>"Bắt đầu như buổi sáng tinh sương — tươi, nhanh. Rồi định lại ở một nơi yên tĩnh và ấm áp."</div>
+    <div class="gram-cell"><div class="gram-dim">Generic</div>"Hương thơm sang trọng, quyến rũ, thanh lịch." — Những tính từ này không nói được gì cụ thể.</div>
+    <div class="gram-cell right"><div class="gram-dim">Situational</div>"Dùng khi bạn muốn người ngồi kế bên quay đầu lại." — Đủ cụ thể để imagine được.</div>
+    <div class="gram-cell"><div class="gram-dim">Claim</div>"Được làm từ nguyên liệu cao cấp nhập khẩu." — Ai cũng nói thế.</div>
+    <div class="gram-cell right"><div class="gram-dim">Evidence</div>"IFRA-certified — cùng tiêu chuẩn nguyên liệu với Chanel, Dior. Không phải claim — là certification có thể verify."</div>
+  </div>
+
+  <hr>
+  <h3>C. Visual Grammar cho Digital</h3>
+
+  <div class="g3">
+    <div class="card"><div class="card-lbl">Ánh sáng</div><div class="card-title">Natural diffused</div><div class="card-body">Golden hour hoặc overcast daylight. Không harsh studio flash. Shadows phải soft và warm, không cut. Consistent với ánh sáng trong store.</div></div>
+    <div class="card"><div class="card-lbl">Composition</div><div class="card-title">Off-center, breathing room</div><div class="card-body">Rule of thirds nhưng không mechanical. Negative space 40%+ của frame. Avoid perfectly centered unless intentional.</div></div>
+    <div class="card"><div class="card-lbl">Texture & Detail</div><div class="card-title">Close, tactile, real</div><div class="card-body">Macro của ingredient, grain của wood counter, texture của bottle glass. Người nhìn phải có thể "cảm" được qua màn hình.</div></div>
+    <div class="card"><div class="card-lbl">Human presence</div><div class="card-title">Hands, not faces</div><div class="card-body">Hands at work, hands holding bottle, arms in motion. Faces blur hoặc turned away. Mystery và craft — không phải portrait.</div></div>
+    <div class="card"><div class="card-lbl">Colour</div><div class="card-title">Warm neutrals + brand accent</div><div class="card-body">Earth tones: linen, cream, sage, terracotta. Teal accent sparingly. Không neon, không oversaturate, không gradients lạ.</div></div>
+    <div class="card"><div class="card-lbl">Post-processing</div><div class="card-title">Subtle, never filtered</div><div class="card-body">+10 warmth, −5 saturation. Ảnh trông như chụp — không như render. Không skin smoothing, không HDR.</div></div>
+  </div>
+</div>
+
+<!-- ══ 04 OMNICHANNEL BRIDGE ══ -->
+<div id="sec-bridge" class="section">
+  <div class="eyebrow">Phần 04</div>
+  <h2>Omnichannel <em>Bridge</em></h2>
+  <p class="lead">Đây là phần thường bị bỏ qua nhất. Physical và digital design riêng — nhưng không có handoff protocol. Kết quả: khách hàng cảm giác ngắt quãng khi chuyển từ kênh này sang kênh kia. Tính toàn vẹn đón chờ — lý do Mora khác biệt — bị phá vỡ từ đây.</p>
+
+  <div class="stmt"><p>"Tính toàn vẹn đón chờ" — khách thấy trên social → cảm thứ gì đó → đến store → mọi thứ match. Không có gap. Đây là thứ chưa có thương hiệu Việt nào làm được có hệ thống. Đây là lý do Mora 1.0 tạo được viral organic mà không có paid ads.</p></div>
+
+  <hr>
+  <h3>A. Cross-Channel Customer Journey Map</h3>
+
+  <table class="journey-map">
+    <tr><th>Stage</th><th>Physical touchpoints</th><th>Digital touchpoints</th><th style="width:80px">Handoff</th></tr>
+    <tr>
+      <td class="stage">Awareness<br><span style="font-size:11px;font-weight:400;color:var(--ink-60)">Biết đến lần đầu</span></td>
+      <td class="muted">Bạn bè dẫn theo. Walk past store. Smell từ ngoài cửa nếu scent diffuses.</td>
+      <td class="muted">UGC tagged on Instagram. Google Maps: "nước hoa pha chế HCM". Bạn share story/post.</td>
+      <td class="handoff">→ Intent</td>
+    </tr>
+    <tr>
+      <td class="stage">Consideration<br><span style="font-size:11px;font-weight:400;color:var(--ink-60)">Tìm hiểu thêm</span></td>
+      <td class="muted">Ghé vào browse — no buy pressure. Talk to staff, get educated. Watch blending ritual.</td>
+      <td class="muted">Visit website: check process, price, products. DM Instagram với câu hỏi. Watch process videos.</td>
+      <td class="handoff">↔ Cả hai</td>
+    </tr>
+    <tr>
+      <td class="stage">First Buy<br><span style="font-size:11px;font-weight:400;color:var(--ink-60)">Lần mua đầu</span></td>
+      <td class="muted">Full ritual in-store. Emotional peak. CRM: phone + scent preference. Exit với bag, card, photo moment.</td>
+      <td class="muted">Online order cho gifting. Name preview online. Order confirmation → CRM entry created.</td>
+      <td class="handoff" style="color:var(--teal)">CRM ✓</td>
+    </tr>
+    <tr>
+      <td class="stage">Post-Buy<br><span style="font-size:11px;font-weight:400;color:var(--ink-60)">Sau mua hàng</span></td>
+      <td class="muted">Return card trong bag drives next visit. Bạn thấy chai → hỏi → new customer.</td>
+      <td class="muted">Day 7 message: "Bạn đang enjoy không?" Tag brand → brand reposts → UGC loop. Day 60: refill trigger.</td>
+      <td class="handoff">→ LTV</td>
+    </tr>
+    <tr>
+      <td class="stage">Return Visit<br><span style="font-size:11px;font-weight:400;color:var(--ink-60)">Khách quay lại</span></td>
+      <td class="muted">Staff nhớ tên, nhớ lần trước chọn gì. "Lần này thử hương mới không?"</td>
+      <td class="muted">New scent launch: first notification đến past buyers. Early access — không points, là exclusives.</td>
+      <td class="handoff">→ Loyal</td>
+    </tr>
+  </table>
+
+  <hr>
+  <h3>B. Consistency Translation Matrix</h3>
+  <p class="body-text" style="margin-bottom:16px">Mỗi element trong store phải có digital equivalent. Nếu không có — khách chỉ tiếp cận online sẽ miss một phần DNA.</p>
+
+  <table class="consist-tbl">
+    <tr><th>Physical element</th><th>Digital equivalent</th><th style="width:100px">Channel</th><th style="width:90px">Level</th></tr>
+    <tr>
+      <td>Ambient scent tại cửa hàng</td>
+      <td>Sensory language trong copy: "Như sáng sớm sau mưa, tươi rồi định lại ở nơi ấm áp."</td>
+      <td class="muted">Website, social</td>
+      <td class="level trans">Translate</td>
+    </tr>
+    <tr>
+      <td>Staff greeting + story</td>
+      <td>DM response không automated, cùng voice. Founder FAQ video. Response guide cho tất cả chat.</td>
+      <td class="muted">Zalo, IG DM</td>
+      <td class="level rep">Replicable</td>
+    </tr>
+    <tr>
+      <td>Blending ritual (watching)</td>
+      <td>Process video: close-up, slow, no voiceover, same music vibe. Đây là closest digital equivalent.</td>
+      <td class="muted">IG, TikTok, website</td>
+      <td class="level rep">Replicable</td>
+    </tr>
+    <tr>
+      <td>Name engraving trên chai</td>
+      <td>Digital preview của label trước khi order. Photo reveal post-delivery. "Chai này chỉ có 1 người."</td>
+      <td class="muted">Website, IG DM</td>
+      <td class="level rep">Replicable</td>
+    </tr>
+    <tr>
+      <td>Sensory quality của vật liệu</td>
+      <td>Close-up photography: texture, weight, light on glass. Unboxing video = packaging quality proof.</td>
+      <td class="muted">Website, IG</td>
+      <td class="level trans">Translate</td>
+    </tr>
+    <tr>
+      <td>Warm temperature, atmosphere</td>
+      <td>Warm-toned visuals. Slow UX pace — không urgency triggers. Generous whitespace = digital breathing room.</td>
+      <td class="muted">Website, social</td>
+      <td class="level trans">Translate</td>
+    </tr>
+    <tr>
+      <td>Staff knowledge / education</td>
+      <td>FAQs viết như conversation. Blog content educates, không chỉ sells. "Why IFRA matters" explained.</td>
+      <td class="muted">Website</td>
+      <td class="level rep">Replicable</td>
+    </tr>
+    <tr>
+      <td>Personal recall (staff nhớ khách)</td>
+      <td>CRM: purchase history trong chat context. "Lần trước bạn chọn [hương X]" — requires CRM discipline từ day 1.</td>
+      <td class="muted">Zalo, email</td>
+      <td class="level rep">Replicable</td>
+    </tr>
+    <tr>
+      <td>Exit card — return invitation</td>
+      <td>Day 7 follow-up message không phải promo. "Complementary scent" suggestion. Not discount voucher.</td>
+      <td class="muted">Zalo, IG DM</td>
+      <td class="level rep">Replicable</td>
+    </tr>
+  </table>
+
+  <div class="warn"><p><strong>Gap analysis:</strong> Mỗi tháng check matrix này — có element nào trong cột "digital equivalent" chưa được implement không? Đó là gap làm mất tính toàn vẹn. Một element thiếu = một phần DNA bị missing cho khách chỉ tiếp cận online.</p></div>
+
+  <hr>
+  <h3>C. Handoff Moments — thiết kế khi khách chuyển kênh</h3>
+  <div class="chain">
+    <div class="ci"><span class="cn">Online → Store</span><div><div class="ct">Pre-visit briefing</div><div class="cd">Sau khi khách DM hoặc book online → nhân sự có context trước khi họ đến. CRM note: "Đã hỏi về hương X trên DM." First line khi gặp: nhắc lại cuộc trò chuyện.</div><div class="cs">"Chào [tên], bạn đã hỏi về Jasmine Vetiver hôm qua — hôm nay chúng tôi muốn cho bạn thử trực tiếp."</div></div></div>
+    <div class="ci"><span class="cn">Store → Online</span><div><div class="ct">In-store → digital continuation</div><div class="cd">Card trong túi không phải voucher — là digital invitation cụ thể. QR code đến "Your Scent Story" page nếu có CRM, hoặc đến Instagram story về hương họ vừa chọn.</div></div></div>
+    <div class="ci"><span class="cn">Post-purchase</span><div><div class="ct">D7 follow-up design</div><div class="cd">Ngày 7 sau purchase: Zalo message không phải review request — là genuine check-in. "Bạn đã dùng hương mới chưa? Lớp base note sẽ mở ra rõ nhất vào ngày thứ 3–5." Educate, không prompt review.</div></div></div>
+    <div class="ci"><span class="cn">D60 trigger</span><div><div class="ct">Refill anticipation</div><div class="cd">Dựa trên average usage (50ml/60 ngày): "Hương của bạn có thể sắp cần refill. Bạn muốn giữ nguyên hương cũ hay thử khám phá hương mới?" Không phải automated promo — là cuộc trò chuyện tiếp tục.</div></div></div>
+  </div>
+</div>
+
+<!-- ══ 05 QA & GOVERNANCE ══ -->
+<div id="sec-qa" class="section">
+  <div class="eyebrow">Phần 05</div>
+  <h2>QA & <em>Governance</em></h2>
+  <p class="lead">Design xong không phải hết. Brand experience bị drift khi nhân viên mới chưa được train đủ, content creator làm theo gu riêng, hay một kênh được update mà kênh kia không được sync. Governance ngăn điều đó.</p>
+
+  <div class="stmt"><p>Dossier này không phải thứ làm 1 lần rồi cất tủ. Nó là tài liệu sống — được test qua QA định kỳ, được update khi brand grows, và được trace về Codex mỗi khi có quyết định mới.</p></div>
+
+  <hr>
+  <h3>A. Experience Audit Checklist</h3>
+
+  <div class="audit-list">
+    <div class="audit-item">
+      <div class="ai-num">01</div>
+      <div class="ai-text">Sensory consistency check<span>Ambient scent đúng spec? Music đúng playlist + volume? Lighting đúng Kelvin? Temperature đúng range? Đứng ở vị trí khách — cảm giác có đúng không?</span></div>
+      <div class="ai-channel">Physical</div>
+      <div class="ai-freq">Weekly</div>
+    </div>
+    <div class="audit-item">
+      <div class="ai-num">02</div>
+      <div class="ai-text">Display reset check<span>Negative space maintained? Products không overcrowded? Hero product prominent? Chai sạch, không fingerprint?</span></div>
+      <div class="ai-channel">Physical</div>
+      <div class="ai-freq">Daily</div>
+    </div>
+    <div class="audit-item">
+      <div class="ai-num">03</div>
+      <div class="ai-text">Staff voice audit<span>Mystery visit hoặc observe shift. Greeting script đúng không? Exit message đúng không? Tone có consistent với Brand Voice Guide không?</span></div>
+      <div class="ai-channel">Physical</div>
+      <div class="ai-freq">Monthly</div>
+    </div>
+    <div class="audit-item">
+      <div class="ai-num">04</div>
+      <div class="ai-text">Social feed consistency<span>Last 9 posts — palette đồng nhất? Tone nhất quán? Không có post nào trông như brand khác?</span></div>
+      <div class="ai-channel">Digital</div>
+      <div class="ai-freq">Weekly</div>
+    </div>
+    <div class="audit-item">
+      <div class="ai-num">05</div>
+      <div class="ai-text">Website copy review<span>Có copy nào dùng language không từ Brand Voice Guide không? Generic marketing phrases, emoji spam, urgency triggers sai?</span></div>
+      <div class="ai-channel">Digital</div>
+      <div class="ai-freq">Monthly</div>
+    </div>
+    <div class="audit-item">
+      <div class="ai-num">06</div>
+      <div class="ai-text">Chat response audit<span>Sample 10 Zalo/DM responses. Tone đúng không? Có robot-sounding không? Có missed personalisation không? Response time &lt;2 giờ?</span></div>
+      <div class="ai-channel">Digital</div>
+      <div class="ai-freq">Monthly</div>
+    </div>
+    <div class="audit-item">
+      <div class="ai-num">07</div>
+      <div class="ai-text">Cross-channel DNA test<span>Pick 1 random customer journey: follow từ first touchpoint (social/online) qua in-store đến post-purchase. Experience seamless không? Có gap nào không?</span></div>
+      <div class="ai-channel">Both</div>
+      <div class="ai-freq">Quarterly</div>
+    </div>
+    <div class="audit-item">
+      <div class="ai-num">08</div>
+      <div class="ai-text">New staff calibration<span>Sau 2 tuần onboarding: mystery shopper test. Pass nếu mystery shopper không phân biệt được nhân sự mới với nhân sự cũ về tinh thần.</span></div>
+      <div class="ai-channel">HR</div>
+      <div class="ai-freq">Per hire</div>
+    </div>
+    <div class="audit-item">
+      <div class="ai-num">09</div>
+      <div class="ai-text">Packaging integrity check<span>Order 1 sản phẩm online như khách thường. Unboxing experience đúng thiết kế không? Có damage, dơ, thiếu insert không?</span></div>
+      <div class="ai-channel">Digital</div>
+      <div class="ai-freq">Monthly</div>
+    </div>
+    <div class="audit-item">
+      <div class="ai-num">10</div>
+      <div class="ai-text">Annual Codex re-alignment<span>Đọc lại Codex. Compare với cách brand đang được expressed hiện tại trên cả 2 kênh. Có drift không? Nếu có — trace về origin và fix.</span></div>
+      <div class="ai-channel">Both</div>
+      <div class="ai-freq">Annual</div>
+    </div>
+  </div>
+
+  <hr>
+  <h3>B. Brand Decision Authority</h3>
+
+  <table class="auth-tbl">
+    <tr><th>Role</th><th>Quyết định</th></tr>
+    <tr>
+      <td class="role">Founder only</td>
+      <td>Thay đổi Codex. Thay đổi pricing architecture. Thay đổi visual identity cốt lõi (logo, palette). Mọi quyết định về brand positioning.</td>
+    </tr>
+    <tr>
+      <td class="role">Founder + Brand lead</td>
+      <td>Campaign direction. Major content strategy shift. New platform entry. Collaboration với external brand. Significant visual system update.</td>
+    </tr>
+    <tr>
+      <td class="role">Brand lead</td>
+      <td>Content calendar hàng tháng. Individual posts. Response scripts update. Display layout. Photography direction cho từng shoot.</td>
+    </tr>
+    <tr>
+      <td class="role">Store lead</td>
+      <td>Daily operations. Tester rotation. Staff rostering. In-store display minor adjustment trong guidelines.</td>
+    </tr>
+    <tr>
+      <td class="role">Any staff</td>
+      <td class="muted">Following SOP. Nếu không có trong SOP → escalate, không improvise. Không có "tự quyết" ngoài phạm vi đã được training.</td>
+    </tr>
+  </table>
+
+  <hr>
+  <h3>C. Dossier Maintenance Rules</h3>
+  <div class="chain">
+    <div class="ci"><span class="cn">Trigger</span><div><div class="ct">Audit phát hiện drift 2 lần liên tiếp cùng 1 điểm</div><div class="cd">Đây là signal cần update SOP hoặc training — không phải chỉ nhắc nhở nhân viên. Nếu cùng vấn đề xảy ra 2 lần → vấn đề hệ thống, không phải cá nhân.</div></div></div>
+    <div class="ci"><span class="cn">Trigger</span><div><div class="ct">New platform hoặc channel được add</div><div class="cd">Dossier phải được update với platform guide mới trước khi channel goes live. Không launch channel chưa có trong dossier.</div></div></div>
+    <div class="ci"><span class="cn">Trigger</span><div><div class="ct">Codex được update</div><div class="cd">Nếu bất kỳ invariant nào thay đổi → toàn bộ dossier cần được reviewed và updated để reflect change đó.</div></div></div>
+    <div class="ci"><span class="cn">Trigger</span><div><div class="ct">NPS drop ≥10 điểm</div><div class="cd">Emergency cross-channel audit. Tìm điểm drift. Update dossier phần liên quan sau khi identify root cause.</div></div></div>
+    <div class="ci"><span class="cn">Không trigger</span><div><div class="ct">"Tôi thấy brand X làm thế này hay hơn"</div><div class="cd">Compare với Codex trước — không phải competitor. Nếu thứ brand X làm consistent với Codex của Mora → có thể adopt. Nếu không → không adopt dù có vẻ hay hơn.</div></div></div>
+  </div>
+
+  <div style="margin-top:24px;padding:16px 20px;background:var(--ink-06);border-radius:4px">
+    <div style="font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-60);margin-bottom:8px">Version control</div>
+    <div style="font-size:13px;color:var(--ink);line-height:1.7">v1.0 → v1.1 (minor update: single section) → v2.0 (major rewrite: multiple sections thay đổi fundamentally). Mỗi version phải có: date, người update, và summary of changes. Dossier cũ được archive — không delete.</div>
+  </div>
+
+  <hr>
+  <h3>D. Nếu Mora 1.0 có dossier này</h3>
+  <div class="stmt">
+    <p>Mora 1.0 đã có physical experience tốt tự nhiên — founder là người thực sự tin vào craft, và điều đó được truyền qua cách store được thiết kế. Nhưng không có dossier → khi mở store thứ 2, experience bắt đầu drift vì không có document để train theo. Và online hoàn toàn ad-hoc — không được derive từ physical experience. Dossier này không tạo ra experience — nó capture experience đang work, codify nó, và đảm bảo nó được replicate đúng khi scale.</p>
+  </div>
+</div>
+
+</main>
+
+<footer class="footer">
+  <span class="footer-brand">Mora</span>
+  <span class="footer-note">Brand Experience Design Dossier v2.0 · Physical × Digital · Derived từ Codex · 5 sections</span>
+</footer>
+
+<script>
+function sw(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sec-' + id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top: document.querySelector('.nav-wrap').offsetTop - 1, behavior: 'smooth'});
+}
+</script>
+</body>
+</html>

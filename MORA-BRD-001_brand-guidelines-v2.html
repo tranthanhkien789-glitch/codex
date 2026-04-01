@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mora · Brand Guidelines v2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#FAF9F6;--cd:#F2EFE9;--cl:#E8DFD0;
+  --ink:#1A1916;--i80:rgba(26,25,22,.8);--i60:rgba(26,25,22,.6);
+  --i30:rgba(26,25,22,.3);--i12:rgba(26,25,22,.12);--i06:rgba(26,25,22,.06);
+  --teal:#0F6E56;--td:#085041;--tl:#E1F5EE;--tm:#5DCAA5;
+  --amber:#854F0B;--ad:#633806;--al:#FAEEDA;--am:#EF9F27;
+  --blue:#185FA5;--bl:#E6F1FB;
+  --w50:#F5F0E8;--w400:#C4B49A;--w600:#8C7A62;
+  --travertine:#D4C5B0;--oak:#4A3728;--brass:#B89A60;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+  --mono:'DM Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+/* NAV */
+.nav{position:sticky;top:0;z-index:500;background:var(--ink);height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;gap:16px}
+.nb{font-family:var(--serif);font-size:16px;font-weight:300;color:var(--cream);white-space:nowrap;letter-spacing:.04em}
+.nt{display:flex;overflow-x:auto;scrollbar-width:none;gap:0}
+.nt::-webkit-scrollbar{display:none}
+.nb2{flex-shrink:0;padding:0 13px;height:48px;font-family:var(--mono);font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:rgba(250,249,246,.4);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;transition:all .2s;white-space:nowrap}
+.nb2:hover{color:rgba(250,249,246,.75)}
+.nb2.a{color:var(--tm);border-bottom-color:var(--tm)}
+/* LAYOUT */
+.main{max-width:1020px;margin:0 auto;padding:0 36px 120px}
+@media(max-width:680px){.main{padding:0 18px 80px}}
+.sec{display:none;padding-top:60px}
+.sec.a{display:block;animation:fi .25s ease}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+/* HERO BLOCK */
+.sh{margin-bottom:48px;padding-bottom:40px;border-bottom:1px solid var(--i12)}
+.ey{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--i60);margin-bottom:12px}
+h2{font-family:var(--serif);font-size:clamp(36px,5vw,62px);font-weight:300;line-height:1.04;letter-spacing:-.015em;margin-bottom:16px}
+h2 em{font-style:italic;color:var(--teal)}
+h3{font-family:var(--serif);font-size:24px;font-weight:400;color:var(--ink);margin:48px 0 12px}
+h3.sub{font-size:18px;margin:32px 0 10px}
+h4{font-family:var(--sans);font-size:11px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--ink);margin:24px 0 8px}
+.lead{font-family:var(--serif);font-size:17px;font-weight:300;font-style:italic;line-height:1.75;color:var(--ink);margin-bottom:24px;max-width:660px}
+.body{font-size:13px;color:var(--i60);line-height:1.8}
+hr{border:none;border-top:1px solid var(--i12);margin:48px 0}
+/* COMPONENTS */
+.stmt{border-left:2px solid var(--teal);padding:18px 24px;margin:20px 0;background:var(--tl)}
+.stmt p{font-family:var(--serif);font-size:16px;font-weight:300;line-height:1.75;color:var(--ink)}
+.warn{border-left:2px solid var(--amber);padding:14px 18px;margin:14px 0;background:var(--al)}
+.warn p{font-size:12px;color:var(--amber);line-height:1.6}
+/* COLOUR */
+.pal-bar{display:flex;height:52px;border-radius:3px;overflow:hidden;margin:16px 0}
+.sw-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:16px 0}
+@media(max-width:600px){.sw-grid{grid-template-columns:1fr 1fr}}
+.sw{border-radius:3px;overflow:hidden;border:1px solid var(--i12)}
+.sw-color{height:68px}
+.sw-info{padding:9px 11px;background:#fff}
+.sw-name{font-size:11px;font-weight:500;color:var(--ink);margin-bottom:1px}
+.sw-hex{font-family:var(--mono);font-size:10px;color:var(--i60)}
+.sw-sub{font-size:10px;color:var(--i60);margin-top:3px;line-height:1.4}
+.mat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0}
+@media(max-width:560px){.mat-grid{grid-template-columns:1fr 1fr}}
+.cmyk-block{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:16px 0}
+@media(max-width:600px){.cmyk-block{grid-template-columns:1fr 1fr}}
+.cmyk-card{border:1px solid var(--i12);border-radius:3px;overflow:hidden}
+.cmyk-sw{height:44px}
+.cmyk-info{padding:8px 10px;background:#fff}
+.cmyk-name{font-size:10px;font-weight:500;color:var(--ink);margin-bottom:3px}
+.cmyk-val{font-family:var(--mono);font-size:9px;color:var(--i60);line-height:1.6}
+/* WCAG TABLE */
+.wcag-tbl{width:100%;border-collapse:collapse;margin:14px 0;font-size:12px}
+.wcag-tbl th{font-family:var(--mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--i60);padding:8px 10px;border-bottom:1px solid var(--i12);background:var(--i06);text-align:left;font-weight:400}
+.wcag-tbl td{padding:9px 10px;border-bottom:1px solid var(--i12);vertical-align:middle;line-height:1.4;color:var(--ink)}
+.wcag-tbl td.pass{color:var(--teal);font-weight:500}
+.wcag-tbl td.fail{color:#A32D2D;font-weight:500}
+.wcag-tbl td.large{color:var(--amber);font-weight:500}
+.wcag-tbl td.mono{font-family:var(--mono);font-size:10px}
+.wcag-tbl td.note{color:var(--i60);font-size:11px}
+.wcag-tbl td.sw-cell{width:20px;padding:6px}
+.sw-dot{width:14px;height:14px;border-radius:2px;display:inline-block;border:0.5px solid var(--i12)}
+.wcag-tbl tr.hd-row td{background:var(--i06);font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:var(--i60);padding:5px 10px}
+/* HARMONY VIS */
+.harmony{display:flex;gap:24px;align-items:center;background:var(--i06);border-radius:4px;padding:20px 24px;margin:16px 0;flex-wrap:wrap}
+/* COMBINATIONS */
+.combo-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:16px 0}
+@media(max-width:580px){.combo-grid{grid-template-columns:1fr 1fr}}
+.combo{border-radius:4px;overflow:hidden;border:1px solid var(--i12)}
+.combo-top{height:72px;display:flex;align-items:center;justify-content:center}
+.combo-lbl{padding:10px 12px;background:#fff}
+.combo-lbl-t{font-size:11px;font-weight:500;color:var(--ink);margin-bottom:2px}
+.combo-lbl-s{font-family:var(--mono);font-size:9px;color:var(--i60)}
+/* LOGO */
+.logo-demos{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:16px 0}
+@media(max-width:560px){.logo-demos{grid-template-columns:1fr}}
+.ld{border-radius:4px;overflow:hidden;border:1px solid var(--i12)}
+.ld-canvas{height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:20px}
+.ld-wm{font-family:var(--serif);font-weight:300;letter-spacing:.2em;text-transform:uppercase;line-height:1}
+.ld-tag{font-family:var(--mono);font-size:8px;letter-spacing:.2em;text-transform:uppercase;opacity:.5}
+.ld-lbl{padding:10px 12px;background:#fff;border-top:1px solid var(--i12)}
+.ld-lbl-t{font-size:11px;font-weight:500;color:var(--ink);margin-bottom:2px}
+.ld-lbl-s{font-family:var(--mono);font-size:9px;color:var(--i60)}
+.cs-box{display:inline-flex;flex-direction:column;align-items:center;gap:6px;padding:32px 56px;border:1px dashed var(--i30);border-radius:4px;margin:16px 0;position:relative}
+.cs-annot{position:absolute;font-family:var(--mono);font-size:9px;color:var(--i30)}
+.dont-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0}
+@media(max-width:560px){.dont-grid{grid-template-columns:1fr 1fr}}
+.dont-card{border:1px solid #F09595;border-radius:4px;overflow:hidden;background:#FCEBEB}
+.dont-canvas{height:72px;display:flex;align-items:center;justify-content:center}
+.dont-lbl{padding:8px 10px}
+.dont-lbl-t{font-size:10px;font-weight:500;color:#A32D2D}
+/* SHAPE / GRAPHIC */
+.shape-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}
+@media(max-width:560px){.shape-grid{grid-template-columns:1fr 1fr}}
+.sg-card{border:1px solid var(--i12);border-radius:4px;overflow:hidden}
+.sg-canvas{height:100px;display:flex;align-items:center;justify-content:center;background:var(--i06)}
+.sg-lbl{padding:10px 12px;background:#fff}
+.sg-name{font-size:11px;font-weight:500;color:var(--ink);margin-bottom:2px}
+.sg-note{font-size:10px;color:var(--i60);line-height:1.4}
+/* TYPOGRAPHY */
+.type-spec{border:1px solid var(--i12);border-radius:4px;overflow:hidden;margin-bottom:14px}
+.type-spec-hd{background:var(--i06);padding:10px 16px;border-bottom:1px solid var(--i12);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.type-spec-label{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--i60)}
+.type-spec-meta{font-family:var(--mono);font-size:9px;color:var(--i30)}
+.type-spec-body{padding:20px 20px}
+.type-scale{display:flex;flex-direction:column;gap:0;margin:14px 0}
+.ts-row{display:grid;grid-template-columns:130px 1fr;border-top:1px solid var(--i12);align-items:baseline}
+.ts-row:last-child{border-bottom:1px solid var(--i12)}
+.ts-meta{padding:12px 0;font-family:var(--mono);font-size:9px;color:var(--i60);line-height:1.5}
+.ts-text{padding:12px 0 12px 16px;border-left:1px solid var(--i12)}
+/* VIET */
+.viet-demo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}
+.vd-card{border:1px solid var(--i12);border-radius:4px;padding:16px 18px}
+.vd-label{font-family:var(--mono);font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--i60);margin-bottom:10px}
+/* PHOTO */
+.photo-rule{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--i12);border-radius:4px;overflow:hidden;margin:14px 0}
+.pr-do{background:var(--tl);padding:16px 18px}
+.pr-dn{background:#FFF8F8;padding:16px 18px}
+.pr-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.07em;text-transform:uppercase;margin-bottom:10px;font-weight:500}
+.pr-do .pr-lbl{color:var(--teal)}
+.pr-dn .pr-lbl{color:#A32D2D}
+.pr-list{list-style:none;display:flex;flex-direction:column;gap:5px}
+.pr-list li{font-size:12px;line-height:1.5;padding-left:16px;position:relative}
+.pr-do .pr-list li{color:var(--i60)}
+.pr-dn .pr-list li{color:#791F1F}
+.pr-do .pr-list li::before{content:"✓";position:absolute;left:0;color:var(--teal)}
+.pr-dn .pr-list li::before{content:"×";position:absolute;left:0;color:#A32D2D}
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+@media(max-width:560px){.photo-grid{grid-template-columns:1fr 1fr}}
+.pg-card{border:1px solid var(--i12);border-radius:4px;overflow:hidden}
+.pg-vis{height:100px;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--i60);font-style:italic}
+.pg-lbl{padding:9px 11px;background:#fff;border-top:1px solid var(--i12)}
+.pg-name{font-size:11px;font-weight:500;color:var(--ink);margin-bottom:1px}
+.pg-spec{font-family:var(--mono);font-size:9px;color:var(--i60)}
+/* ICON */
+.icon-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin:14px 0}
+@media(max-width:560px){.icon-grid{grid-template-columns:repeat(3,1fr)}}
+.ic-card{border:1px solid var(--i12);border-radius:4px;padding:14px 10px;text-align:center;background:#fff}
+.ic-vis{font-size:20px;margin-bottom:6px}
+.ic-name{font-size:9px;color:var(--i60)}
+/* MOTION */
+.motion-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+.mot-card{border:1px solid var(--i12);border-radius:4px;padding:16px 18px}
+.mot-label{font-family:var(--mono);font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--i60);margin-bottom:8px}
+.mot-val{font-family:var(--serif);font-size:22px;font-weight:300;color:var(--ink);margin-bottom:4px}
+.mot-desc{font-size:12px;color:var(--i60);line-height:1.5}
+.timing-bar{height:4px;border-radius:2px;background:var(--i12);margin:8px 0;overflow:hidden}
+.timing-fill{height:100%;background:var(--teal);border-radius:2px}
+/* APPLICATIONS */
+.app-tabs{display:flex;gap:0;border-bottom:1px solid var(--i12);margin-bottom:24px;overflow-x:auto;scrollbar-width:none}
+.app-tabs::-webkit-scrollbar{display:none}
+.atb{flex-shrink:0;padding:10px 16px;font-family:var(--mono);font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--i60);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap}
+.atb.aa{color:var(--teal);border-bottom-color:var(--teal)}
+.app-cat{display:none}
+.app-cat.aa{display:block}
+.app-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.app-grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+@media(max-width:660px){.app-grid-3,.app-grid-4{grid-template-columns:1fr 1fr}}
+@media(max-width:400px){.app-grid-3,.app-grid-4{grid-template-columns:1fr}}
+.app-card{border:1px solid var(--i12);border-radius:4px;overflow:hidden}
+.app-vis{display:flex;align-items:center;justify-content:center;padding:16px;min-height:110px}
+.app-lbl{padding:10px 12px;background:#fff;border-top:1px solid var(--i12)}
+.app-name{font-size:11px;font-weight:500;color:var(--ink);margin-bottom:2px}
+.app-spec{font-family:var(--mono);font-size:9px;color:var(--i60);line-height:1.4}
+/* UTILS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+@media(max-width:580px){.g2,.g3{grid-template-columns:1fr}}
+.chain{display:flex;flex-direction:column;gap:0;margin:12px 0}
+.ci{display:flex;gap:14px;padding:10px 0;border-top:1px solid var(--i12);align-items:flex-start}
+.ci:last-child{border-bottom:1px solid var(--i12)}
+.cn{font-family:var(--mono);font-size:9px;color:var(--i30);min-width:24px;padding-top:2px;flex-shrink:0}
+.ct{font-size:12px;font-weight:500;color:var(--ink);margin-bottom:2px}
+.cd{font-size:11px;color:var(--i60);line-height:1.55}
+.badge{display:inline-block;font-family:var(--mono);font-size:9px;padding:2px 7px;border-radius:2px;border:1px solid var(--i12);color:var(--i60)}
+.badge.teal{background:var(--tl);color:var(--td);border-color:var(--teal)}
+.badge.amber{background:var(--al);color:var(--ad);border-color:var(--amber)}
+.badge.red{background:#FCEBEB;color:#A32D2D;border-color:#F09595}
+/* FOOTER */
+.footer{max-width:1020px;margin:0 auto;padding:36px;border-top:1px solid var(--i12);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.fb{font-family:var(--serif);font-size:18px;font-weight:300}
+.fn{font-family:var(--mono);font-size:9px;color:var(--i60);letter-spacing:.05em}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <span class="nb">Mora · Brand Guidelines v2.0</span>
+  <div class="nt">
+    <button class="nb2 a" onclick="sw('s01',this)">01·Foundation</button>
+    <button class="nb2" onclick="sw('s02',this)">02·Colour</button>
+    <button class="nb2" onclick="sw('s03',this)">03·Logo</button>
+    <button class="nb2" onclick="sw('s04',this)">04·Shape</button>
+    <button class="nb2" onclick="sw('s05',this)">05·Typography</button>
+    <button class="nb2" onclick="sw('s06',this)">06·Photography</button>
+    <button class="nb2" onclick="sw('s07',this)">07·Icon·Illus</button>
+    <button class="nb2" onclick="sw('s08',this)">08·Motion</button>
+    <button class="nb2" onclick="sw('s09',this)">09·Applications</button>
+  </div>
+</nav>
+<main class="main">
+<!-- ══════════════ 01 FOUNDATION ══════════════ -->
+<div id="s01" class="sec a">
+<div class="sh">
+  <div class="ey">Mora Brand Guidelines · v2.0 · Synced with Store Experience Design v1.0</div>
+  <h2>Brand <em>Foundation</em></h2>
+  <p class="lead">Một tài liệu. Mọi quyết định visual và verbal trace về đây. Mọi ngoại lệ cần được justify bởi Codex — không phải bởi trend, convention, hay client pressure.</p>
+</div>
+<div class="g3">
+  <div style="border-left:3px solid var(--teal);padding:14px 18px">
+    <div class="ey" style="margin-bottom:6px">Mission</div>
+    <div style="font-family:var(--serif);font-size:15px;font-weight:300;line-height:1.65;color:var(--ink)">Chứng minh rằng có thể xây dựng một thế giới dựa trên sự thật — bắt đầu từ một chai nước hoa.</div>
+  </div>
+  <div style="border-left:3px solid var(--amber);padding:14px 18px">
+    <div class="ey" style="margin-bottom:6px">Vision</div>
+    <div style="font-family:var(--serif);font-size:15px;font-weight:300;line-height:1.65;color:var(--ink)">Trở thành tiêu chuẩn mà người Việt dùng để đo "thế nào là thương hiệu thật."</div>
+  </div>
+  <div style="border-left:3px solid var(--i30);padding:14px 18px">
+    <div class="ey" style="margin-bottom:6px">Position</div>
+    <div style="font-family:var(--serif);font-size:15px;font-weight:300;line-height:1.65;color:var(--ink)">Accessible luxury — chất lượng Le Labo, giá người Việt tiếp cận được. Bespoke. Pha chế tại chỗ.</div>
+  </div>
+</div>
+<hr>
+<h3>How to use this document</h3>
+<table class="wcag-tbl">
+<tr><th>Nếu bạn là</th><th>Đọc sections</th><th>Critical nhất</th></tr>
+<tr><td>Designer</td><td>02·Colour · 03·Logo · 04·Shape · 05·Typography · 09·Applications</td><td class="note">HEX+CMYK, clear space, type scale</td></tr>
+<tr><td>Photographer / Videographer</td><td>06·Photography · 02·Colour</td><td class="note">Lighting spec, composition, post-processing</td></tr>
+<tr><td>Content creator</td><td>05·Typography · 06·Photography · 07·Icon</td><td class="note">Vietnamese handling, voice rules, caption specs</td></tr>
+<tr><td>Print / Production</td><td>02·Colour (CMYK section) · 09·Applications</td><td class="note">Pantone refs, CMYK, material specs</td></tr>
+<tr><td>Store / Fitout contractor</td><td>02·Colour · 09·Applications (Store)</td><td class="note">Material palette, lighting spec, signage dims</td></tr>
+<tr><td>Developer</td><td>02·Colour · 05·Typography · 08·Motion</td><td class="note">CSS variables, font loading, animation tokens</td></tr>
+</table>
+<hr>
+<h3>6 Brand Personality Attributes</h3>
+<div class="g3">
+<div style="background:var(--i06);border-radius:4px;padding:16px"><div style="font-family:var(--serif);font-size:20px;font-weight:300;margin-bottom:5px">Craft</div><div class="cd">Tỉ mỉ, không vội. Chú tâm hiện diện trong mọi chi tiết — từ cách pha chế đến cách gấp túi.</div></div>
+<div style="background:var(--i06);border-radius:4px;padding:16px"><div style="font-family:var(--serif);font-size:20px;font-weight:300;margin-bottom:5px">Honest</div><div class="cd">Nói được làm được. Không over-promise. Khi có lỗi — thừa nhận trước khi ai hỏi.</div></div>
+<div style="background:var(--i06);border-radius:4px;padding:16px"><div style="font-family:var(--serif);font-size:20px;font-weight:300;margin-bottom:5px">Intimate</div><div class="cd">Mỗi người một trải nghiệm. Không có giao tiếp "mass" — mọi thứ feel cá nhân.</div></div>
+<div style="background:var(--i06);border-radius:4px;padding:16px"><div style="font-family:var(--serif);font-size:20px;font-weight:300;margin-bottom:5px">Knowledgeable</div><div class="cd">Educate, không lecture. Chia sẻ để người khác hiểu — không phải để intimidate.</div></div>
+<div style="background:var(--i06);border-radius:4px;padding:16px"><div style="font-family:var(--serif);font-size:20px;font-weight:300;margin-bottom:5px">Local</div><div class="cd">Vietnamese, không wannabe. Tiếng Việt tự nhiên. Không pretend là brand nước ngoài.</div></div>
+<div style="background:var(--tl);border:1px solid var(--teal);border-radius:4px;padding:16px"><div style="font-family:var(--serif);font-size:20px;font-weight:300;color:var(--td);margin-bottom:5px">Accessible</div><div class="cd">Premium không phải xa xỉ. Mora là nơi bạn thuộc về — không phải nơi phải xứng đáng.</div></div>
+</div>
+</div>
+<!-- ══════════════ 02 COLOUR ══════════════ -->
+<div id="s02" class="sec">
+<div class="sh"><div class="ey">Section 02</div><h2>Colour <em>System</em></h2>
+<p class="lead">Palette được derive từ materials tự nhiên và Codex. Mọi giá trị — HEX, RGB, CMYK, Pantone — là giá trị chính thức dùng cho tất cả production.</p></div>
+
+<div class="pal-bar">
+  <div style="flex:2;background:#1A1916"></div>
+  <div style="flex:2;background:#0F6E56"></div>
+  <div style="flex:1;background:#854F0B"></div>
+  <div style="flex:3;background:#FAF9F6;border-left:1px solid #E8DFD0"></div>
+  <div style="flex:2;background:#E8DFD0"></div>
+</div>
+
+<h3 class="sub">Primary 5 — Core brand colours</h3>
+<div class="sw-grid">
+<div class="sw"><div class="sw-color" style="background:#1A1916"></div><div class="sw-info"><div class="sw-name">Mora Ink</div><div class="sw-hex">#1A1916</div><div class="sw-sub">RGB 26·25·22<br>CMYK 0·2·6·91<br>PMS Black 7 C</div></div></div>
+<div class="sw"><div class="sw-color" style="background:#0F6E56"></div><div class="sw-info"><div class="sw-name">Mora Teal</div><div class="sw-hex">#0F6E56</div><div class="sw-sub">RGB 15·110·86<br>CMYK 86·0·22·57<br>PMS 7723 C</div></div></div>
+<div class="sw"><div class="sw-color" style="background:#854F0B"></div><div class="sw-info"><div class="sw-name">Mora Amber</div><div class="sw-hex">#854F0B</div><div class="sw-sub">RGB 133·79·11<br>CMYK 0·41·92·48<br>PMS 1545 C</div></div></div>
+<div class="sw"><div class="sw-color" style="background:#FAF9F6;border-bottom:1px solid #E8DFD0"></div><div class="sw-info"><div class="sw-name">Mora Cream</div><div class="sw-hex">#FAF9F6</div><div class="sw-sub">RGB 250·249·246<br>CMYK 0·0·2·2<br>PMS 9103 C</div></div></div>
+<div class="sw"><div class="sw-color" style="background:#E8DFD0"></div><div class="sw-info"><div class="sw-name">Mora Linen</div><div class="sw-hex">#E8DFD0</div><div class="sw-sub">RGB 232·223·208<br>CMYK 0·4·10·9<br>PMS 9183 C</div></div></div>
+</div>
+
+<h3 class="sub">Extended — Tonal variations</h3>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:14px 0">
+<div>
+  <div class="ey" style="margin-bottom:8px">Teal family</div>
+  <div style="display:flex;flex-direction:column;gap:6px">
+    <div style="display:flex;align-items:center;gap:10px"><div style="width:28px;height:20px;background:#085041;border-radius:2px;flex-shrink:0"></div><div><span style="font-family:var(--mono);font-size:9px;color:var(--ink)">#085041</span> <span style="font-size:9px;color:var(--i60)">Teal Dark</span></div></div>
+    <div style="display:flex;align-items:center;gap:10px"><div style="width:28px;height:20px;background:#0F6E56;border-radius:2px;flex-shrink:0"></div><div><span style="font-family:var(--mono);font-size:9px;color:var(--ink)">#0F6E56</span> <span style="font-size:9px;color:var(--i60)">Mora Teal ●</span></div></div>
+    <div style="display:flex;align-items:center;gap:10px"><div style="width:28px;height:20px;background:#5DCAA5;border-radius:2px;flex-shrink:0"></div><div><span style="font-family:var(--mono);font-size:9px;color:var(--ink)">#5DCAA5</span> <span class="badge red" style="font-size:8px">No text on cream</span></div></div>
+    <div style="display:flex;align-items:center;gap:10px"><div style="width:28px;height:20px;background:#E1F5EE;border-radius:2px;border:1px solid #C4B49A;flex-shrink:0"></div><div><span style="font-family:var(--mono);font-size:9px;color:var(--ink)">#E1F5EE</span> <span style="font-size:9px;color:var(--i60)">Background only</span></div></div>
+  </div>
+</div>
+<div>
+  <div class="ey" style="margin-bottom:8px">Amber family</div>
+  <div style="display:flex;flex-direction:column;gap:6px">
+    <div style="display:flex;align-items:center;gap:10px"><div style="width:28px;height:20px;background:#633806;border-radius:2px;flex-shrink:0"></div><div><span style="font-family:var(--mono);font-size:9px;color:var(--ink)">#633806</span> <span style="font-size:9px;color:var(--i60)">Amber Dark</span></div></div>
+    <div style="display:flex;align-items:center;gap:10px"><div style="width:28px;height:20px;background:#854F0B;border-radius:2px;flex-shrink:0"></div><div><span style="font-family:var(--mono);font-size:9px;color:var(--ink)">#854F0B</span> <span style="font-size:9px;color:var(--i60)">Mora Amber ●</span></div></div>
+    <div style="display:flex;align-items:center;gap:10px"><div style="width:28px;height:20px;background:#EF9F27;border-radius:2px;flex-shrink:0"></div><div><span style="font-family:var(--mono);font-size:9px;color:var(--ink)">#EF9F27</span> <span class="badge red" style="font-size:8px">No text on cream</span></div></div>
+    <div style="display:flex;align-items:center;gap:10px"><div style="width:28px;height:20px;background:#FAEEDA;border-radius:2px;border:1px solid #C4B49A;flex-shrink:0"></div><div><span style="font-family:var(--mono);font-size:9px;color:var(--ink)">#FAEEDA</span> <span style="font-size:9px;color:var(--i60)">Background only</span></div></div>
+  </div>
+</div>
+<div>
+  <div class="ey" style="margin-bottom:8px">Warm neutrals + Blue</div>
+  <div style="display:flex;flex-direction:column;gap:6px">
+    <div style="display:flex;align-items:center;gap:10px"><div style="width:28px;height:20px;background:#F5F0E8;border-radius:2px;border:1px solid #E8DFD0;flex-shrink:0"></div><div><span style="font-family:var(--mono);font-size:9px;color:var(--ink)">#F5F0E8</span> <span style="font-size:9px;color:var(--i60)">Warm 50</span></div></div>
+    <div style="display:flex;align-items:center;gap:10px"><div style="width:28px;height:20px;background:#C4B49A;border-radius:2px;flex-shrink:0"></div><div><span style="font-family:var(--mono);font-size:9px;color:var(--ink)">#C4B49A</span> <span class="badge red" style="font-size:8px">No text on cream</span></div></div>
+    <div style="display:flex;align-items:center;gap:10px"><div style="width:28px;height:20px;background:#8C7A62;border-radius:2px;flex-shrink:0"></div><div><span style="font-family:var(--mono);font-size:9px;color:var(--ink)">#8C7A62</span> <span style="font-size:9px;color:var(--i60)">Large text only</span></div></div>
+    <div style="display:flex;align-items:center;gap:10px"><div style="width:28px;height:20px;background:#185FA5;border-radius:2px;flex-shrink:0"></div><div><span style="font-family:var(--mono);font-size:9px;color:var(--ink)">#185FA5</span> <span style="font-size:9px;color:var(--i60)">Digital UI only</span></div></div>
+  </div>
+</div>
+</div>
+
+<h3 class="sub">Physical Materials — Store & Packaging</h3>
+<div class="mat-grid">
+<div class="sw"><div class="sw-color" style="background:#D4C5B0"></div><div class="sw-info"><div class="sw-name">Travertine</div><div class="sw-hex">#D4C5B0</div><div class="sw-sub">Counter top · Display<br>≈ Warm 400 (digital)</div></div></div>
+<div class="sw"><div class="sw-color" style="background:#4A3728"></div><div class="sw-info"><div class="sw-name">Dark Oak</div><div class="sw-hex">#4A3728</div><div class="sw-sub">Counter frame<br>Cabinetry · Shelving</div></div></div>
+<div class="sw"><div class="sw-color" style="background:#B89A60"></div><div class="sw-info"><div class="sw-name">Aged Brass</div><div class="sw-hex">#B89A60</div><div class="sw-sub">Fixtures · Handles<br>Trim · Không chrome</div></div></div>
+<div class="sw"><div class="sw-color" style="background:#8C7A62"></div><div class="sw-info"><div class="sw-name">Concrete</div><div class="sw-hex">#8C7A62</div><div class="sw-sub">Flooring · Terrazzo<br>= Warm 600 (digital)</div></div></div>
+</div>
+
+<h3 class="sub">WCAG Accessibility Matrix</h3>
+<table class="wcag-tbl">
+<tr><th></th><th>Colour</th><th>HEX</th><th>On Cream</th><th>On Ink</th><th>Text use rule</th></tr>
+<tr class="hd-row"><td colspan="6">Primary colours — safe for all text</td></tr>
+<tr><td class="sw-cell"><span class="sw-dot" style="background:#1A1916"></span></td><td>Mora Ink</td><td class="mono">#1A1916</td><td class="pass">16.7:1 AAA</td><td>—</td><td class="note">All text sizes ✓</td></tr>
+<tr><td class="sw-cell"><span class="sw-dot" style="background:#0F6E56"></span></td><td>Mora Teal</td><td class="mono">#0F6E56</td><td class="pass">5.9:1 AA</td><td class="large">2.8:1 Large</td><td class="note">Body text ✓ · Bold ≥14px ✓</td></tr>
+<tr><td class="sw-cell"><span class="sw-dot" style="background:#854F0B"></span></td><td>Mora Amber</td><td class="mono">#854F0B</td><td class="pass">6.4:1 AA</td><td class="large">2.6:1</td><td class="note">Body text ✓ · Bold ≥14px ✓</td></tr>
+<tr><td class="sw-cell"><span class="sw-dot" style="background:#085041"></span></td><td>Teal Dark</td><td class="mono">#085041</td><td class="pass">8.9:1 AAA</td><td class="large">1.9:1</td><td class="note">All text sizes ✓</td></tr>
+<tr><td class="sw-cell"><span class="sw-dot" style="background:#633806"></span></td><td>Amber Dark</td><td class="mono">#633806</td><td class="pass">9.5:1 AAA</td><td class="large">1.8:1</td><td class="note">All text sizes ✓</td></tr>
+<tr class="hd-row"><td colspan="6">Background / decoration only — never for text on cream</td></tr>
+<tr style="background:#FFF8F8"><td class="sw-cell"><span class="sw-dot" style="background:#5DCAA5"></span></td><td>Teal Mid</td><td class="mono">#5DCAA5</td><td class="fail">1.9:1 FAIL</td><td class="pass">8.8:1</td><td class="note" style="color:#A32D2D">Decoration · On ink bg only</td></tr>
+<tr style="background:#FFF8F8"><td class="sw-cell"><span class="sw-dot" style="background:#EF9F27"></span></td><td>Amber Mid</td><td class="mono">#EF9F27</td><td class="fail">2.1:1 FAIL</td><td class="pass">8.1:1</td><td class="note" style="color:#A32D2D">Decoration · On ink bg only</td></tr>
+<tr style="background:#FFF8F8"><td class="sw-cell"><span class="sw-dot" style="background:#C4B49A"></span></td><td>Warm 400</td><td class="mono">#C4B49A</td><td class="fail">1.9:1 FAIL</td><td class="pass">8.7:1</td><td class="note" style="color:#A32D2D">Background surfaces only</td></tr>
+<tr><td class="sw-cell"><span class="sw-dot" style="background:#8C7A62"></span></td><td>Warm 600</td><td class="mono">#8C7A62</td><td class="large">3.9:1 Large</td><td class="large">4.2:1</td><td class="note">Large text ≥18px only</td></tr>
+<tr><td class="sw-cell"><span class="sw-dot" style="background:#185FA5"></span></td><td>Blue</td><td class="mono">#185FA5</td><td class="pass">6.2:1 AA</td><td class="large">2.7:1</td><td class="note">Digital links/UI only</td></tr>
+</table>
+
+<h3 class="sub">Hue Harmony — Temperature Opposition</h3>
+<div class="harmony">
+  <svg width="90" height="90" viewBox="0 0 90 90" style="flex-shrink:0">
+    <circle cx="45" cy="45" r="40" fill="none" stroke="var(--i12)" stroke-width="0.5"/>
+    <circle cx="45" cy="45" r="2.5" fill="var(--i30)"/>
+    <circle cx="82" cy="31" r="5" fill="#854F0B"/>
+    <circle cx="11" cy="41" r="5" fill="#0F6E56"/>
+    <line x1="82" y1="31" x2="11" y2="41" stroke="var(--i30)" stroke-width="0.5" stroke-dasharray="3 2"/>
+    <text x="45" y="86" text-anchor="middle" font-family="monospace" font-size="7" fill="var(--i60)">132° apart</text>
+  </svg>
+  <div style="flex:1;min-width:180px">
+    <div style="font-size:12px;color:var(--ink);font-weight:500;margin-bottom:8px">Declared: Temperature Opposition</div>
+    <div class="cd" style="margin-bottom:8px">Teal (165°) ↔ Amber (33°) = 132°. Không phải harmonic mathematical chuẩn — nhưng là đối lập nhiệt độ có chủ đích: cool craftsmanship (teal) vs warm heritage (amber). Đây là quyết định design, không phải lỗi.</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <span class="badge teal">Cool accent</span>
+      <span class="badge amber">Warm accent</span>
+      <span class="badge">Warm neutral base</span>
+    </div>
+  </div>
+</div>
+<div class="warn"><p><strong>Print production note:</strong> Mora Ink CMYK = C0·M2·Y6·K91 (adjusted từ computed C0·M4·Y15·K90 để giảm yellow cast). Luôn proof print trước production run. Pantone Black 7 C là reference chính thức — ưu tiên Pantone khi in offset.</p></div>
+
+<h3 class="sub">Approved Colour Combinations</h3>
+<div class="combo-grid">
+<div class="combo"><div class="combo-top" style="background:#FAF9F6"><div style="font-family:var(--serif);font-size:22px;font-weight:300;letter-spacing:.12em;text-transform:uppercase;color:#0F6E56">Mora</div></div><div class="combo-lbl"><div class="combo-lbl-t">✓ Teal on Cream</div><div class="combo-lbl-s">Primary · 5.9:1</div></div></div>
+<div class="combo"><div class="combo-top" style="background:#1A1916"><div style="font-family:var(--serif);font-size:22px;font-weight:300;letter-spacing:.12em;text-transform:uppercase;color:#FAF9F6">Mora</div></div><div class="combo-lbl"><div class="combo-lbl-t">✓ Cream on Ink</div><div class="combo-lbl-s">Premium · 16.7:1</div></div></div>
+<div class="combo"><div class="combo-top" style="background:#0F6E56"><div style="font-family:var(--serif);font-size:22px;font-weight:300;letter-spacing:.12em;text-transform:uppercase;color:#FAF9F6">Mora</div></div><div class="combo-lbl"><div class="combo-lbl-t">✓ Cream on Teal</div><div class="combo-lbl-s">Brand moment · 5.9:1</div></div></div>
+<div class="combo"><div class="combo-top" style="background:#FAF9F6"><div style="font-family:var(--serif);font-size:22px;font-weight:300;letter-spacing:.12em;text-transform:uppercase;color:#854F0B">Mora</div></div><div class="combo-lbl"><div class="combo-lbl-t">✓ Amber on Cream</div><div class="combo-lbl-s">Warm emphasis · 6.4:1</div></div></div>
+<div class="combo"><div class="combo-top" style="background:#FAEEDA"><div style="font-family:var(--serif);font-size:22px;font-weight:300;letter-spacing:.12em;text-transform:uppercase;color:#633806">Mora</div></div><div class="combo-lbl"><div class="combo-lbl-t">✓ Amber Dark on Amber Light</div><div class="combo-lbl-s">Warm callout · 9.5:1</div></div></div>
+<div class="combo" style="border-color:#F09595"><div class="combo-top" style="background:#FAF9F6"><div style="font-family:var(--serif);font-size:22px;font-weight:300;letter-spacing:.12em;text-transform:uppercase;color:#5DCAA5">Mora</div></div><div class="combo-lbl" style="background:#FFF8F8"><div class="combo-lbl-t" style="color:#A32D2D">× Teal Mid on Cream</div><div class="combo-lbl-s" style="color:#A32D2D">FAIL · 1.9:1</div></div></div>
+</div>
+</div>
+<!-- ══════════════ 03 LOGO ══════════════ -->
+<div id="s03" class="sec">
+<div class="sh"><div class="ey">Section 03</div><h2>Logo <em>System</em></h2>
+<p class="lead">Wordmark — tên thương hiệu là logo. Không có icon tách biệt. Cái tên là thương hiệu. Mọi quyết định về logo trace về nguyên lý này.</p></div>
+<h3 class="sub">Primary Wordmark</h3>
+<div style="border:1px solid var(--i12);border-radius:4px;padding:48px 40px;display:flex;flex-direction:column;align-items:center;gap:8px;background:#fff;margin:14px 0">
+  <div style="font-family:var(--serif);font-size:68px;font-weight:300;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);line-height:1">Mora</div>
+  <div style="font-family:var(--mono);font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--i60)">bespoke fragrance</div>
+</div>
+<div class="g3">
+<div style="background:var(--i06);border-radius:4px;padding:12px 14px"><div class="ey" style="margin-bottom:4px">Wordmark</div><div class="cd">Cormorant Garamond · Weight 300 · Letter-spacing .2em · Uppercase · Không Bold (600+)</div></div>
+<div style="background:var(--i06);border-radius:4px;padding:12px 14px"><div class="ey" style="margin-bottom:4px">Tagline</div><div class="cd">DM Mono · Weight 400 · Letter-spacing .3em · Uppercase · Optional — bỏ khi không gian nhỏ</div></div>
+<div style="background:var(--i06);border-radius:4px;padding:12px 14px"><div class="ey" style="margin-bottom:4px">Proportion</div><div class="cd">Tagline = 15% kích thước wordmark. Gap = ½ chiều cao tagline. Không rescale riêng lẻ.</div></div>
+</div>
+<hr>
+<h3 class="sub">Logo Variations — Dùng theo background</h3>
+<div class="logo-demos">
+<div class="ld"><div class="ld-canvas" style="background:#FAF9F6"><div class="ld-wm" style="font-size:28px;color:#1A1916">Mora</div><div class="ld-tag" style="color:rgba(26,25,22,.5)">bespoke fragrance</div></div><div class="ld-lbl"><div class="ld-lbl-t">Light — on Cream</div><div class="ld-lbl-s">Ink wordmark · Primary use</div></div></div>
+<div class="ld"><div class="ld-canvas" style="background:#1A1916"><div class="ld-wm" style="font-size:28px;color:#FAF9F6">Mora</div><div class="ld-tag" style="color:rgba(250,249,246,.45)">bespoke fragrance</div></div><div class="ld-lbl"><div class="ld-lbl-t">Dark — on Ink</div><div class="ld-lbl-s">Cream wordmark · Premium packaging</div></div></div>
+<div class="ld"><div class="ld-canvas" style="background:#0F6E56"><div class="ld-wm" style="font-size:28px;color:#FAF9F6">Mora</div><div class="ld-tag" style="color:rgba(250,249,246,.5)">bespoke fragrance</div></div><div class="ld-lbl"><div class="ld-lbl-t">Brand — on Teal</div><div class="ld-lbl-s">Cream wordmark · Brand moments</div></div></div>
+<div class="ld"><div class="ld-canvas" style="background:#E8DFD0"><div class="ld-wm" style="font-size:28px;color:#1A1916">Mora</div><div class="ld-tag" style="color:rgba(26,25,22,.45)">bespoke fragrance</div></div><div class="ld-lbl"><div class="ld-lbl-t">Warm — on Linen</div><div class="ld-lbl-s">Ink wordmark · Packaging, editorial</div></div></div>
+<div class="ld"><div class="ld-canvas" style="background:#1A1916"><div class="ld-wm" style="font-size:28px;color:#FAF9F6">M</div></div><div class="ld-lbl"><div class="ld-lbl-t">Favicon / Icon</div><div class="ld-lbl-s">Letter M only · Dark circle · ≤32px</div></div></div>
+<div class="ld"><div class="ld-canvas" style="background:#FAF9F6"><div class="ld-wm" style="font-size:28px;color:rgba(26,25,22,.15)">Mora</div></div><div class="ld-lbl"><div class="ld-lbl-t">Watermark / Ghost</div><div class="ld-lbl-s">15% opacity · Background pattern</div></div></div>
+</div>
+<hr>
+<h3 class="sub">Clear Space</h3>
+<div style="display:flex;justify-content:center;margin:20px 0">
+<div style="position:relative;display:inline-block">
+  <div style="border:1px dashed var(--i30);padding:40px 64px;border-radius:4px">
+    <div style="font-family:var(--serif);font-size:40px;font-weight:300;letter-spacing:.2em;text-transform:uppercase;color:var(--ink)">Mora</div>
+  </div>
+  <div style="position:absolute;top:-2px;left:50%;transform:translateX(-50%) translateY(-100%);font-family:var(--mono);font-size:9px;color:var(--i30)">X</div>
+  <div style="position:absolute;bottom:-2px;left:50%;transform:translateX(-50%) translateY(100%);font-family:var(--mono);font-size:9px;color:var(--i30)">X</div>
+  <div style="position:absolute;left:-2px;top:50%;transform:translateY(-50%) translateX(-100%) rotate(-90deg);font-family:var(--mono);font-size:9px;color:var(--i30)">X</div>
+  <div style="position:absolute;right:-2px;top:50%;transform:translateY(-50%) translateX(100%) rotate(90deg);font-family:var(--mono);font-size:9px;color:var(--i30)">X</div>
+</div>
+</div>
+<div class="chain"><div class="ci"><span class="cn">X</span><div><div class="ct">Clear space minimum</div><div class="cd">X = chiều cao chữ "M" trong wordmark ở kích thước hiển thị. Áp dụng cho tất cả 4 phía. Không có exception.</div></div></div>
+<div class="ci"><span class="cn">Print</span><div><div class="ct">Minimum size print</div><div class="cd">20mm chiều rộng wordmark. Dưới 20mm: bỏ tagline, chỉ dùng "Mora". Dưới 12mm: dùng Letter M version.</div></div></div>
+<div class="ci"><span class="cn">Digital</span><div><div class="ct">Minimum size digital</div><div class="cd">80px chiều rộng wordmark tại 72dpi. Dưới 80px: bỏ tagline. Dưới 48px: Letter M only.</div></div></div></div>
+<hr>
+<h3 class="sub">Logo Don'ts</h3>
+<div class="dont-grid">
+<div class="dont-card"><div class="dont-canvas"><div style="font-family:var(--serif);font-size:28px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#A32D2D">Mora</div></div><div class="dont-lbl"><div class="dont-lbl-t">× Không bold wordmark</div></div></div>
+<div class="dont-card"><div class="dont-canvas"><div style="font-family:var(--sans);font-size:28px;font-weight:400;letter-spacing:.05em;text-transform:uppercase;color:#A32D2D">Mora</div></div><div class="dont-lbl"><div class="dont-lbl-t">× Không đổi typeface</div></div></div>
+<div class="dont-card"><div class="dont-canvas"><div style="font-family:var(--serif);font-size:28px;font-weight:300;letter-spacing:.2em;text-transform:uppercase;background:linear-gradient(90deg,#7F77DD,#D4537E);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Mora</div></div><div class="dont-lbl"><div class="dont-lbl-t">× Không gradient</div></div></div>
+<div class="dont-card"><div class="dont-canvas"><div style="font-family:var(--serif);font-size:28px;font-weight:300;letter-spacing:.2em;text-transform:uppercase;color:#A32D2D;transform:skewX(-12deg)">Mora</div></div><div class="dont-lbl"><div class="dont-lbl-t">× Không distort/skew</div></div></div>
+<div class="dont-card"><div class="dont-canvas" style="background:linear-gradient(135deg,#E8DDD0,#C4B49A)"><div style="font-family:var(--serif);font-size:28px;font-weight:300;letter-spacing:.2em;text-transform:uppercase;color:var(--ink)">Mora</div></div><div class="dont-lbl"><div class="dont-lbl-t">× Không busy background</div></div></div>
+<div class="dont-card"><div class="dont-canvas"><div style="font-family:var(--serif);font-size:28px;font-weight:300;letter-spacing:.2em;text-transform:uppercase;color:rgba(26,25,22,.25)">Mora</div></div><div class="dont-lbl"><div class="dont-lbl-t">× Không opacity dưới 100%<br><span style="font-size:9px;color:var(--i60)">(trừ ghost/watermark variant)</span></div></div></div>
+</div>
+</div>
+<!-- ══════════════ 04 SHAPE & GRAPHIC ══════════════ -->
+<div id="s04" class="sec">
+<div class="sh"><div class="ey">Section 04</div><h2>Shape & <em>Graphic Language</em></h2>
+<p class="lead">Hệ thống graphic elements của Mora minimal và purposeful. Mỗi element phục vụ communication — không có decoration thuần túy.</p></div>
+
+<h3 class="sub">Geometric Vocabulary</h3>
+<div class="shape-grid">
+<div class="sg-card"><div class="sg-canvas"><svg width="60" height="60" viewBox="0 0 60 60"><line x1="10" y1="30" x2="50" y2="30" stroke="#1A1916" stroke-width="1"/></svg></div><div class="sg-lbl"><div class="sg-name">1px line — standard divider</div><div class="sg-note">Ink 12% opacity. Horizontal only. Không decorative.</div></div></div>
+<div class="sg-card"><div class="sg-canvas"><svg width="60" height="60" viewBox="0 0 60 60"><line x1="10" y1="30" x2="50" y2="30" stroke="#0F6E56" stroke-width="2"/></svg></div><div class="sg-lbl"><div class="sg-name">2px line — emphasis divider</div><div class="sg-note">Mora Teal. Section breaks, statement borders.</div></div></div>
+<div class="sg-card"><div class="sg-canvas"><svg width="60" height="60" viewBox="0 0 60 60"><line x1="10" y1="30" x2="50" y2="30" stroke="#1A1916" stroke-width="1" stroke-dasharray="3 3" opacity="0.3"/></svg></div><div class="sg-lbl"><div class="sg-name">Dashed — secondary</div><div class="sg-note">Ink 30% opacity. Annotation, secondary info.</div></div></div>
+<div class="sg-card"><div class="sg-canvas"><svg width="60" height="60" viewBox="0 0 60 60"><rect x="20" y="20" width="20" height="20" fill="none" stroke="#1A1916" stroke-width="1" opacity="0.2"/></svg></div><div class="sg-lbl"><div class="sg-name">Square — container</div><div class="sg-note">rx=0 sharp corners. Không dùng rounded nhiều. 0px hoặc 3–4px max.</div></div></div>
+<div class="sg-card"><div class="sg-canvas"><svg width="60" height="60" viewBox="0 0 60 60"><circle cx="30" cy="30" r="12" fill="none" stroke="#0F6E56" stroke-width="1.5"/></svg></div><div class="sg-lbl"><div class="sg-name">Circle — teal accent</div><div class="sg-note">Dùng sparingly. Ritual counter spotlight indicator.</div></div></div>
+<div class="sg-card"><div class="sg-canvas"><svg width="60" height="60" viewBox="0 0 60 60"><circle cx="30" cy="30" r="4" fill="#0F6E56"/></svg></div><div class="sg-lbl"><div class="sg-name">Dot — teal micro</div><div class="sg-note">4–6px. List markers, accent, enumerations.</div></div></div>
+<div class="sg-card"><div class="sg-canvas"><svg width="60" height="60" viewBox="0 0 60 60"><line x1="20" y1="30" x2="40" y2="30" stroke="#1A1916" stroke-width="1" opacity="0.4"/><polygon points="38,26 42,30 38,34" fill="#1A1916" opacity="0.4"/></svg></div><div class="sg-lbl"><div class="sg-name">Arrow — directional</div><div class="sg-note">Thin, open head. Navigation, flow only.</div></div></div>
+<div class="sg-card"><div class="sg-canvas"><svg width="60" height="60" viewBox="0 0 60 60"><text x="30" y="35" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="#1A1916" opacity="0.4" letter-spacing="2">01 · 02 · 03</text></svg></div><div class="sg-lbl"><div class="sg-name">Mono separator — ·</div><div class="sg-note">Middle dot (·) U+00B7. DM Mono. Giữa metadata items.</div></div></div>
+</div>
+
+<h3 class="sub">Border Radius System</h3>
+<div class="g3">
+<div style="border:1px solid var(--i12);border-radius:0;padding:16px 18px;text-align:center"><div style="font-family:var(--mono);font-size:11px;color:var(--i60);margin-bottom:6px">0px</div><div class="cd">Packaging, print, signage. Sharp = craft precision.</div></div>
+<div style="border:1px solid var(--i12);border-radius:4px;padding:16px 18px;text-align:center"><div style="font-family:var(--mono);font-size:11px;color:var(--i60);margin-bottom:6px">4px</div><div class="cd">UI cards, tags, counter cards. Subtle — không quá soft.</div></div>
+<div style="border:1px solid var(--i12);border-radius:100px;padding:16px 18px;text-align:center"><div style="font-family:var(--mono);font-size:11px;color:var(--i60);margin-bottom:6px">Pill</div><div class="cd">Tags, badges, pills only. Không cho cards hay panels lớn.</div></div>
+</div>
+
+<h3 class="sub">Spacing System — Token Scale</h3>
+<table class="wcag-tbl">
+<tr><th>Token</th><th>Value</th><th>Usage</th></tr>
+<tr><td class="mono">--space-2xs</td><td class="mono">2px</td><td class="note">Underline offset, micro gaps</td></tr>
+<tr><td class="mono">--space-xs</td><td class="mono">4px</td><td class="note">Icon-text gap, badge padding</td></tr>
+<tr><td class="mono">--space-sm</td><td class="mono">8px</td><td class="note">Label-to-content, internal rows</td></tr>
+<tr><td class="mono">--space-md</td><td class="mono">16px</td><td class="note">Standard card padding, row gaps</td></tr>
+<tr><td class="mono">--space-lg</td><td class="mono">24–28px</td><td class="note">Section padding, component gaps</td></tr>
+<tr><td class="mono">--space-xl</td><td class="mono">40–48px</td><td class="note">Between sections, major breaks</td></tr>
+<tr><td class="mono">--space-2xl</td><td class="mono">64–80px</td><td class="note">Page margins, hero padding</td></tr>
+</table>
+
+<h3 class="sub">Pattern & Texture Usage</h3>
+<div class="g2">
+<div style="border:1px solid var(--teal);border-radius:4px;padding:16px 18px;background:var(--tl)">
+<div class="ey" style="color:var(--teal);margin-bottom:8px">Allowed patterns</div>
+<ul class="pr-list"><li style="color:var(--i60)">Subtle grain trên large surfaces (5–8% opacity)</li><li style="color:var(--i60)">Repeat watermark wordmark (15% opacity, large format)</li><li style="color:var(--i60)">Single diagonal rule để separate content blocks</li><li style="color:var(--i60)">Dashed grid làm background cho technical docs</li></ul>
+</div>
+<div style="border:1px solid #F09595;border-radius:4px;padding:16px 18px;background:#FFF8F8">
+<div class="ey" style="color:#A32D2D;margin-bottom:8px">Never use</div>
+<ul class="pr-list"><li style="color:#791F1F">Geometric patterns trang trí (không có chức năng)</li><li style="color:#791F1F">Floral, botanical illustration</li><li style="color:#791F1F">Busy background textures cạnh tranh với content</li><li style="color:#791F1F">Drop shadows, glow effects, gradients decorative</li></ul>
+</div>
+</div>
+</div>
+
+<!-- ══════════════ 05 TYPOGRAPHY ══════════════ -->
+<div id="s05" class="sec">
+<div class="sh"><div class="ey">Section 05</div><h2>Typography <em>System</em></h2>
+<p class="lead">Ba typefaces, ba vai trò rõ ràng. Cormorant Garamond: editorial và heritage. DM Sans: clarity và accessibility. DM Mono: precision và authenticity. Vietnamese-first trong mọi quyết định.</p></div>
+
+<div class="type-spec">
+<div class="type-spec-hd"><span class="type-spec-label">Cormorant Garamond · Primary Display</span><span class="type-spec-meta">Google Fonts · Weights 300, 400, 500, Italic 300</span></div>
+<div class="type-spec-body">
+<div style="font-family:var(--serif);font-size:52px;font-weight:300;line-height:1;letter-spacing:-.02em;color:var(--ink);margin-bottom:12px">Đạo Mora</div>
+<div style="font-family:var(--serif);font-size:28px;font-weight:300;font-style:italic;color:var(--i60);margin-bottom:10px">Sự thật trước. Mọi thứ còn lại sau.</div>
+<div style="font-family:var(--serif);font-size:16px;font-weight:400;line-height:1.75;color:var(--i60)">Mora là không gian nơi mọi thứ đều có lý do. Từ cái chạm tay mở cửa đến nhãn kho phía sau — cùng một tinh thần, mọi tầng, mọi tỷ lệ. Tiếng Việt: Ộ Ổ Ộ Ở Ợ Ư Ứ Ừ Ử Ữ Ự Đ.</div>
+</div>
+</div>
+<div class="type-spec">
+<div class="type-spec-hd"><span class="type-spec-label">DM Sans · Body & UI</span><span class="type-spec-meta">Google Fonts · Weights 300, 400, 500 · Italic 300, 400</span></div>
+<div class="type-spec-body">
+<div style="font-family:var(--sans);font-size:16px;font-weight:400;line-height:1.8;color:var(--ink);margin-bottom:8px">Mora được tạo ra từ niềm tin rằng có thể xây dựng một thế giới dựa trên sự thật — bắt đầu từ một chai nước hoa.</div>
+<div style="font-family:var(--sans);font-size:13px;font-weight:400;line-height:1.7;color:var(--i60)">IFRA-certified · Pha chế tại chỗ · Cá nhân hoá hoàn toàn · Hồ Chí Minh, Việt Nam<br>Ắ Ặ Ẳ Ẵ Â Ấ Ầ Ẩ Ẫ Ậ Ê Ế Ề Ể Ễ Ệ Ô Ố Ồ Ổ Ỗ Ộ Ơ Ớ Ờ Ở Ỡ Ợ Ư Ứ Ừ Ử Ữ Ự Đ</div>
+</div>
+</div>
+<div class="type-spec">
+<div class="type-spec-hd"><span class="type-spec-label">DM Mono · Technical</span><span class="type-spec-meta">Google Fonts · Weights 300, 400</span></div>
+<div class="type-spec-body">
+<div style="font-family:var(--mono);font-size:13px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);margin-bottom:8px">MORA · BESPOKE FRAGRANCE · HCM · 2025</div>
+<div style="font-family:var(--mono);font-size:11px;color:var(--i60);letter-spacing:.06em">#0F6E56 · IFRA CERTIFIED · JASMINE VETIVER · 50ML · 1,500,000đ</div>
+</div>
+</div>
+
+<h3 class="sub">Type Scale</h3>
+<div class="type-scale">
+<div class="ts-row"><div class="ts-meta">Display<br>80px · Light 300<br>LS: −.02em</div><div class="ts-text" style="font-family:var(--serif);font-size:52px;font-weight:300;letter-spacing:-.02em;color:var(--ink);line-height:1.05">Mora</div></div>
+<div class="ts-row"><div class="ts-meta">H1 · Section<br>48px · Light 300<br>LS: −.01em</div><div class="ts-text" style="font-family:var(--serif);font-size:34px;font-weight:300;letter-spacing:-.01em;color:var(--ink);line-height:1.1">Brand Experience Design</div></div>
+<div class="ts-row"><div class="ts-meta">H2 · Subhead<br>28px · Regular 400<br>LS: 0</div><div class="ts-text" style="font-family:var(--serif);font-size:24px;font-weight:400;color:var(--ink);line-height:1.2">Sensory Design System</div></div>
+<div class="ts-row"><div class="ts-meta">Lead · Intro<br>18px · Light italic<br>LH: 1.75</div><div class="ts-text" style="font-family:var(--serif);font-size:16px;font-weight:300;font-style:italic;line-height:1.75;color:var(--i60)">Mỗi chi tiết trong store là quyết định thương hiệu, không phải quyết định nội thất.</div></div>
+<div class="ts-row"><div class="ts-meta">Body<br>15px · Regular 400<br>LH: 1.8</div><div class="ts-text" style="font-family:var(--sans);font-size:14px;font-weight:400;line-height:1.8;color:var(--i60)">Mora là không gian nơi mọi touchpoint đều có lý do. Không có gì ngẫu nhiên, không có gì giả. Khách hàng cảm nhận điều đó dù không thể giải thích tại sao.</div></div>
+<div class="ts-row"><div class="ts-meta">Caption<br>12px · Regular 400<br>LH: 1.6</div><div class="ts-text" style="font-family:var(--sans);font-size:12px;font-weight:400;color:var(--i60)">IFRA-certified · Hồ Chí Minh · Mỗi chai là duy nhất</div></div>
+<div class="ts-row"><div class="ts-meta">Label / Eyebrow<br>10px · Mono 500<br>LS: +.10em · UC</div><div class="ts-text" style="font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--i60)">Brand Experience · Mora 2.0</div></div>
+</div>
+
+<h3 class="sub">Vietnamese Typography — Đặc thù tiếng Việt</h3>
+<div class="warn"><p><strong>Font loading:</strong> Phải load tất cả Unicode ranges cần thiết. Google Fonts subset "vietnamese" khi dùng API. Không assume Latin charset đủ.</p></div>
+<div class="viet-demo">
+<div class="vd-card">
+  <div class="vd-label">Line height — tiếng Việt cần cao hơn</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div>
+      <div style="font-size:9px;color:var(--amber);margin-bottom:6px;font-family:var(--mono)">× LH 1.5 — too tight</div>
+      <div style="font-family:var(--sans);font-size:13px;line-height:1.5;color:var(--i60)">Khi người ta tìm một không gian có thể ở lại mà không cần giải thích tại sao họ quan tâm.</div>
+    </div>
+    <div>
+      <div style="font-size:9px;color:var(--teal);margin-bottom:6px;font-family:var(--mono)">✓ LH 1.8 — correct</div>
+      <div style="font-family:var(--sans);font-size:13px;line-height:1.8;color:var(--ink)">Khi người ta tìm một không gian có thể ở lại mà không cần giải thích tại sao họ quan tâm.</div>
+    </div>
+  </div>
+</div>
+<div class="vd-card">
+  <div class="vd-label">Serif — Vietnamese tone marks</div>
+  <div style="font-family:var(--serif);font-size:20px;font-weight:300;line-height:2;color:var(--ink)">à á ả ã ạ<br>ắ ặ ẳ ẵ ằ<br>ố ồ ổ ỗ ộ<br>ứ ừ ử ữ ự</div>
+</div>
+</div>
+<div class="g2">
+<div style="border:1px solid var(--teal);border-radius:4px;padding:14px 16px;background:var(--tl)">
+<div class="ey" style="color:var(--teal);margin-bottom:6px">Vietnamese rules</div>
+<ul class="pr-list" style="list-style:none">
+<li style="color:var(--i60);padding-left:0">→ Line height: body min 1.8 (vs 1.6 cho Latin)</li>
+<li style="color:var(--i60);padding-left:0">→ Font size: +1–2px so với Latin equivalent</li>
+<li style="color:var(--i60);padding-left:0">→ Không dùng italic cho body text Việt — diacritics clash</li>
+<li style="color:var(--i60);padding-left:0">→ Không auto-hyphenate tiếng Việt</li>
+<li style="color:var(--i60);padding-left:0">→ Test đầy đủ: ắ ặ ổ ỗ ợ ữ — tất cả 5 tones × 6+ vowels</li>
+</ul>
+</div>
+<div style="border:1px solid var(--i12);border-radius:4px;padding:14px 16px;background:var(--i06)">
+<div class="ey" style="margin-bottom:6px">CSS implementation</div>
+<div style="font-family:var(--mono);font-size:10px;color:var(--ink);line-height:1.8;background:#fff;padding:10px 12px;border-radius:3px;border:1px solid var(--i12)">body {<br>&nbsp; font-family: 'DM Sans', sans-serif;<br>&nbsp; line-height: 1.8;<br>&nbsp; -webkit-font-smoothing: antialiased;<br>&nbsp; hyphens: none;<br>}<br>.display {<br>&nbsp; font-family: 'Cormorant Garamond';<br>&nbsp; font-style: normal; /* NOT italic for Viet */<br>}</div>
+</div>
+</div>
+</div>
+
+<!-- ══════════════ 06 PHOTOGRAPHY ══════════════ -->
+<div id="s06" class="sec">
+<div class="sh"><div class="ey">Section 06</div><h2>Photography & <em>Visual Treatment</em></h2>
+<p class="lead">Ảnh của Mora thuyết phục vì không trông như quảng cáo — trông như khoảnh khắc thật. Aesthetic direction: intimate documentary, không phải commercial photography.</p></div>
+<div class="stmt"><p>Mỗi ảnh phải transmit ít nhất 1 trong 6 brand personality attributes. Nếu không transmit được gì — không phải ảnh của Mora dù có đẹp đến đâu.</p></div>
+
+<h3 class="sub">6 Visual Grammar Rules</h3>
+<div class="g2">
+<div class="vd-card"><div class="vd-label">01 · Ánh sáng</div><div style="font-size:12px;font-weight:500;color:var(--ink);margin-bottom:5px">Natural diffused — không studio flash</div><div class="cd">Golden hour hoặc overcast daylight. Shadows soft và warm. 2700–3000K consistent với store. Không harsh artificial flash.</div></div>
+<div class="vd-card"><div class="vd-label">02 · Composition</div><div style="font-size:12px;font-weight:500;color:var(--ink);margin-bottom:5px">Off-center · breathing room</div><div class="cd">Rule of thirds nhưng không mechanical. 40%+ negative space. Không perfectly centered trừ khi intentional.</div></div>
+<div class="vd-card"><div class="vd-label">03 · Colour palette</div><div style="font-size:12px;font-weight:500;color:var(--ink);margin-bottom:5px">Warm neutrals + botanical</div><div class="cd">Earth tones: linen, cream, sage, terracotta. +10 warmth, −5 saturation. Không oversaturate, không HDR.</div></div>
+<div class="vd-card"><div class="vd-label">04 · Texture & Detail</div><div style="font-size:12px;font-weight:500;color:var(--ink);margin-bottom:5px">Close · tactile · real</div><div class="cd">Macro ingredients, wood grain, glass texture. Người nhìn phải "cảm" được qua màn hình.</div></div>
+<div class="vd-card"><div class="vd-label">05 · Human presence</div><div style="font-size:12px;font-weight:500;color:var(--ink);margin-bottom:5px">Hands · không phải faces</div><div class="cd">Tay làm việc, tay cầm chai, arms in motion. Faces: blur hoặc turned away. Craft, không portrait.</div></div>
+<div class="vd-card"><div class="vd-label">06 · Post-processing</div><div style="font-size:12px;font-weight:500;color:var(--ink);margin-bottom:5px">Subtle · không filtered</div><div class="cd">+10 warmth, −5 saturation, +5 clarity. Không preset mạnh, không HDR, không skin smoothing.</div></div>
+</div>
+
+<h3 class="sub">Shot Categories</h3>
+<table class="wcag-tbl">
+<tr><th>Category</th><th>Mô tả</th><th>Ratio</th><th>Primary use</th></tr>
+<tr><td><strong>Hero / Atmosphere</strong></td><td class="note">Store không gian, golden light, hands or silhouette. "Thế giới Mora"</td><td class="mono">16:9 · 4:5</td><td class="note">Website, editorial, press</td></tr>
+<tr><td><strong>Process / Craft</strong></td><td class="note">Blending ritual, đong đo, pha chế. Close-up tools và hands</td><td class="mono">1:1 · 4:5</td><td class="note">Social feed, website</td></tr>
+<tr><td><strong>Product</strong></td><td class="note">Chai trên surfaces thật (wood, linen, stone). Không white box</td><td class="mono">1:1 · 4:5</td><td class="note">Social, e-commerce</td></tr>
+<tr><td><strong>Ingredient / Detail</strong></td><td class="note">Macro ingredients, tên khắc, label, packaging texture</td><td class="mono">1:1</td><td class="note">Social stories, callouts</td></tr>
+<tr><td><strong>Customer Moment</strong></td><td class="note">Real, unscripted. Back-of-shoulder, hands receiving. Không posed smiles</td><td class="mono">4:5 · 9:16</td><td class="note">Social, testimonials</td></tr>
+</table>
+
+<h3 class="sub">Technical Specifications</h3>
+<div class="g3">
+<div style="background:var(--i06);border-radius:4px;padding:14px 16px"><div class="ey" style="margin-bottom:6px">File specs</div><div class="cd">RAW/DNG: lưu mãi mãi<br>Web: JPEG 85% · max 1MB<br>Print: TIFF 300dpi min<br>Social 1:1: 1080×1080px<br>Social 4:5: 1080×1350px</div></div>
+<div style="background:var(--i06);border-radius:4px;padding:14px 16px"><div class="ey" style="margin-bottom:6px">Lens guide</div><div class="cd">Product: 85–105mm f/2.8<br>Macro ingredient: 100mm f/4<br>Store atmosphere: 35mm f/2<br>Lifestyle: 50mm f/1.8<br>iPhone: content only</div></div>
+<div style="background:var(--i06);border-radius:4px;padding:14px 16px"><div class="ey" style="margin-bottom:6px">Usage rights</div><div class="cd">Brand photography: perpetual<br>Photographer credit: editorial<br>Staff / customer: release required<br>Third party: written approval</div></div>
+</div>
+<div class="photo-rule">
+<div class="pr-do"><div class="pr-lbl">Đúng hướng</div><ul class="pr-list"><li>Chụp trong store với natural light — mở cửa sổ</li><li>Ingredients trên nền linen hoặc marble thật</li><li>Bottles with few drops in action — evocative</li><li>Staff hands trong ritual — genuine concentration</li><li>Customer back-of-shoulder, hands receiving</li><li>40%+ negative space để ảnh "thở"</li></ul></div>
+<div class="pr-dn"><div class="pr-lbl">Sai hướng</div><ul class="pr-list"><li>White-box product shots (generic e-commerce)</li><li>Heavily posed với forced smiles</li><li>Oversaturated colours, neon backgrounds</li><li>Font overlay lớn lên ảnh (kills the mood)</li><li>Stock photo aesthetics: too clean, no soul</li><li>Flash photography trong store</li></ul></div>
+</div>
+</div>
+<!-- ══════════════ 07 ICON & ILLUSTRATION ══════════════ -->
+<div id="s07" class="sec">
+<div class="sh"><div class="ey">Section 07</div><h2>Icon & <em>Illustration</em></h2>
+<p class="lead">Mora không có một icon library phức tạp. Icons được dùng sparingly và chỉ khi ngôn ngữ text không đủ. Không có illustration style — thay vào đó: photography và typography làm đủ công việc.</p></div>
+
+<h3 class="sub">Icon Usage Principles</h3>
+<div class="g2">
+<div style="border:1px solid var(--teal);border-radius:4px;padding:14px 16px;background:var(--tl)">
+<div class="ey" style="color:var(--teal);margin-bottom:6px">Khi nào dùng icon</div>
+<ul class="pr-list"><li style="color:var(--i60)">Navigation và UI functional elements</li><li style="color:var(--i60)">Checklist và process steps (✓ × →)</li><li style="color:var(--i60)">Social media icons (link, share — minimal)</li><li style="color:var(--i60)">Loading states</li><li style="color:var(--i60)">Phân loại nhanh khi text quá dài</li></ul>
+</div>
+<div style="border:1px solid #F09595;border-radius:4px;padding:14px 16px;background:#FFF8F8">
+<div class="ey" style="color:#A32D2D;margin-bottom:6px">Không dùng icon cho</div>
+<ul class="pr-list"><li style="color:#791F1F">Brand decoration — Mora dùng typography thay</li><li style="color:#791F1F">Thay thế photography trong editorial contexts</li><li style="color:#791F1F">Hero visual của bất kỳ trang nào</li><li style="color:#791F1F">Emoji trong brand communication chính thức</li><li style="color:#791F1F">Inline với body text</li></ul>
+</div>
+</div>
+
+<h3 class="sub">Icon Style Specification</h3>
+<div class="vd-card" style="margin:14px 0">
+<div class="vd-label">Khi cần dùng icon — style requirements</div>
+<div class="g3" style="margin-top:10px">
+<div><div style="font-size:11px;font-weight:500;color:var(--ink);margin-bottom:5px">Stroke weight</div><div class="cd">1.5px stroke. Không fill solid. Không bold. Consistent với text weight của surrounding body text.</div></div>
+<div><div style="font-size:11px;font-weight:500;color:var(--ink);margin-bottom:5px">Size</div><div class="cd">16px inline · 20px standalone · 24px decorative max. Không scale lớn hơn — dùng typography thay.</div></div>
+<div><div style="font-size:11px;font-weight:500;color:var(--ink);margin-bottom:5px">Colour</div><div class="cd">Mora Ink hoặc Mora Teal chỉ. Không amber icon, không blue icon trừ UI link context.</div></div>
+</div>
+</div>
+
+<h3 class="sub">Illustration — Conditions for use</h3>
+<div class="stmt"><p>Mora không có một illustration style defined. Đây là quyết định có chủ đích: photography và typography của Mora đủ mạnh để không cần illustration. Nếu cần visual explanation mà photography không phù hợp — dùng SVG diagram tối giản, monoline, không decorative.</p></div>
+
+<div class="g2">
+<div style="border:1px solid var(--i12);border-radius:4px;padding:14px 16px;background:var(--i06)">
+<div class="ey" style="margin-bottom:6px">Diagram style — nếu cần</div>
+<div class="cd">Monoline · 1px stroke · Ink 60% opacity. Không fill. Không hatching. Không perspective 3D. Không decorative flourish. Functional only: spatial maps, process flows, technical specs.</div>
+<div style="margin-top:10px">
+<svg width="120" height="40" viewBox="0 0 120 40">
+  <rect x="5" y="8" width="30" height="24" rx="2" fill="none" stroke="#1A1916" stroke-width="1" opacity="0.5"/>
+  <text x="20" y="22" text-anchor="middle" font-family="DM Mono,monospace" font-size="7" fill="#1A1916" opacity="0.5">Z1</text>
+  <line x1="35" y1="20" x2="45" y2="20" stroke="#1A1916" stroke-width="1" opacity="0.4" marker-end="url(#arr)"/>
+  <rect x="45" y="8" width="30" height="24" rx="2" fill="none" stroke="#0F6E56" stroke-width="1.5"/>
+  <text x="60" y="22" text-anchor="middle" font-family="DM Mono,monospace" font-size="7" fill="#0F6E56">Z4</text>
+  <line x1="75" y1="20" x2="85" y2="20" stroke="#1A1916" stroke-width="1" opacity="0.4"/>
+  <rect x="85" y="8" width="30" height="24" rx="2" fill="none" stroke="#1A1916" stroke-width="1" opacity="0.5"/>
+  <text x="100" y="22" text-anchor="middle" font-family="DM Mono,monospace" font-size="7" fill="#1A1916" opacity="0.5">Z4</text>
+</svg>
+</div>
+</div>
+<div style="border:1px solid var(--i12);border-radius:4px;padding:14px 16px">
+<div class="ey" style="margin-bottom:6px">Typography as visual — preferred</div>
+<div class="cd">Trước khi tạo diagram hay illustration — thử dùng typography sáng tạo. Large Cormorant Garamond numbers, mono grids, serif pull quotes làm việc của illustration mà consistent với brand.</div>
+<div style="font-family:var(--serif);font-size:48px;font-weight:300;color:var(--teal);opacity:.6;line-height:1;margin-top:8px">01</div>
+<div style="font-family:var(--mono);font-size:9px;color:var(--i60);letter-spacing:.06em">BƯỚC ĐẦU TIÊN</div>
+</div>
+</div>
+
+<h3 class="sub">Motion — Quick Reference</h3>
+<p class="body" style="margin-bottom:8px">Xem Section 08 cho full motion principles. Summary cho icon và micro-interactions:</p>
+<div class="chain">
+<div class="ci"><span class="cn">Hover</span><div><div class="ct">Opacity change: 100% → 70% · Duration 150ms · ease-out</div><div class="cd">Áp dụng cho icons, buttons, clickable elements. Không color change, không scale trừ khi deliberate.</div></div></div>
+<div class="ci"><span class="cn">Active</span><div><div class="ct">Scale: 1.0 → 0.97 · Duration 80ms · ease-in</div><div class="cd">Physical "press" feel. Subtle, không dramatic.</div></div></div>
+<div class="ci"><span class="cn">Loading</span><div><div class="ct">Pulse: opacity 30% → 100% · Duration 1200ms · ease-in-out · loop</div><div class="cd">Monochrome — Ink 30% opacity skeleton. Không spinner. Không branded loading animation.</div></div></div>
+</div>
+</div>
+
+<!-- ══════════════ 08 MOTION ══════════════ -->
+<div id="s08" class="sec">
+<div class="sh"><div class="ey">Section 08</div><h2>Motion <em>Principles</em></h2>
+<p class="lead">Motion là ngôn ngữ của time. Mora dùng motion để hướng dẫn sự chú ý và xác nhận actions — không để entertain hay impress. Mọi animation phải có functional reason.</p></div>
+
+<div class="stmt"><p>Nguyên lý cốt lõi: nếu bỏ animation đi mà content vẫn communicate được — animation không cần thiết. Motion của Mora subtle, purposeful, không phô trương.</p></div>
+
+<h3 class="sub">Duration Scale</h3>
+<div class="motion-grid">
+<div class="mot-card"><div class="mot-label">Micro interaction</div><div class="mot-val">80–150ms</div><div style="background:var(--teal);height:3px;border-radius:2px;width:15%;margin:8px 0"></div><div class="mot-desc">Hover states, button press, icon toggle. Blink of an eye. Nhanh nhất.</div></div>
+<div class="mot-card"><div class="mot-label">Element transition</div><div class="mot-val">200–300ms</div><div style="background:var(--teal);height:3px;border-radius:2px;width:28%;margin:8px 0"></div><div class="mot-desc">Dropdown, tooltip, small UI reveals. Nhanh nhưng perceptible.</div></div>
+<div class="mot-card"><div class="mot-label">Page / section</div><div class="mot-val">350–450ms</div><div style="background:var(--teal);height:3px;border-radius:2px;width:42%;margin:8px 0"></div><div class="mot-desc">Page transitions, tab switches, modal open. Asserted và smooth.</div></div>
+<div class="mot-card"><div class="mot-label">Long sequence</div><div class="mot-val">600–800ms</div><div style="background:var(--teal);height:3px;border-radius:2px;width:70%;margin:8px 0"></div><div class="mot-desc">Hero reveals, staggered lists, onboarding steps. Deliberate pace.</div></div>
+</div>
+
+<h3 class="sub">Easing Tokens</h3>
+<table class="wcag-tbl">
+<tr><th>Token</th><th>Curve</th><th>Use case</th></tr>
+<tr><td class="mono">ease-out</td><td class="mono">cubic-bezier(0,0,.25,1)</td><td class="note">Elements entering the screen. Fast start, gentle stop.</td></tr>
+<tr><td class="mono">ease-in</td><td class="mono">cubic-bezier(.4,0,1,1)</td><td class="note">Elements leaving the screen. Slow start, fast exit.</td></tr>
+<tr><td class="mono">ease-in-out</td><td class="mono">cubic-bezier(.4,0,.25,1)</td><td class="note">Elements moving within screen. Smooth arc.</td></tr>
+<tr><td class="mono">ease-bounce</td><td class="mono">cubic-bezier(.34,1.56,.64,1)</td><td class="note">Rare — physical objects settling (dropdown landing). Max 1 per screen.</td></tr>
+<tr><td class="mono">linear</td><td class="mono">cubic-bezier(0,0,1,1)</td><td class="note">Progress bars, loading sequences only. Never for UI transitions.</td></tr>
+</table>
+
+<h3 class="sub">Properties — What moves, what doesn't</h3>
+<div class="g2">
+<div style="border:1px solid var(--teal);border-radius:4px;padding:14px 16px;background:var(--tl)">
+<div class="ey" style="color:var(--teal);margin-bottom:6px">Animatable properties</div>
+<ul class="pr-list"><li style="color:var(--i60)">opacity — fade in/out</li><li style="color:var(--i60)">transform: translateY() — vertical slides</li><li style="color:var(--i60)">transform: translateX() — horizontal slides</li><li style="color:var(--i60)">transform: scale() — press states</li><li style="color:var(--i60)">transform: rotate() — loading spinners (utility only)</li></ul>
+</div>
+<div style="border:1px solid #F09595;border-radius:4px;padding:14px 16px;background:#FFF8F8">
+<div class="ey" style="color:#A32D2D;margin-bottom:6px">Never animate</div>
+<ul class="pr-list"><li style="color:#791F1F">color / background-color (instant switch only)</li><li style="color:#791F1F">font-size (layout thrash)</li><li style="color:#791F1F">width / height (use transform: scale instead)</li><li style="color:#791F1F">border-radius changes</li><li style="color:#791F1F">Continuous / looping decorative animations</li></ul>
+</div>
+</div>
+
+<h3 class="sub">Accessibility — Reduced Motion</h3>
+<div style="background:var(--i06);border-radius:4px;padding:16px 18px;margin:14px 0">
+<div class="ey" style="margin-bottom:8px">@media (prefers-reduced-motion: reduce)</div>
+<div style="font-family:var(--mono);font-size:10px;color:var(--ink);line-height:1.8;background:#fff;padding:10px 12px;border-radius:3px;border:1px solid var(--i12)">@media (prefers-reduced-motion: reduce) {<br>&nbsp; *, *::before, *::after {<br>&nbsp;&nbsp;&nbsp; animation-duration: 0.01ms !important;<br>&nbsp;&nbsp;&nbsp; animation-iteration-count: 1 !important;<br>&nbsp;&nbsp;&nbsp; transition-duration: 0.01ms !important;<br>&nbsp; }<br>}</div>
+<div class="cd" style="margin-top:8px">Bắt buộc implement. Không optional. Mọi animation phải degrade gracefully — content vẫn accessible không có motion.</div>
+</div>
+
+<h3 class="sub">Store-Space Motion Equivalent</h3>
+<div class="chain">
+<div class="ci"><span class="cn">Pace</span><div><div class="ct">Nhân sự di chuyển với deliberate pace — không vội, không chậm chạp</div><div class="cd">Physical equivalent của ease-in-out 350ms. Mỗi movement có clear start và end. Không abrupt stops.</div></div></div>
+<div class="ci"><span class="cn">Ritual</span><div><div class="ct">Counter ritual: mỗi bước được hoàn thành trước khi bắt đầu bước tiếp theo</div><div class="cd">Không parallelize. Không shortcut vì bận. Sequential completion = trust signal.</div></div></div>
+<div class="ci"><span class="cn">Handover</span><div><div class="ct">2 tay · không vội · pause trước khi release</div><div class="cd">Physical "ease-out" — fast approach, slow handoff. Opposite của rushing.</div></div></div>
+</div>
+</div>
+<!-- ══════════════ 09 APPLICATIONS ══════════════ -->
+<div id="s09" class="sec">
+<div class="sh"><div class="ey">Section 09</div><h2>Brand <em>Applications</em></h2>
+<p class="lead">95 touchpoints — từ favicon đến fitout. Mỗi application sử dụng đúng màu, font, và proportion từ hệ thống này.</p></div>
+
+<div class="app-tabs">
+<button class="atb aa" onclick="cat('cdig',this)">Digital · 30</button>
+<button class="atb" onclick="cat('cpack',this)">Packaging · 20</button>
+<button class="atb" onclick="cat('cprint',this)">Print · 20</button>
+<button class="atb" onclick="cat('cstore',this)">Store · 15</button>
+<button class="atb" onclick="cat('cbrand',this)">Brand tools · 10</button>
+</div>
+
+<!-- DIGITAL -->
+<div id="cdig" class="app-cat aa">
+<h4>Website</h4>
+<div class="app-grid-3">
+<div class="app-card"><div class="app-vis" style="background:#1A1916;flex-direction:column;align-items:flex-start;gap:8px;padding:20px"><div style="font-family:var(--mono);font-size:8px;color:rgba(250,249,246,.35);letter-spacing:.08em;text-transform:uppercase">Mora · Bespoke Fragrance</div><div style="font-family:var(--serif);font-size:20px;font-weight:300;color:var(--cream);line-height:1.2">Nước hoa<br><em style="color:var(--tm)">riêng của bạn</em></div><div style="background:var(--teal);border-radius:2px;padding:5px 12px;font-family:var(--sans);font-size:9px;font-weight:500;color:var(--cream);margin-top:4px">Đặt lịch →</div></div><div class="app-lbl"><div class="app-name">Website Hero — dark</div><div class="app-spec">Ink bg · Serif 300 headline · Teal CTA · Mono eyebrow</div></div></div>
+<div class="app-card"><div class="app-vis" style="background:#FAF9F6;flex-direction:column;align-items:flex-start;gap:6px;padding:20px"><div style="font-family:var(--mono);font-size:8px;color:var(--i60);letter-spacing:.08em;text-transform:uppercase">Jasmine Vetiver · 50ml</div><div style="font-family:var(--serif);font-size:14px;font-weight:300;color:var(--ink);line-height:1.5">Buổi sáng còn dịu.<br>Rồi định lại nơi ấm.</div><div style="width:20px;height:1px;background:var(--teal);margin:4px 0"></div><div style="font-family:var(--mono);font-size:9px;color:var(--i60)">1,500,000đ</div></div><div class="app-lbl"><div class="app-name">Product card — light</div><div class="app-spec">Cream bg · Sensory desc · Teal divider · Mono price</div></div></div>
+<div class="app-card"><div class="app-vis" style="background:#FAF9F6;flex-direction:column;align-items:center;gap:8px"><div style="font-family:var(--mono);font-size:8px;color:var(--i60);letter-spacing:.08em">HOW IT WORKS</div><div style="display:flex;gap:8px;align-items:center"><div style="font-family:var(--mono);font-size:9px;color:var(--i30)">01</div><div style="font-size:11px;color:var(--ink)">Hiểu</div><div style="font-size:9px;color:var(--i30)">→</div><div style="font-family:var(--mono);font-size:9px;color:var(--i30)">02</div><div style="font-size:11px;color:var(--teal);font-weight:500">Trải nghiệm</div><div style="font-size:9px;color:var(--i30)">→</div><div style="font-family:var(--mono);font-size:9px;color:var(--i30)">03</div><div style="font-size:11px;color:var(--i60)">Kết nối</div></div></div><div class="app-lbl"><div class="app-name">Process section</div><div class="app-spec">Mono step numbers · Teal = current step · Sans labels</div></div></div>
+</div>
+<h4>Social — Instagram</h4>
+<div class="app-grid-4">
+<div class="app-card"><div class="app-vis" style="background:#E8DFD0;flex-direction:column;gap:4px;padding:16px"><div style="font-family:var(--mono);font-size:8px;color:var(--i60);letter-spacing:.06em;text-transform:uppercase">Craft · Process</div><div style="font-family:var(--serif);font-size:14px;font-weight:300;color:var(--ink);line-height:1.3">Từ nguyên liệu<br>đến tên bạn</div></div><div class="app-lbl"><div class="app-name">Feed 1:1 — Craft</div><div class="app-spec">Linen bg · Mono eyebrow · Serif headline</div></div></div>
+<div class="app-card"><div class="app-vis" style="background:#1A1916;flex-direction:column;gap:6px;padding:16px;align-items:flex-start"><div style="font-family:var(--serif);font-size:13px;font-weight:300;font-style:italic;color:var(--cream);line-height:1.5">"Không ai có chai giống<br>chai của tôi."</div><div style="width:16px;height:1px;background:var(--teal);margin-top:4px"></div></div><div class="app-lbl"><div class="app-name">Feed 1:1 — Quote</div><div class="app-spec">Ink bg · Serif italic · Teal accent line</div></div></div>
+<div class="app-card"><div class="app-vis" style="background:#FAF9F6;flex-direction:column;gap:6px;padding:16px;align-items:flex-start"><div style="font-family:var(--mono);font-size:8px;color:var(--amber);letter-spacing:.08em">JASMINE VETIVER</div><div style="font-family:var(--serif);font-size:13px;font-weight:300;color:var(--ink)">Bắt đầu như buổi sáng. Dịu, nhanh.</div><div style="font-size:10px;color:var(--i60)">← back to product</div></div><div class="app-lbl"><div class="app-name">Feed 4:5 — Product</div><div class="app-spec">Cream bg · Amber scent name · Serif desc</div></div></div>
+<div class="app-card"><div class="app-vis" style="background:#0F6E56;flex-direction:column;gap:6px;padding:16px;align-items:center"><div style="font-family:var(--serif);font-size:24px;font-weight:300;letter-spacing:.2em;color:#FAF9F6">Mora</div><div style="font-family:var(--mono);font-size:8px;letter-spacing:.15em;color:rgba(250,249,246,.5)">STORY HIGHLIGHT</div></div><div class="app-lbl"><div class="app-name">Story Highlight Cover</div><div class="app-spec">Teal bg · Cream wordmark · Simple</div></div></div>
+</div>
+<div class="app-grid-4">
+<div class="app-card"><div class="app-vis" style="background:#1A1916;padding:14px;flex-direction:column;gap:4px;align-items:flex-start"><div style="font-family:var(--mono);font-size:8px;color:rgba(250,249,246,.3);letter-spacing:.06em">Thứ 3 · 10AM</div><div style="font-family:var(--serif);font-size:13px;font-weight:300;color:var(--cream);line-height:1.4">Có những khoảnh khắc chỉ cần mùi hương là đủ.</div></div><div class="app-lbl"><div class="app-name">Caption style — editorial</div><div class="app-spec">1–3 câu · Story first · Không CTA trên mỗi post</div></div></div>
+<div class="app-card"><div class="app-vis" style="background:#FAF9F6;flex-direction:column;gap:6px;padding:16px"><div style="width:44px;height:44px;background:var(--ink);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:16px;font-weight:300;color:var(--cream)">M</div><div style="font-family:var(--mono);font-size:8px;color:var(--i60);letter-spacing:.06em">IG PROFILE PHOTO</div></div><div class="app-lbl"><div class="app-name">Profile icon — IG/Zalo</div><div class="app-spec">Dark circle · Letter M · Cream on ink</div></div></div>
+<div class="app-card"><div class="app-vis" style="background:#1A1916;flex-direction:row;align-items:center;gap:8px;padding:16px"><div style="width:24px;height:24px;background:var(--teal);border-radius:50%;flex-shrink:0"></div><div><div style="font-family:var(--mono);font-size:8px;color:rgba(250,249,246,.4);letter-spacing:.06em">MORA</div><div style="font-size:11px;color:var(--cream)">Chai của bạn đã sẵn sàng →</div></div></div><div class="app-lbl"><div class="app-name">Zalo OA message</div><div class="app-spec">Specific · Không automated sounding · Personalized</div></div></div>
+<div class="app-card"><div class="app-vis" style="background:#FAF9F6;flex-direction:column;align-items:center;gap:6px"><div style="width:32px;height:32px;background:var(--ink);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:14px;font-weight:300;color:var(--cream)">M</div><div style="font-family:var(--mono);font-size:7px;color:var(--i60)">32px FAVICON</div></div><div class="app-lbl"><div class="app-name">Favicon 32px</div><div class="app-spec">Letter M only · Dark circle · No wordmark</div></div></div>
+</div>
+<h4>Email</h4>
+<div class="app-grid-3">
+<div class="app-card"><div class="app-vis" style="background:#F0EFEC;padding:12px"><div style="background:var(--cream);border-radius:3px;padding:14px;width:100%"><div style="font-family:var(--serif);font-size:14px;font-weight:300;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);margin-bottom:6px">Mora</div><div style="width:100%;height:1px;background:var(--teal);margin-bottom:10px"></div><div style="font-family:var(--mono);font-size:8px;letter-spacing:.06em;text-transform:uppercase;color:var(--i60);margin-bottom:3px">Chai của bạn đã sẵn sàng</div><div style="font-size:11px;color:var(--ink);margin-bottom:2px">Jasmine Vetiver — 50ml</div><div style="font-size:10px;color:var(--teal);font-style:italic;font-family:var(--serif)">Nguyen An · 15/01/2025</div></div></div><div class="app-lbl"><div class="app-name">Order confirmation</div><div class="app-spec">Plain-ish HTML · Cream bg · Teal divider · Personal</div></div></div>
+<div class="app-card"><div class="app-vis" style="background:#F0EFEC;padding:12px"><div style="background:var(--cream);border-radius:3px;padding:14px;width:100%"><div style="font-family:var(--serif);font-size:13px;font-weight:300;color:var(--ink);margin-bottom:8px">Bạn đã dùng hương mới chưa?</div><div style="font-size:11px;color:var(--i60);line-height:1.6">Lớp base note của Jasmine Vetiver sẽ mở ra rõ nhất vào ngày thứ 3–5.</div><div style="margin-top:8px;font-family:var(--mono);font-size:8px;color:var(--i30)">mora · bespoke fragrance</div></div></div><div class="app-lbl"><div class="app-name">D7 follow-up</div><div class="app-spec">No CTA · No promo · Personal curiosity tone</div></div></div>
+<div class="app-card"><div class="app-vis" style="background:#F0EFEC;padding:12px"><div style="background:var(--cream);border-radius:3px;padding:14px;width:100%"><div style="font-family:var(--serif);font-size:12px;font-weight:300;color:var(--ink);margin-bottom:6px">Nguyen Van An<br><span style="font-family:var(--mono);font-size:9px;color:var(--i60)">Mora Fragrance · Hồ Chí Minh</span></div><div style="width:100%;height:1px;background:var(--i12);margin-bottom:6px"></div><div style="font-size:10px;color:var(--i60)">T: +84 xxx xxx xxxx<br>mora.vn · IG: @morafragrance</div></div></div><div class="app-lbl"><div class="app-name">Email signature</div><div class="app-spec">Serif name · Mono role · Minimal links</div></div></div>
+</div>
+</div>
+
+<!-- PACKAGING -->
+<div id="cpack" class="app-cat">
+<h4>Bottle Labels</h4>
+<div class="app-grid-3">
+<div class="app-card"><div class="app-vis" style="background:#1A1916;flex-direction:column;align-items:flex-start;gap:4px;padding:20px"><div style="font-family:var(--mono);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:rgba(250,249,246,.35)">Mora · Bespoke Fragrance</div><div style="font-family:var(--serif);font-size:16px;font-weight:300;color:var(--cream)">Jasmine Vetiver</div><div style="width:24px;height:1px;background:var(--teal);margin:4px 0"></div><div style="font-family:var(--mono);font-size:8px;letter-spacing:.08em;color:rgba(250,249,246,.4)">50ml · IFRA CERTIFIED</div><div style="font-family:var(--serif);font-size:11px;font-style:italic;color:var(--tm);margin-top:4px">Nguyen An</div></div><div class="app-lbl"><div class="app-name">50ml bottle label — front</div><div class="app-spec">Ink bg · Cream text · Teal divider · Engraved name italic teal</div></div></div>
+<div class="app-card"><div class="app-vis" style="background:#D4C5B0;flex-direction:column;align-items:flex-start;gap:4px;padding:20px"><div style="font-family:var(--mono);font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:rgba(26,25,22,.4)">Scent notes</div><div style="font-size:11px;color:var(--ink);line-height:1.5">Jasmine Sambac · Vetiver<br>Sandalwood · Amber</div><div style="font-family:var(--mono);font-size:7px;color:var(--i60);margin-top:4px">IFRA CERT. NO. XXX-2025<br>Produced: HCM 15/01/2025</div></div><div class="app-lbl"><div class="app-name">50ml bottle label — back</div><div class="app-spec">Travertine bg · Ink text · Mono specs · Small</div></div></div>
+<div class="app-card"><div class="app-vis" style="background:#FAF9F6;flex-direction:column;align-items:center;gap:6px;padding:20px"><div style="width:28px;height:48px;background:var(--ink);border-radius:1px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px"><div style="font-family:var(--serif);font-size:8px;letter-spacing:.1em;color:var(--cream)">M</div></div><div style="font-family:var(--serif);font-size:10px;font-style:italic;color:var(--teal)">Nguyen An</div></div><div class="app-lbl"><div class="app-name">10ml bottle label</div><div class="app-spec">M monogram · Engraved name · Minimal</div></div></div>
+</div>
+<h4>Outer Packaging</h4>
+<div class="app-grid-4">
+<div class="app-card"><div class="app-vis" style="background:#1A1916;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:16px"><div style="font-family:var(--serif);font-size:18px;font-weight:300;letter-spacing:.2em;text-transform:uppercase;color:var(--cream)">Mora</div><div style="font-family:var(--mono);font-size:7px;letter-spacing:.15em;text-transform:uppercase;color:rgba(250,249,246,.35)">bespoke fragrance</div></div><div class="app-lbl"><div class="app-name">Box — standard</div><div class="app-spec">Matte ink · Cream wordmark · Embossed preferred</div></div></div>
+<div class="app-card"><div class="app-vis" style="background:#FAF9F6;border:1px solid #E8DFD0;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:16px"><div style="font-family:var(--serif);font-size:18px;font-weight:300;letter-spacing:.2em;text-transform:uppercase;color:var(--ink)">Mora</div><div style="font-family:var(--mono);font-size:7px;letter-spacing:.15em;text-transform:uppercase;color:var(--i60)">bespoke fragrance</div></div><div class="app-lbl"><div class="app-name">Box — gift cream</div><div class="app-spec">Matte cream · Ink wordmark · Debossed preferred</div></div></div>
+<div class="app-card"><div class="app-vis" style="background:#E8DFD0;flex-direction:column;align-items:center;gap:4px;padding:16px"><div style="font-size:20px;color:var(--i60)">≋</div><div style="font-size:10px;color:var(--i60);font-style:italic;font-family:var(--serif)">tissue wrap</div><div style="width:24px;height:1px;background:var(--teal);margin-top:4px"></div></div><div class="app-lbl"><div class="app-name">Tissue paper</div><div class="app-spec">Warm cream · Matte · Thick · Quiet rustle when folded</div></div></div>
+<div class="app-card"><div class="app-vis" style="background:#FAF9F6;flex-direction:column;align-items:center;gap:6px;padding:16px"><div style="width:40px;height:48px;background:var(--ink);border-radius:1px;display:flex;align-items:center;justify-content:center"><div style="font-family:var(--serif);font-size:14px;font-weight:300;letter-spacing:.1em;color:var(--cream)">M</div></div><div style="font-family:var(--mono);font-size:7px;color:var(--i60);letter-spacing:.08em">SHOPPING BAG</div></div><div class="app-lbl"><div class="app-name">Shopping bag</div><div class="app-spec">Matte cream natural · M monogram or wordmark · Thick paper handles</div></div></div>
+</div>
+<div class="app-grid-4">
+<div class="app-card"><div class="app-vis" style="background:#FAF9F6;flex-direction:column;align-items:center;gap:6px;padding:20px"><div style="font-family:var(--mono);font-size:28px;font-weight:300;color:var(--ink);opacity:.7">·</div><div style="font-family:var(--mono);font-size:8px;color:var(--i60)">RIBBON / TWINE</div></div><div class="app-lbl"><div class="app-name">Ribbon</div><div class="app-spec">Linen twine or thin ribbon in Teal · No satin · Real knot</div></div></div>
+<div class="app-card"><div class="app-vis" style="background:#FAF9F6;flex-direction:column;align-items:center;gap:6px;padding:20px"><div style="width:32px;height:32px;background:var(--teal);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:12px;font-weight:300;color:var(--cream)">M</div><div style="font-family:var(--mono);font-size:7px;color:var(--i60)">WAX SEAL</div></div><div class="app-lbl"><div class="app-name">Wax seal</div><div class="app-spec">Teal or Cream wax · M monogram stamp</div></div></div>
+<div class="app-card"><div class="app-vis" style="background:#FAF9F6;flex-direction:column;gap:4px;padding:16px;align-items:flex-start"><div style="font-family:var(--serif);font-size:11px;font-weight:300;color:var(--ink)">Chai này được tạo ra<br>cho riêng bạn.</div><div style="width:16px;height:1px;background:var(--teal);margin:4px 0"></div><div style="font-family:var(--mono);font-size:8px;color:var(--i60)">mora · 15/01/2025</div></div><div class="app-lbl"><div class="app-name">Brand card in bag</div><div class="app-spec">Not a discount voucher · Experience invitation</div></div></div>
+<div class="app-card"><div class="app-vis" style="background:#1A1916;flex-direction:column;gap:4px;padding:16px;align-items:flex-start"><div style="font-family:var(--mono);font-size:7px;color:rgba(250,249,246,.3);letter-spacing:.08em;text-transform:uppercase">B2B · Trân trọng gửi đến</div><div style="font-family:var(--serif);font-size:14px;font-weight:300;color:var(--cream)">Nguyễn An</div><div style="font-family:var(--serif);font-size:10px;font-style:italic;color:var(--tm)">Jasmine Vetiver</div></div><div class="app-lbl"><div class="app-name">B2B individual card</div><div class="app-spec">Ink bg · Recipient name prominent · Scent italic teal</div></div></div>
+</div>
+<h4>Labels & Misc</h4>
+<div class="app-grid-4">
+<div class="app-card"><div class="app-vis" style="background:#1A1916;flex-direction:column;gap:4px;padding:16px;align-items:flex-start"><div style="font-family:var(--mono);font-size:8px;color:rgba(250,249,246,.3);text-transform:uppercase;letter-spacing:.08em">Ingredient</div><div style="font-family:var(--serif);font-size:13px;font-weight:300;color:var(--cream)">Jasmine Sambac</div><div style="font-size:9px;color:rgba(250,249,246,.4);font-style:italic">India · IFRA Grade A</div><div style="width:16px;height:1px;background:var(--teal);margin-top:4px"></div></div><div class="app-lbl"><div class="app-name">Ingredient jar label</div><div class="app-spec">Dark glass · Cream on oak · Serif name · Mono origin</div></div></div>
+<div class="app-card"><div class="app-vis" style="background:#D4C5B0;flex-direction:column;gap:4px;padding:16px;align-items:flex-start"><div style="font-family:var(--mono);font-size:8px;color:var(--i60);text-transform:uppercase;letter-spacing:.06em">Refill</div><div style="font-family:var(--serif);font-size:13px;font-weight:300;color:var(--ink)">Jasmine Vetiver</div><div style="font-family:var(--mono);font-size:9px;color:var(--i60)">700,000đ · 50ml</div></div><div class="app-lbl"><div class="app-name">Refill label</div><div class="app-spec">Travertine bg · Serif scent · Mono price</div></div></div>
+<div class="app-card"><div class="app-vis" style="background:#FAF9F6;flex-direction:column;gap:4px;padding:16px;align-items:flex-start"><div style="font-family:var(--mono);font-size:7px;color:var(--i60);text-transform:uppercase;letter-spacing:.07em">Sample set · 3 × 3ml</div><div style="font-family:var(--serif);font-size:12px;font-weight:300;color:var(--ink);line-height:1.5">Khám phá<br>thế giới Mora</div></div><div class="app-lbl"><div class="app-name">Sample set packaging</div><div class="app-spec">Small format · Cream · Intro text · Serif</div></div></div>
+<div class="app-card"><div class="app-vis" style="background:#FAF9F6;align-items:center;justify-content:center"><div style="font-family:var(--mono);font-size:8px;color:var(--i60);border:1px solid var(--i12);padding:8px 10px;border-radius:2px;letter-spacing:.04em">MORA<br>░░░░░<br>░░░░░<br>Scan to...</div></div><div class="app-lbl"><div class="app-name">QR code treatment</div><div class="app-spec">Cream bg · Ink QR · No logo embedded in QR</div></div></div>
+</div>
+</div>
+
+<!-- PRINT -->
+<div id="cprint" class="app-cat">
+<h4>Stationery</h4>
+<div class="app-grid-3">
+<div class="app-card"><div class="app-vis" style="background:#FAF9F6;border:1px solid #E8DFD0;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:4px;padding:16px"><div style="font-family:var(--serif);font-size:14px;font-weight:300;letter-spacing:.2em;text-transform:uppercase;color:var(--ink)">Mora</div><div style="width:100%;height:1px;background:var(--i12);margin:6px 0"></div><div style="flex:1"></div><div style="font-family:var(--sans);font-size:9px;color:var(--i60)">Nguyen Van An<br>mora.vn · HCM</div></div><div class="app-lbl"><div class="app-name">Business card — front</div><div class="app-spec">Cream · Serif logo · Matte laminate · 85×55mm</div></div></div>
+<div class="app-card"><div class="app-vis" style="background:#1A1916;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:20px"><div style="font-family:var(--serif);font-size:20px;font-weight:300;letter-spacing:.2em;text-transform:uppercase;color:var(--cream)">Mora</div><div style="font-family:var(--mono);font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:rgba(250,249,246,.35)">bespoke fragrance</div></div><div class="app-lbl"><div class="app-name">Business card — back</div><div class="app-spec">Ink full bleed · Cream wordmark · Matte</div></div></div>
+<div class="app-card"><div class="app-vis" style="background:#FAF9F6;border:1px solid #E8DFD0;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:4px;padding:16px"><div><div style="font-family:var(--serif);font-size:12px;font-weight:300;letter-spacing:.15em;text-transform:uppercase;color:var(--ink)">Mora</div><div style="width:28px;height:1px;background:var(--teal);margin:4px 0"></div></div><div style="font-size:9px;color:var(--i60)">mora.vn · Hồ Chí Minh · +84 xxx</div></div><div class="app-lbl"><div class="app-name">Letterhead A4</div><div class="app-spec">Cream paper · Small wordmark top-left · Teal accent · Mono footer</div></div></div>
+</div>
+<div class="app-grid-4">
+<div class="app-card"><div class="app-vis" style="background:#FAF9F6;flex-direction:column;gap:4px;padding:16px;align-items:flex-start"><div style="font-family:var(--serif);font-size:12px;font-weight:300;color:var(--ink)">Cảm ơn bạn đã ghé<br>thế giới Mora.</div><div style="width:16px;height:1px;background:var(--teal);margin:6px 0"></div><div style="font-family:var(--mono);font-size:7px;color:var(--i60)">mora.vn</div></div><div class="app-lbl"><div class="app-name">Thank you card</div><div class="app-spec">Cream · Serif message · Teal rule · Not a receipt</div></div></div>
+<div class="app-card"><div class="app-vis" style="background:#1A1916;flex-direction:column;gap:4px;padding:16px"><div style="font-family:var(--mono);font-size:8px;color:rgba(250,249,246,.3);letter-spacing:.06em">MORA · PRESS KIT</div><div style="font-family:var(--serif);font-size:14px;font-weight:300;color:var(--cream);margin-top:4px;line-height:1.3">Thế giới<br><em style="color:var(--tm)">có đạo</em></div></div><div class="app-lbl"><div class="app-name">Press kit cover</div><div class="app-spec">Ink bg · Serif headline · Teal italic accent</div></div></div>
+<div class="app-card"><div class="app-vis" style="background:#FAF9F6;border:1px solid #E8DFD0;flex-direction:column;gap:4px;padding:16px;align-items:flex-start"><div style="font-family:var(--mono);font-size:7px;color:var(--i60);text-transform:uppercase;letter-spacing:.06em">Hang tag</div><div style="font-family:var(--serif);font-size:13px;font-weight:300;color:var(--ink)">Jasmine Vetiver</div><div style="font-family:var(--mono);font-size:8px;color:var(--i60)">50ml · 1,500,000đ</div></div><div class="app-lbl"><div class="app-name">Hang tag</div><div class="app-spec">Cream card · Hole top-center · String linen or teal</div></div></div>
+<div class="app-card"><div class="app-vis" style="background:#FAF9F6;align-items:center;justify-content:center;flex-direction:column;gap:4px"><div style="width:48px;height:48px;border:1px solid var(--i12);border-radius:50%;display:flex;align-items:center;justify-content:center"><div style="font-family:var(--serif);font-size:16px;font-weight:300;color:var(--ink)">M</div></div><div style="font-family:var(--mono);font-size:7px;color:var(--i60)">RUBBER STAMP</div></div><div class="app-lbl"><div class="app-name">Rubber stamp</div><div class="app-spec">M monogram · 40mm circle · Ink-friendly</div></div></div>
+</div>
+<h4>Document Design</h4>
+<div class="app-grid-3">
+<div class="app-card"><div class="app-vis" style="background:#1A1916;flex-direction:column;gap:6px;padding:16px;align-items:flex-start"><div style="font-family:var(--mono);font-size:7px;color:rgba(250,249,246,.3);letter-spacing:.06em">MORA · PRESENTATION</div><div style="font-family:var(--serif);font-size:18px;font-weight:300;color:var(--cream);line-height:1.2">Thế giới<br><em style="color:var(--tm)">có đạo</em></div><div style="font-family:var(--mono);font-size:8px;color:rgba(250,249,246,.3);margin-top:8px">2025</div></div><div class="app-lbl"><div class="app-name">Presentation title slide</div><div class="app-spec">16:9 · Ink bg · Large serif · Teal italic</div></div></div>
+<div class="app-card"><div class="app-vis" style="background:#FAF9F6;flex-direction:column;gap:8px;padding:16px;align-items:flex-start"><div style="font-family:var(--serif);font-size:14px;font-weight:400;color:var(--ink)">Revenue · Tháng 1–3</div><div style="width:100%;height:1px;background:var(--i12)"></div><div style="display:flex;align-items:flex-end;gap:6px;height:32px"><div style="background:var(--teal);width:16px;height:50%"></div><div style="background:var(--teal);width:16px;height:75%"></div><div style="background:var(--teal);width:16px;height:100%"></div><div style="font-family:var(--mono);font-size:8px;color:var(--i60);align-self:flex-start">1.8B</div></div></div><div class="app-lbl"><div class="app-name">Presentation data slide</div><div class="app-spec">Cream bg · Teal chart · Mono axis labels · Serif title</div></div></div>
+<div class="app-card"><div class="app-vis" style="background:#1A1916;flex-direction:column;gap:4px;padding:16px;align-items:center;text-align:center"><div style="font-family:var(--serif);font-size:15px;font-weight:300;font-style:italic;color:var(--cream);line-height:1.5">"Mora đã tạo ra thứ tôi không nghĩ tồn tại ở Việt Nam."</div><div style="width:20px;height:1px;background:var(--teal);margin-top:8px"></div></div><div class="app-lbl"><div class="app-name">Quote / testimonial slide</div><div class="app-spec">Ink bg · Serif italic quote · Teal rule · Center aligned</div></div></div>
+</div>
+</div>
+
+<!-- STORE -->
+<div id="cstore" class="app-cat">
+<h4>Signage & Interior</h4>
+<div class="app-grid-3">
+<div class="app-card"><div class="app-vis" style="background:#E8E4DC;flex-direction:column;align-items:center;gap:6px"><div style="background:#B89A60;padding:6px 16px;border-radius:1px"><div style="font-family:var(--serif);font-size:20px;font-weight:300;letter-spacing:.25em;text-transform:uppercase;color:#FAF9F6">MORA</div></div><div style="font-family:var(--mono);font-size:7px;color:rgba(26,25,22,.35);letter-spacing:.06em">raised brass · exterior wall</div></div><div class="app-lbl"><div class="app-name">Exterior sign</div><div class="app-spec">Brass #B89A60 raised letters · Matte · H: 60–80mm · MORA only</div></div></div>
+<div class="app-card"><div class="app-vis" style="background:#D4C5B0;flex-direction:column;align-items:flex-start;gap:5px;padding:18px"><div style="font-family:var(--mono);font-size:8px;color:var(--i60);text-transform:uppercase;letter-spacing:.08em">Jasmine Vetiver</div><div style="font-family:var(--serif);font-size:15px;font-weight:300;color:var(--ink);line-height:1.3">Buổi sáng còn dịu.<br>Rồi định lại nơi ấm.</div><div style="width:20px;height:1px;background:var(--teal);margin:4px 0"></div><div style="font-family:var(--mono);font-size:9px;color:var(--i60)">50ml · 1,500,000đ</div></div><div class="app-lbl"><div class="app-name">Counter card</div><div class="app-spec">On Travertine #D4C5B0 · Serif 300 · Teal divider · Mono price</div></div></div>
+<div class="app-card"><div class="app-vis" style="background:#4A3728;flex-direction:column;align-items:flex-start;gap:4px;padding:18px"><div style="font-family:var(--mono);font-size:8px;color:rgba(250,249,246,.3);letter-spacing:.1em;text-transform:uppercase">Ingredient</div><div style="font-family:var(--serif);font-size:14px;font-weight:300;color:var(--cream)">Jasmine Sambac</div><div style="font-size:9px;color:rgba(250,249,246,.35);font-style:italic">India · IFRA Grade A</div><div style="width:16px;height:1px;background:rgba(13,110,86,.7);margin-top:4px"></div></div><div class="app-lbl"><div class="app-name">Ingredient label on dark glass</div><div class="app-spec">Cream on Dark Oak #4A3728 · Serif name · Mono origin · Teal rule</div></div></div>
+</div>
+<div class="app-grid-4">
+<div class="app-card"><div class="app-vis" style="background:#1A1916;align-items:center;justify-content:center"><div style="font-family:var(--sans);font-size:11px;color:rgba(250,249,246,.4);border:1px solid rgba(250,249,246,.15);padding:6px 10px;border-radius:2px">MORA<br><span style="font-size:9px;font-family:var(--mono);letter-spacing:.04em">10:00–20:00 · T2–CN</span></div></div><div class="app-lbl"><div class="app-name">Door information</div><div class="app-spec">Etched glass or matte vinyl · Hours only · No "Welcome"</div></div></div>
+<div class="app-card"><div class="app-vis" style="background:#E8DFD0;align-items:center;justify-content:center;flex-direction:column;gap:6px"><div style="width:48px;height:56px;background:var(--ink);border-radius:1px;display:flex;align-items:center;justify-content:center"><div style="font-family:var(--serif);font-size:14px;font-weight:300;color:var(--cream)">M</div></div></div><div class="app-lbl"><div class="app-name">Staff apron</div><div class="app-spec">Linen/cream apron · M monogram embroidered · Ink thread</div></div></div>
+<div class="app-card"><div class="app-vis" style="background:#FAF9F6;flex-direction:column;align-items:flex-start;gap:4px;padding:16px"><div style="font-family:var(--sans);font-size:10px;font-weight:500;color:var(--ink)">Nguyen Van An</div><div style="font-family:var(--mono);font-size:8px;color:var(--i60)">Perfumer</div><div style="width:16px;height:1px;background:var(--teal);margin:4px 0"></div><div style="font-family:var(--serif);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--i60)">Mora</div></div><div class="app-lbl"><div class="app-name">Staff name badge</div><div class="app-spec">Cream card · Name bold · Role mono · Teal rule · Wordmark small</div></div></div>
+<div class="app-card"><div class="app-vis" style="background:#F0EFEC;flex-direction:column;align-items:flex-start;gap:2px;padding:16px"><div style="font-family:var(--serif);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink)">Mora</div><div style="width:100%;height:0.5px;background:var(--i12);margin:4px 0"></div><div style="font-family:var(--mono);font-size:7px;color:var(--i60)">1× Jasmine Vetiver 50ml<br>1× Engraving — Nguyen An</div><div style="width:100%;height:0.5px;background:var(--i12);margin:4px 0"></div><div style="font-family:var(--mono);font-size:8px;color:var(--ink)">1,650,000đ</div></div><div class="app-lbl"><div class="app-name">Receipt / invoice</div><div class="app-spec">Cream paper · Mono details · Small wordmark · Minimal</div></div></div>
+</div>
+</div>
+
+<!-- BRAND TOOLS -->
+<div id="cbrand" class="app-cat">
+<h4>Digital Brand Tools</h4>
+<div class="app-grid-3">
+<div class="app-card"><div class="app-vis" style="background:#1A1916;flex-direction:column;gap:8px;padding:20px;align-items:flex-start"><div style="font-family:var(--serif);font-size:16px;font-weight:300;letter-spacing:.2em;text-transform:uppercase;color:var(--cream)">Mora</div><div style="font-family:var(--serif);font-size:11px;font-weight:300;font-style:italic;color:rgba(250,249,246,.4)">Bespoke Fragrance · HCM</div><div style="position:absolute;bottom:16px;right:16px;font-family:var(--mono);font-size:7px;color:rgba(250,249,246,.2)">1500px × 500px</div></div><div class="app-lbl"><div class="app-name">LinkedIn banner</div><div class="app-spec">1500×500px · Ink bg · Cream wordmark + tagline</div></div></div>
+<div class="app-card"><div class="app-vis" style="background:#1A1916;padding:20px;flex-direction:column;gap:8px;align-items:flex-start"><div style="font-family:var(--mono);font-size:8px;color:rgba(250,249,246,.3);letter-spacing:.06em">ZOOM BACKGROUND</div><div style="font-family:var(--serif);font-size:18px;font-weight:300;color:var(--cream);opacity:.15;position:absolute;letter-spacing:.2em;text-transform:uppercase">Mora</div></div><div class="app-lbl"><div class="app-name">Zoom / virtual background</div><div class="app-spec">Ink bg · Ghost watermark wordmark 15% · Clean</div></div></div>
+<div class="app-card"><div class="app-vis" style="background:#FAF9F6;flex-direction:column;gap:8px;padding:16px;align-items:center"><div style="font-family:var(--serif);font-size:18px;font-weight:300;letter-spacing:.2em;text-transform:uppercase;color:var(--ink)">Mora</div><div style="font-family:var(--mono);font-size:8px;color:var(--i60);letter-spacing:.08em">mora.vn/link</div><div style="display:flex;flex-direction:column;gap:4px;width:100%"><div style="border:0.5px solid var(--i12);border-radius:3px;padding:5px 8px;font-size:10px;color:var(--i60);text-align:center">Instagram</div><div style="border:0.5px solid var(--i12);border-radius:3px;padding:5px 8px;font-size:10px;color:var(--i60);text-align:center">Đặt lịch hẹn</div></div></div><div class="app-lbl"><div class="app-name">Link in bio page</div><div class="app-spec">Cream · Serif wordmark · Sans links · No hero image</div></div></div>
+</div>
+<h4>CSS Variables — Developer Reference</h4>
+<div style="background:var(--ink);border-radius:4px;padding:16px 20px;margin:14px 0;font-family:var(--mono);font-size:10px;color:rgba(250,249,246,.6);line-height:2">
+<span style="color:rgba(250,249,246,.3)">/* Mora Design System · CSS Variables */</span><br>
+:root {<br>
+&nbsp; <span style="color:var(--tm)">--mora-ink</span>: #1A1916;<br>
+&nbsp; <span style="color:var(--tm)">--mora-teal</span>: #0F6E56;<br>
+&nbsp; <span style="color:var(--tm)">--mora-amber</span>: #854F0B;<br>
+&nbsp; <span style="color:var(--tm)">--mora-cream</span>: #FAF9F6;<br>
+&nbsp; <span style="color:var(--tm)">--mora-linen</span>: #E8DFD0;<br>
+&nbsp; <span style="color:rgba(250,249,246,.3)">/* Extended */</span><br>
+&nbsp; <span style="color:var(--tm)">--teal-dark</span>: #085041; <span style="color:var(--tm)">--teal-mid</span>: #5DCAA5; <span style="color:var(--tm)">--teal-light</span>: #E1F5EE;<br>
+&nbsp; <span style="color:var(--tm)">--amber-dark</span>: #633806; <span style="color:var(--tm)">--amber-mid</span>: #EF9F27; <span style="color:var(--tm)">--amber-light</span>: #FAEEDA;<br>
+&nbsp; <span style="color:var(--tm)">--warm-400</span>: #C4B49A; <span style="color:var(--tm)">--warm-600</span>: #8C7A62;<br>
+&nbsp; <span style="color:rgba(250,249,246,.3)">/* Physical Materials */</span><br>
+&nbsp; <span style="color:var(--tm)">--travertine</span>: #D4C5B0; <span style="color:var(--tm)">--oak</span>: #4A3728;<br>
+&nbsp; <span style="color:var(--tm)">--brass</span>: #B89A60; <span style="color:var(--tm)">--concrete</span>: #8C7A62;<br>
+&nbsp; <span style="color:rgba(250,249,246,.3)">/* Typography */</span><br>
+&nbsp; <span style="color:var(--tm)">--serif</span>: 'Cormorant Garamond', Georgia, serif;<br>
+&nbsp; <span style="color:var(--tm)">--sans</span>: 'DM Sans', system-ui, sans-serif;<br>
+&nbsp; <span style="color:var(--tm)">--mono</span>: 'DM Mono', monospace;<br>
+}
+</div>
+</div>
+</div>
+</main>
+<footer class="footer"><span class="fb">Mora</span><span class="fn">Brand Guidelines v2.0 · 9 Sections · Synced Store Experience Design v1.0 · WCAG AA compliant · Review annually</span></footer>
+<script>
+function sw(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('a'));
+  document.querySelectorAll('.nb2').forEach(b=>b.classList.remove('a'));
+  document.getElementById(id).classList.add('a');
+  btn.classList.add('a');
+  window.scrollTo({top:document.querySelector('.nav').offsetHeight,behavior:'smooth'});
+}
+function cat(id,btn){
+  document.querySelectorAll('.app-cat').forEach(c=>c.classList.remove('aa'));
+  document.querySelectorAll('.atb').forEach(b=>b.classList.remove('aa'));
+  document.getElementById(id).classList.add('aa');
+  btn.classList.add('aa');
+}
+</script>
+</body></html>
