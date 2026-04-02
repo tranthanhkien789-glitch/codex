@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Operating OS — Dịch vụ & Năng lực</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --teal:#0F6E56;--teal-l:#EDF5F2;--teal-m:#B5DFD0;--teal-d:#0A4F3E;
+  --blue:#185FA5;--blue-l:#EDF2F8;
+  --amber:#854F0B;--amber-l:#FBF5ED;
+  --purple:#6B21A8;--purple-l:#F5F0FA;
+  --red:#8B3A3A;--red-l:#FBF0F0;
+  --cyan:#0E7490;--cyan-l:#EDF8FA;
+  --g50:#FAFAF9;--g100:#F5F5F4;--g200:#E8E6E4;--g300:#D6D3D1;
+  --g400:#A8A29E;--g500:#78716C;--g600:#57534E;--g700:#44403C;--g800:#292524;--g900:#1C1917;
+  --white:#FFFFFF;--radius:8px;
+  --shadow:0 2px 12px rgba(0,0,0,0.06);
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'Be Vietnam Pro','Segoe UI',sans-serif;
+  --mono:'JetBrains Mono','Courier New',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--sans);background:var(--g100);color:var(--g800);-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.6}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;background:var(--g900);border-bottom:1px solid rgba(255,255,255,.06)}
+.nav-inner{max-width:720px;margin:0 auto;display:flex;align-items:center;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-logo{font-family:var(--serif);font-size:15px;font-weight:500;color:var(--teal-m);padding:16px 24px;white-space:nowrap;flex-shrink:0;cursor:pointer;letter-spacing:.02em}
+.nav-tabs{display:flex;flex-shrink:0;align-items:center}
+.nav-tab{padding:16px 18px;font-size:11px;font-weight:500;color:var(--g400);cursor:pointer;white-space:nowrap;transition:all .25s;border-bottom:1.5px solid transparent;letter-spacing:.04em;text-transform:uppercase}
+.nav-tab:hover{color:var(--g200)}
+.nav-tab.active{color:var(--white);border-bottom-color:var(--teal)}
+.nav-sep{width:1px;height:14px;background:var(--g700);flex-shrink:0;margin:0 2px}
+
+/* PAGE */
+.page{max-width:720px;margin:0 auto;background:var(--white);min-height:100vh}
+.tab-content{display:none;animation:fadeIn .4s ease}
+.tab-content.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* FRACTAL LAYERS */
+.l0-hero{background:var(--g900);color:var(--white);padding:72px 40px 64px;text-align:center}
+.l0-badge{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--g400);margin-bottom:24px;display:block}
+.l0-hero h1{font-family:var(--serif);font-size:30px;font-weight:400;line-height:1.35;margin-bottom:20px;max-width:540px;margin-left:auto;margin-right:auto;letter-spacing:.01em}
+.l0-hero h1 em,.l0-page h1 em{font-style:normal;color:var(--teal-m)}
+.l0-pos{font-size:14px;color:var(--g400);max-width:480px;margin:0 auto;line-height:1.8;font-weight:300}
+
+.l0-page{background:var(--g900);color:var(--white);padding:56px 40px 48px;text-align:center}
+.l0-page h1{font-family:var(--serif);font-size:26px;font-weight:400;line-height:1.35;margin-bottom:12px;max-width:500px;margin-left:auto;margin-right:auto;letter-spacing:.01em}
+.l0-page .l0-pos{font-size:13px;max-width:440px}
+
+.l1-frame{background:var(--g50);padding:44px 40px;border-bottom:1px solid var(--g200)}
+.l1-inner{max-width:520px;margin:0 auto}
+.l1-label{font-family:var(--mono);font-size:9px;color:var(--teal);letter-spacing:.14em;text-transform:uppercase;margin-bottom:12px;display:block;text-align:center}
+.l1-narrative{font-size:14px;color:var(--g600);line-height:1.9;text-align:center;font-weight:300}
+.l1-narrative strong{color:var(--g800);font-weight:500}
+
+.l1-box{background:var(--g50);border:1px solid var(--g200);border-radius:var(--radius);padding:24px 28px;margin-bottom:24px}
+.l1-box .l1-label{text-align:left}
+.l1-box p{font-size:13px;color:var(--g600);line-height:1.8;font-weight:300}
+
+section.l2{padding:64px 40px}
+section.l2+section.l2{border-top:1px solid var(--g200)}
+.l2-head{text-align:center;margin-bottom:36px}
+.l2-num{font-family:var(--mono);font-size:9px;color:var(--teal);letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px;display:block}
+.l2-head h2{font-family:var(--serif);font-size:26px;font-weight:400;line-height:1.3;margin-bottom:8px;letter-spacing:.01em}
+.l2-head p{font-size:13px;color:var(--g500);max-width:460px;margin:0 auto;line-height:1.7;font-weight:300}
+
+/* GEOMETRIC GLYPH (replaces emoji) */
+.glyph{width:44px;height:44px;border-radius:var(--radius);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.04em}
+.glyph-sm{width:36px;height:36px;border-radius:6px;font-size:10px}
+
+/* FRACTAL CARD */
+.f-card{border:1px solid var(--g200);border-radius:var(--radius);overflow:hidden;transition:all .25s}
+.f-card:hover{box-shadow:var(--shadow)}
+.f-card-l0{padding:22px 24px;display:flex;align-items:center;gap:16px;cursor:pointer}
+.f-card-l0 h3{font-family:var(--serif);font-size:16px;font-weight:400;margin-bottom:2px;letter-spacing:.01em}
+.f-pos{font-size:11px;color:var(--g500);line-height:1.4;font-weight:300}
+.f-chev{font-size:12px;color:var(--g400);transition:transform .2s;flex-shrink:0;margin-left:auto}
+.f-card.open .f-chev{transform:rotate(180deg)}
+.f-card-l1{display:none;padding:16px 24px;background:var(--g50);border-top:1px solid var(--g100);border-bottom:1px solid var(--g100)}
+.f-card.open .f-card-l1{display:block}
+.f-card-l1 p{font-size:12px;color:var(--g600);line-height:1.8;font-style:italic;font-weight:300}
+.f-card-l2{display:none;padding:20px 24px 24px}
+.f-card.open .f-card-l2{display:block}
+.f-work{display:flex;align-items:flex-start;gap:10px;padding:8px 0;font-size:12px;color:var(--g600);line-height:1.6;font-weight:300}
+.f-work::before{content:'\2014';color:var(--teal);flex-shrink:0;font-weight:400}
+.f-work+.f-work{border-top:1px solid var(--g50)}
+.f-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;padding-top:12px;border-top:1px solid var(--g100)}
+.f-tag{padding:4px 10px;border:1px solid var(--g200);border-radius:4px;font-size:10px;color:var(--g500);font-weight:400;letter-spacing:.02em}
+
+.sp{height:28px}.sp-l{height:44px}
+
+/* PAIN */
+.pain-split{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.pain-card{padding:24px;border-radius:var(--radius);border:1px solid}
+.pain-card h4{font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px}
+.pain-item{font-size:12px;padding:6px 0;line-height:1.6;display:flex;align-items:flex-start;gap:8px;font-weight:300}
+.pain-icon{flex-shrink:0;margin-top:2px;font-size:11px}
+
+/* SOLUTION */
+.sol-box{background:var(--g900);color:var(--white);border-radius:var(--radius);padding:36px 32px;text-align:center}
+.sol-box h3{font-family:var(--serif);font-size:20px;font-weight:400;margin-bottom:12px;letter-spacing:.01em}
+.sol-box p{font-size:13px;color:var(--g400);line-height:1.8;max-width:440px;margin:0 auto;font-weight:300}
+.sol-note{font-family:var(--mono);font-size:9px;color:var(--g500);margin-top:16px;padding-top:14px;border-top:1px solid var(--g700);letter-spacing:.02em}
+
+/* STEPS */
+.steps{display:flex;flex-direction:column}
+.step{display:grid;grid-template-columns:48px 1fr;gap:20px;padding:24px 0;border-bottom:1px solid var(--g100)}
+.step:last-child{border-bottom:none}
+.step-num{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:20px;color:var(--white);flex-shrink:0}
+.step-title{font-family:var(--serif);font-size:17px;font-weight:400;margin-bottom:4px}
+.step-desc{font-size:12px;color:var(--g500);line-height:1.7;font-weight:300}
+
+/* CAP OVERVIEW */
+.cap-overview{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cap-mini{padding:20px;border-radius:var(--radius);border:1px solid var(--g200);display:flex;gap:14px;align-items:start}
+.cap-mini h4{font-family:var(--serif);font-size:14px;font-weight:400;margin-bottom:3px}
+.cap-mini p{font-size:11px;color:var(--g500);line-height:1.5;font-weight:300}
+
+/* MODEL */
+.model-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.model-card{padding:24px 16px;border-radius:var(--radius);text-align:center}
+.model-role{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;display:block}
+.model-card h4{font-family:var(--serif);font-size:16px;font-weight:400;margin-bottom:12px}
+.model-item{font-size:11px;color:var(--g600);padding:5px 0;border-bottom:1px solid rgba(0,0,0,.04);line-height:1.5;text-align:left;font-weight:300}
+.model-item:last-child{border-bottom:none}
+.model-bottom{font-size:11px;font-weight:500;margin-top:12px;padding-top:10px;border-top:1px solid rgba(0,0,0,.06);text-align:center}
+
+/* FLOW */
+.flow-box{background:var(--g900);color:var(--white);border-radius:var(--radius);padding:28px;text-align:center}
+.flow-row{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.flow-node{padding:10px 16px;border-radius:6px;font-size:12px;font-weight:500}
+.flow-arrow{color:var(--g500);font-size:14px}
+.flow-options{font-size:10px;color:var(--g500);padding-top:12px;border-top:1px solid var(--g700);line-height:1.8;letter-spacing:.02em}
+
+/* VALUE CHAIN */
+.vchain-row{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:0;align-items:stretch}
+.vchain-node{padding:24px 16px;border-radius:var(--radius);text-align:center}
+.vchain-node h4{font-family:var(--serif);font-size:15px;font-weight:400;margin-bottom:6px}
+.vchain-node p{font-size:10px;line-height:1.5;font-weight:300}
+.vchain-arrow{display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--g300);padding:0 6px}
+
+.scope-compound{padding:20px;background:var(--g50);border:1px solid var(--g200);border-radius:var(--radius);text-align:center;font-size:12px;color:var(--g600);line-height:1.8;font-weight:300}
+.scope-compound strong{color:var(--g800);font-weight:500}
+
+.ai-bar{padding:16px 20px;border:1px solid var(--g200);border-radius:var(--radius);font-size:11px;color:var(--g600);line-height:1.7;text-align:center;font-weight:300;margin-top:24px}
+.ai-bar strong{color:var(--g800);font-weight:500}
+
+/* SERVICE TOGGLE */
+.svc-toggle-bar{display:flex;justify-content:center;gap:4px;margin-bottom:32px;border:1px solid var(--g200);border-radius:var(--radius);padding:4px;max-width:320px;margin-left:auto;margin-right:auto}
+.svc-toggle-btn{flex:1;padding:10px 16px;font-size:11px;font-weight:500;color:var(--g400);background:transparent;border:none;border-radius:6px;cursor:pointer;transition:all .25s;font-family:var(--sans);letter-spacing:.02em}
+.svc-toggle-btn.active{background:var(--g900);color:var(--white)}
+.svc-view{display:none;animation:fadeIn .3s ease}
+.svc-view.active{display:block}
+.svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.svc-full{display:flex;flex-direction:column;gap:16px}
+
+/* MATRIX */
+.matrix-visual{margin:28px 0 0;padding:24px;background:var(--g900);border-radius:var(--radius);color:var(--white)}
+.matrix-title{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:var(--g500);margin-bottom:16px;text-align:center}
+.matrix-grid{display:grid;grid-template-columns:100px repeat(4,1fr);gap:1px;background:var(--g700);border-radius:6px;overflow:hidden}
+.matrix-cell{padding:12px 8px;font-size:10px;text-align:center;line-height:1.4;font-weight:300}
+.matrix-header{background:var(--g800);color:var(--g400);font-weight:500;font-family:var(--mono);font-size:9px;letter-spacing:.04em}
+.matrix-row-label{background:var(--g800);color:var(--g300);text-align:left;font-weight:400;padding-left:14px;font-size:10px}
+.matrix-dot{background:var(--g900);color:var(--teal-m);font-size:8px}
+.matrix-note{font-size:10px;color:var(--g500);text-align:center;margin-top:14px;font-weight:300}
+
+/* INDUSTRY */
+.ind-list{display:flex;flex-direction:column;gap:20px}
+.ind-card{border:1px solid var(--g200);border-radius:var(--radius);overflow:hidden}
+.ind-l0{padding:28px 24px;display:grid;grid-template-columns:44px 1fr;gap:16px;align-items:start}
+.ind-l0 h3{font-family:var(--serif);font-size:18px;font-weight:400;margin-bottom:4px}
+.ind-pos{font-size:12px;color:var(--g500);line-height:1.7;font-weight:300}
+.ind-l1{padding:16px 24px;background:var(--g50);border-top:1px solid var(--g100);border-bottom:1px solid var(--g100);font-size:12px;color:var(--g600);line-height:1.8;font-style:italic;font-weight:300}
+.ind-l2{padding:20px 24px 24px}
+.ind-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ind-box{padding:16px;border-radius:6px;font-size:11px;line-height:1.7;font-weight:300}
+.ind-box h5{font-family:var(--mono);font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+
+/* CAREER */
+.culture-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.culture-card{padding:28px;border-radius:var(--radius);border:1px solid var(--g200)}
+.culture-card h4{font-family:var(--serif);font-size:15px;font-weight:400;margin-bottom:8px}
+.culture-card p{font-size:11px;color:var(--g500);line-height:1.7;font-weight:300}
+.role-list{display:flex;flex-direction:column;gap:14px}
+.role-card{display:grid;grid-template-columns:1fr auto;gap:16px;padding:24px;border:1px solid var(--g200);border-radius:var(--radius);align-items:center;transition:all .25s}
+.role-card:hover{box-shadow:var(--shadow);transform:translateY(-1px)}
+.role-type{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;display:block}
+.role-card h4{font-size:14px;font-weight:500;margin-bottom:4px}
+.role-card p{font-size:11px;color:var(--g500);line-height:1.6;font-weight:300}
+.role-badge{padding:6px 14px;border-radius:4px;font-size:10px;font-weight:500;white-space:nowrap;letter-spacing:.02em}
+.growth-path{background:var(--g900);color:var(--white);border-radius:var(--radius);padding:32px}
+.growth-path h3{font-family:var(--serif);font-size:17px;font-weight:400;margin-bottom:20px;text-align:center}
+.growth-steps{display:flex;align-items:stretch}
+.growth-step{flex:1;text-align:center;padding:16px 10px;position:relative}
+.growth-step::after{content:'\2192';position:absolute;right:-6px;top:50%;transform:translateY(-50%);color:var(--g500);font-size:12px}
+.growth-step:last-child::after{display:none}
+.gs-num{font-family:var(--mono);font-size:9px;color:var(--teal-m);margin-bottom:6px;display:block;letter-spacing:.06em}
+.growth-step h5{font-size:12px;font-weight:500;margin-bottom:4px}
+.growth-step p{font-size:10px;color:var(--g400);line-height:1.5;font-weight:300}
+
+.cta{background:var(--g900);color:var(--white);padding:64px 40px;text-align:center}
+.cta h2{font-family:var(--serif);font-size:24px;font-weight:400;margin-bottom:14px;line-height:1.35}
+.cta h2 em{font-style:normal;color:var(--teal-m)}
+.cta p{font-size:14px;color:var(--g400);max-width:420px;margin:0 auto 28px;line-height:1.8;font-weight:300}
+.cta-btn{display:inline-block;padding:14px 36px;background:var(--teal);color:var(--white);border-radius:6px;font-size:13px;font-weight:500;text-decoration:none;transition:all .25s;cursor:pointer;letter-spacing:.03em}
+.cta-btn:hover{background:var(--teal-d)}
+.cta-sub{font-family:var(--mono);font-size:9px;color:var(--g500);margin-top:18px;letter-spacing:.04em}
+.foot{padding:28px 40px;text-align:center;font-family:var(--mono);font-size:9px;color:var(--g400);border-top:1px solid var(--g200);letter-spacing:.06em;text-transform:uppercase}
+
+@media(max-width:640px){
+  section.l2{padding:44px 24px}
+  .l0-hero{padding:52px 24px 48px}.l0-hero h1{font-size:24px}
+  .l0-page{padding:44px 24px 40px}.l0-page h1{font-size:21px}
+  .l1-frame{padding:36px 24px}
+  .pain-split,.model-grid,.culture-grid,.ind-row,.svc-grid,.cap-overview{grid-template-columns:1fr}
+  .step{grid-template-columns:40px 1fr;gap:14px}.step-num{width:40px;height:40px;font-size:17px}
+  .flow-row{flex-direction:column;gap:6px}.flow-arrow{transform:rotate(90deg)}
+  .cta{padding:48px 24px}
+  .vchain-row{grid-template-columns:1fr;gap:8px}.vchain-arrow{transform:rotate(90deg);padding:4px 0}
+  .growth-steps{flex-direction:column}.growth-step::after{display:none}
+  .nav-tab{padding:16px 14px;font-size:10px}
+  .matrix-grid{grid-template-columns:72px repeat(4,1fr)}.matrix-cell{padding:8px 4px;font-size:8px}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="nav-inner">
+  <div class="nav-logo" onclick="switchTab('home')">Operating OS</div>
+  <div class="nav-tabs">
+    <div class="nav-tab active" data-tab="home">Trang chủ</div>
+    <div class="nav-sep"></div>
+    <div class="nav-tab" data-tab="model">Mô hình</div>
+    <div class="nav-sep"></div>
+    <div class="nav-tab" data-tab="services">Dịch vụ</div>
+    <div class="nav-tab" data-tab="industries">Ngành nghề</div>
+    <div class="nav-sep"></div>
+    <div class="nav-tab" data-tab="careers">Careers</div>
+  </div>
+</div></nav>
+
+<div class="page">
+
+<!-- TAB 1: TRANG CHỦ -->
+<div class="tab-content active" id="tab-home">
+  <div class="l0-hero">
+    <span class="l0-badge">Operating OS · Tổng quan</span>
+    <h1>Bạn outsource cho 10 đơn vị khác nhau. <em>Hoặc outsource cho 1 — và 1 đó tổ chức tất cả.</em></h1>
+    <p class="l0-pos">OOS là đơn vị nhận outsource tại Việt Nam — tổ chức quy trình, quản lý nhà thầu, giao kết quả đúng chuẩn quốc tế. Không phải agency. Không phải freelancer. Là lớp tổ chức.</p>
+  </div>
+  <div class="l1-frame"><div class="l1-inner">
+    <span class="l1-label">Cấu trúc trang này</span>
+    <p class="l1-narrative">Trang này đi từ <strong>vấn đề</strong> (tại sao cần OOS) → <strong>giải pháp</strong> (OOS giải quyết bằng cách nào) → <strong>cách hoạt động</strong> (bạn cần làm gì). Để hiểu sâu hơn, xem tab Mô hình.</p>
+  </div></div>
+
+  <section class="l2">
+    <div class="l2-head"><span class="l2-num">01 · Vấn đề</span><h2>Outsource không tổ chức = mất tiền, mất thời gian</h2></div>
+    <div class="l1-box"><span class="l1-label">Tại sao điều này xảy ra</span><p>Không phải nhà thầu kém. Mà không ai đứng giữa để chuẩn hoá yêu cầu, kiểm tra năng lực, quản lý tiến độ, và kiểm soát chất lượng.</p></div>
+    <div class="sp"></div>
+    <div class="pain-split">
+      <div class="pain-card" style="background:var(--red-l);border-color:#E8D0D0"><h4 style="color:var(--red)">Khi tự outsource</h4>
+        <div class="pain-item"><span class="pain-icon" style="color:var(--red)">—</span><span>Tự tìm vendor — không biết ai đáng tin</span></div>
+        <div class="pain-item"><span class="pain-icon" style="color:var(--red)">—</span><span>Brief qua Zalo — hiểu sai, sửa nhiều vòng</span></div>
+        <div class="pain-item"><span class="pain-icon" style="color:var(--red)">—</span><span>Không ai quản lý — chạy tới đâu xử lý tới đó</span></div>
+        <div class="pain-item"><span class="pain-icon" style="color:var(--red)">—</span><span>Quản lý 5–10 vendor cùng lúc = kiệt sức</span></div>
+      </div>
+      <div class="pain-card" style="background:var(--teal-l);border-color:var(--teal-m)"><h4 style="color:var(--teal)">Khi outsource qua OOS</h4>
+        <div class="pain-item"><span class="pain-icon" style="color:var(--teal)">◆</span><span>Vendor đã kiểm tra, xếp hạng, có backup</span></div>
+        <div class="pain-item"><span class="pain-icon" style="color:var(--teal)">◆</span><span>Brief chuẩn hoá — hiểu đúng từ lần đầu</span></div>
+        <div class="pain-item"><span class="pain-icon" style="color:var(--teal)">◆</span><span>Timeline, milestone, QA có hệ thống</span></div>
+        <div class="pain-item"><span class="pain-icon" style="color:var(--teal)">◆</span><span>1 đầu mối duy nhất — OOS chịu trách nhiệm</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="l2">
+    <div class="l2-head"><span class="l2-num">02 · Giải pháp</span><h2>OOS đứng giữa — tổ chức lại toàn bộ</h2></div>
+    <div class="l1-box"><span class="l1-label">Nguyên tắc giải quyết</span><p>OOS không làm thay nhà thầu. OOS tạo điều kiện để nhà thầu giỏi phát huy — và lọc ra người không đủ năng lực từ đầu. Bạn chỉ deal với 1 bên duy nhất.</p></div>
+    <div class="sp"></div>
+    <div class="sol-box">
+      <h3>Bạn giao yêu cầu. OOS giao kết quả.</h3>
+      <p>Chuẩn hoá thành quy trình, tìm và quản lý nhà thầu, kiểm soát chất lượng tại mỗi giai đoạn, giao output đúng chuẩn.</p>
+    </div>
+  </section>
+
+  <section class="l2">
+    <div class="l2-head"><span class="l2-num">03 · Cách hoạt động</span><h2>3 bước — đơn giản cho bạn, phức tạp cho OOS</h2></div>
+    <div class="l1-box"><span class="l1-label">Nguyên tắc</span><p>Mọi thứ phức tạp nằm ở phía OOS. Bạn chỉ giao đầu vào và nhận đầu ra. Giữa hai điểm đó, OOS chịu trách nhiệm toàn bộ.</p></div>
+    <div class="sp"></div>
+    <div class="steps">
+      <div class="step"><div class="step-num" style="background:var(--g800)">1</div><div><div class="step-title">Bạn giao việc</div><div class="step-desc">Yêu cầu, deadline, budget — dưới bất kỳ hình thức nào. Chưa gọn gàng cũng được — việc sắp xếp là của OOS.</div></div></div>
+      <div class="step"><div class="step-num" style="background:var(--teal)">2</div><div><div class="step-title">OOS tổ chức, vận hành, kiểm soát</div><div class="step-desc">Chuẩn hoá yêu cầu, tìm nhà thầu, phân công, timeline, QA tại mỗi giai đoạn. Cảnh báo sớm khi có rủi ro.</div></div></div>
+      <div class="step"><div class="step-num" style="background:var(--g800)">3</div><div><div class="step-title">Bạn nhận kết quả</div><div class="step-desc">Output đúng chuẩn, đúng hạn, kèm báo cáo đầy đủ. Approve tại milestone — không micro-manage.</div></div></div>
+    </div>
+  </section>
+
+  <div class="cta">
+    <h2>Bạn đang cần <em>outsource gì?</em></h2>
+    <p>Gửi cho chúng tôi — dưới bất kỳ hình thức nào. Trong 48 giờ, bạn nhận bản demo cho 1 phần nhỏ nhất của dự án.</p>
+    <a class="cta-btn" href="#">Gửi yêu cầu →</a>
+    <div class="cta-sub">Không cam kết · Không phí · Bắt đầu bằng 1 việc thật</div>
+  </div>
+</div>
+
+<!-- TAB 2: MÔ HÌNH -->
+<div class="tab-content" id="tab-model">
+  <div class="l0-page">
+    <span class="l0-badge">Mô hình · Nền tảng</span>
+    <h1>OOS đứng ở đâu trong chuỗi — <em>và tạo ra giá trị gì</em></h1>
+    <p class="l0-pos">Không thay thế ai. Chỉ tổ chức lại cách mọi bên làm việc với nhau.</p>
+  </div>
+  <div class="l1-frame"><div class="l1-inner">
+    <span class="l1-label">Cấu trúc mô hình</span>
+    <p class="l1-narrative">OOS hoạt động theo mô hình <strong>3 bên — 4 năng lực — hiệu ứng tích luỹ</strong>. Mỗi tầng được giải thích riêng bên dưới — cùng logic nền → bổ trợ → chi tiết.</p>
+  </div></div>
+
+  <section class="l2">
+    <div class="l2-head"><span class="l2-num">01 · Vị trí trong chuỗi</span><h2>Lớp tổ chức giữa doanh nghiệp và nhà thầu</h2></div>
+    <div class="l1-box"><span class="l1-label">Tại sao cần lớp này</span><p>Nhà thầu giỏi vẫn giỏi. Nhưng khi không ai chuẩn hoá brief, quản lý timeline, kiểm tra chất lượng — thì nhà thầu giỏi cũng giao output kém.</p></div>
+    <div class="sp"></div>
+    <div class="vchain-row">
+      <div class="vchain-node" style="background:var(--blue-l)"><h4 style="color:var(--blue)">Doanh nghiệp</h4><p style="color:var(--blue)">Có nhu cầu outsource<br>Không có thời gian quản lý</p></div>
+      <div class="vchain-arrow">→</div>
+      <div class="vchain-node" style="background:var(--teal-l);border:1.5px solid var(--teal)"><h4 style="color:var(--teal)">OOS</h4><p style="color:var(--teal)">Nhận việc · Tổ chức · Kiểm soát<br>Giao kết quả đúng chuẩn</p></div>
+      <div class="vchain-arrow">→</div>
+      <div class="vchain-node" style="background:var(--amber-l)"><h4 style="color:var(--amber)">Nhà thầu & Expert</h4><p style="color:var(--amber)">Thực thi công việc<br>Được brief rõ, được hỗ trợ</p></div>
+    </div>
+  </section>
+
+  <section class="l2">
+    <div class="l2-head"><span class="l2-num">02 · Ba bên tham gia</span><h2>Ai tham gia — ai được gì</h2></div>
+    <div class="l1-box"><span class="l1-label">Nguyên tắc phân phối giá trị</span><p>Mỗi bên nhận giá trị tương xứng. Doanh nghiệp nhận kết quả. OOS nhận phí tổ chức. Nhà thầu nhận brief rõ và thu nhập ổn định. Cả 3 cùng tốt hơn.</p></div>
+    <div class="sp"></div>
+    <div class="model-grid">
+      <div class="model-card" style="background:var(--blue-l)"><span class="model-role" style="color:var(--blue)">Bên giao việc</span><h4 style="color:var(--blue)">Doanh nghiệp</h4><div class="model-item">Outsource mà không loạn</div><div class="model-item">Kết quả đúng chuẩn, đúng hạn</div><div class="model-item">1 đầu mối thay vì 10 vendor</div><div class="model-item">Báo cáo sẵn sàng cho HQ</div><div class="model-bottom" style="color:var(--blue)">Trả OOS → nhận kết quả</div></div>
+      <div class="model-card" style="background:var(--teal-l)"><span class="model-role" style="color:var(--teal)">Bên tổ chức</span><h4 style="color:var(--teal)">OOS</h4><div class="model-item">Nhận việc, tổ chức, vận hành</div><div class="model-item">Kiểm soát chất lượng end-to-end</div><div class="model-item">Kết nối doanh nghiệp ↔ nhà thầu</div><div class="model-item">Mỗi dự án = hệ thống tốt hơn</div><div class="model-bottom" style="color:var(--teal)">Chịu trách nhiệm toàn bộ output</div></div>
+      <div class="model-card" style="background:var(--amber-l)"><span class="model-role" style="color:var(--amber)">Bên thực thi</span><h4 style="color:var(--amber)">Nhà thầu & Expert</h4><div class="model-item">Brief rõ ràng, ít sửa lại</div><div class="model-item">Làm đúng việc, đúng cách</div><div class="model-item">Chất lượng tăng → thu nhập tăng</div><div class="model-item">Được hỗ trợ nâng cao năng lực</div><div class="model-bottom" style="color:var(--amber)">Được trả theo công việc qua OOS</div></div>
+    </div>
+  </section>
+
+  <section class="l2">
+    <div class="l2-head"><span class="l2-num">03 · Dòng tiền</span><h2>Tiền chảy thế nào</h2></div>
+    <div class="l1-box"><span class="l1-label">Nguyên tắc dòng tiền</span><p>Doanh nghiệp chỉ trả cho 1 bên duy nhất. OOS chịu trách nhiệm phân bổ, quản lý thanh toán nhà thầu, và đảm bảo output.</p></div>
+    <div class="sp"></div>
+    <div class="flow-box">
+      <div class="flow-row"><span class="flow-node" style="background:var(--blue)">Doanh nghiệp</span><span class="flow-arrow">→</span><span class="flow-node" style="background:var(--teal)">OOS</span><span class="flow-arrow">→</span><span class="flow-node" style="background:var(--amber)">Nhà thầu</span></div>
+      <div class="flow-options">Trọn gói theo dự án · Phí quản lý theo % giá trị · Retainer hàng tháng</div>
+    </div>
+  </section>
+
+  <section class="l2">
+    <div class="l2-head"><span class="l2-num">04 · Bốn năng lực cốt lõi</span><h2>4 thứ OOS mang vào mọi dự án</h2></div>
+    <div class="l1-box"><span class="l1-label">Cấu trúc năng lực</span><p>4 năng lực hoạt động đồng thời: tổ chức → tìm người → vận hành → chuẩn hoá. Xem chi tiết công việc tại tab Dịch vụ.</p></div>
+    <div class="sp"></div>
+    <div class="cap-overview">
+      <div class="cap-mini"><div class="glyph glyph-sm" style="background:var(--teal-l);color:var(--teal)">01</div><div><h4>Tổ chức dự án</h4><p>Biến yêu cầu bừa bộn thành hệ thống: documents, timeline, phân công.</p></div></div>
+      <div class="cap-mini"><div class="glyph glyph-sm" style="background:var(--purple-l);color:var(--purple)">02</div><div><h4>Tìm & kiểm tra nhà thầu</h4><p>Tìm, kiểm tra thực tế, scorecard, luôn có backup plan.</p></div></div>
+      <div class="cap-mini"><div class="glyph glyph-sm" style="background:var(--blue-l);color:var(--blue)">03</div><div><h4>Vận hành & quản lý</h4><p>Chạy timeline, QA mỗi giai đoạn, xử lý sự cố sớm.</p></div></div>
+      <div class="cap-mini"><div class="glyph glyph-sm" style="background:var(--amber-l);color:var(--amber)">04</div><div><h4>Chuẩn hoá & Compliance</h4><p>Yêu cầu quốc tế → quy trình + checklist nhà thầu VN hiểu.</p></div></div>
+    </div>
+    <div class="ai-bar"><strong>OOS dùng AI để xử lý phần nặng</strong> — documents, phân tích, báo cáo, matching nhà thầu — nên chi phí thấp hơn thuê 1 team, nhưng output nhanh hơn và chuẩn hơn.</div>
+  </section>
+
+  <section class="l2">
+    <div class="l2-head"><span class="l2-num">05 · Hiệu ứng tích luỹ</span><h2>Dự án sau luôn tốt hơn dự án trước</h2></div>
+    <div class="l1-box"><span class="l1-label">Tại sao đây là lợi thế cấu trúc</span><p>Freelancer và agency bắt đầu từ zero mỗi lần. OOS thì không — mỗi dự án tạo ra template, checklist, vendor database có thể dùng lại.</p></div>
+    <div class="sp"></div>
+    <div class="scope-compound"><strong>Mỗi dự án OOS hoàn thành = 1 hệ thống có thể dùng lại.</strong><br>Client tiếp theo cùng ngành nhận output nhanh hơn, rẻ hơn, chuẩn hơn. OOS ngày càng tốt hơn theo thời gian.</div>
+  </section>
+</div>
+
+<!-- TAB 3: DỊCH VỤ -->
+<div class="tab-content" id="tab-services">
+  <div class="l0-page">
+    <span class="l0-badge">Dịch vụ · Chi tiết</span>
+    <h1>OOS làm gì cụ thể — <em>xem theo năng lực hoặc theo ngành</em></h1>
+    <p class="l0-pos">Mọi dịch vụ đều nằm trong ma trận 4 năng lực × 4 ngành.</p>
+  </div>
+  <div class="l1-frame"><div class="l1-inner">
+    <span class="l1-label">Cấu trúc dịch vụ</span>
+    <p class="l1-narrative">OOS không bán dịch vụ rời rạc. <strong>4 năng lực cốt lõi</strong> được áp dụng vào <strong>4 nhóm ngành</strong> — tạo thành 16 nhóm công việc cụ thể. Xem theo hàng (năng lực) hoặc theo cột (ngành).</p>
+    <div class="matrix-visual">
+      <div class="matrix-title">Ma trận dịch vụ</div>
+      <div class="matrix-grid">
+        <div class="matrix-cell matrix-header"></div><div class="matrix-cell matrix-header">Nội dung</div><div class="matrix-cell matrix-header">Thi công</div><div class="matrix-cell matrix-header">Sự kiện</div><div class="matrix-cell matrix-header">Cung ứng</div>
+        <div class="matrix-cell matrix-row-label">Tổ chức</div><div class="matrix-cell matrix-dot">◆</div><div class="matrix-cell matrix-dot">◆</div><div class="matrix-cell matrix-dot">◆</div><div class="matrix-cell matrix-dot">◆</div>
+        <div class="matrix-cell matrix-row-label">Kiểm tra</div><div class="matrix-cell matrix-dot">◆</div><div class="matrix-cell matrix-dot">◆</div><div class="matrix-cell matrix-dot">◆</div><div class="matrix-cell matrix-dot">◆</div>
+        <div class="matrix-cell matrix-row-label">Vận hành</div><div class="matrix-cell matrix-dot">◆</div><div class="matrix-cell matrix-dot">◆</div><div class="matrix-cell matrix-dot">◆</div><div class="matrix-cell matrix-dot">◆</div>
+        <div class="matrix-cell matrix-row-label">Chuẩn hoá</div><div class="matrix-cell matrix-dot">◆</div><div class="matrix-cell matrix-dot">◆</div><div class="matrix-cell matrix-dot">◆</div><div class="matrix-cell matrix-dot">◆</div>
+      </div>
+      <div class="matrix-note">16 ô giao nhau = 16 nhóm công việc. Chọn cách xem bên dưới.</div>
+    </div>
+  </div></div>
+
+  <section class="l2">
+    <div class="l2-head"><span class="l2-num">Danh sách công việc</span><h2>Bấm vào từng mục để xem chi tiết</h2></div>
+    <div class="l1-box"><span class="l1-label">Cách đọc phần này</span><p>Mỗi card có 3 lớp: tên & định vị → tại sao quan trọng (bối cảnh) → công việc cụ thể + deliverables. Chọn "Theo năng lực" hoặc "Theo ngành" tuỳ góc nhìn.</p></div>
+    <div class="sp"></div>
+    <div class="svc-toggle-bar">
+      <button class="svc-toggle-btn active" data-view="capability" onclick="switchSvcView('capability')">Theo năng lực</button>
+      <button class="svc-toggle-btn" data-view="industry" onclick="switchSvcView('industry')">Theo ngành</button>
+    </div>
+
+    <div class="svc-view active" id="svc-capability"><div class="svc-grid">
+      <div class="f-card"><div class="f-card-l0" onclick="toggleCard(this)"><div class="glyph" style="background:var(--teal-l);color:var(--teal)">01</div><div style="flex:1"><h3>Tổ chức dự án</h3><div class="f-pos">Biến yêu cầu bừa bộn thành hệ thống chạy được</div></div><span class="f-chev">▾</span></div>
+        <div class="f-card-l1"><p>Đây là năng lực nền tảng — không có tổ chức thì 3 năng lực còn lại không vận hành được. Tổ chức tốt = ít sửa, ít trễ, ít surprise.</p></div>
+        <div class="f-card-l2"><div class="f-work">Nhận brief mọi hình thức → chuẩn hoá thành production document</div><div class="f-work">Lên timeline chi tiết: milestone, deadline, buffer</div><div class="f-work">Phân công: ai làm gì, giao gì, khi nào</div><div class="f-work">Tạo bộ tài liệu: scope, budget, RACI matrix</div><div class="f-work">Quản lý communication giữa các bên</div><div class="f-tags"><span class="f-tag">Production brief</span><span class="f-tag">Timeline</span><span class="f-tag">RACI</span><span class="f-tag">Scope doc</span></div></div>
+      </div>
+      <div class="f-card"><div class="f-card-l0" onclick="toggleCard(this)"><div class="glyph" style="background:var(--purple-l);color:var(--purple)">02</div><div style="flex:1"><h3>Tìm & kiểm tra nhà thầu</h3><div class="f-pos">Không bao giờ chọn nhầm người</div></div><span class="f-chev">▾</span></div>
+        <div class="f-card-l1"><p>Nhà thầu sai = toàn bộ dự án sai. OOS kiểm tra thực tế, không dựa vào portfolio đẹp hay giá rẻ. Luôn có backup plan.</p></div>
+        <div class="f-card-l2"><div class="f-work">Research và longlist theo yêu cầu cụ thể</div><div class="f-work">Đến tận nơi kiểm tra: cơ sở, thiết bị, portfolio thực tế</div><div class="f-work">Đánh giá scorecard: chất lượng, đúng hạn, giá, communication</div><div class="f-work">Shortlist + phương án chính và backup</div><div class="f-work">Theo dõi hiệu suất qua từng dự án</div><div class="f-tags"><span class="f-tag">Vendor shortlist</span><span class="f-tag">Scorecard</span><span class="f-tag">Site visit report</span><span class="f-tag">Database</span></div></div>
+      </div>
+      <div class="f-card"><div class="f-card-l0" onclick="toggleCard(this)"><div class="glyph" style="background:var(--blue-l);color:var(--blue)">03</div><div style="flex:1"><h3>Vận hành & quản lý</h3><div class="f-pos">Bạn approve — còn lại có người lo</div></div><span class="f-chev">▾</span></div>
+        <div class="f-card-l1"><p>Tổ chức tốt mà không ai vận hành = kế hoạch nằm trên giấy. OOS chạy hàng ngày, phát hiện vấn đề sớm, xử lý trước khi ảnh hưởng output.</p></div>
+        <div class="f-card-l2"><div class="f-work">Quản lý tiến độ hàng ngày/hàng tuần</div><div class="f-work">QA tại mỗi milestone: review output trước khi giao</div><div class="f-work">Phát hiện và xử lý sự cố sớm</div><div class="f-work">Quản lý thay đổi scope, phát sinh, budget</div><div class="f-work">Post-project review và lessons learned</div><div class="f-tags"><span class="f-tag">Progress report</span><span class="f-tag">QA checklist</span><span class="f-tag">Risk log</span><span class="f-tag">Post-mortem</span></div></div>
+      </div>
+      <div class="f-card"><div class="f-card-l0" onclick="toggleCard(this)"><div class="glyph" style="background:var(--amber-l);color:var(--amber)">04</div><div style="flex:1"><h3>Chuẩn hoá & Compliance</h3><div class="f-pos">Audit đến lúc nào cũng sẵn sàng</div></div><span class="f-chev">▾</span></div>
+        <div class="f-card-l1"><p>Nhiều doanh nghiệp bị HQ hoặc auditor phạt vì thiếu tài liệu — dù output tốt. OOS tạo compliance layer từ đầu.</p></div>
+        <div class="f-card-l2"><div class="f-work">Nhận brand guidelines, safety standards, ESG requirements từ HQ</div><div class="f-work">Dịch thành SOP, checklist, template tiếng Việt</div><div class="f-work">Training nhà thầu hiểu và áp dụng đúng</div><div class="f-work">Audit compliance tại mỗi giai đoạn</div><div class="f-work">Tạo tài liệu audit-ready cho HQ review</div><div class="f-tags"><span class="f-tag">Localized SOP</span><span class="f-tag">Compliance checklist</span><span class="f-tag">Training deck</span><span class="f-tag">Audit report</span></div></div>
+      </div>
+    </div></div>
+
+    <div class="svc-view" id="svc-industry"><div class="svc-full">
+      <div class="f-card"><div class="f-card-l0" onclick="toggleCard(this)"><div class="glyph" style="background:var(--teal-l);color:var(--teal)">N</div><div style="flex:1"><h3>Sản xuất nội dung</h3><div class="f-pos">Video, photo, VO, social content — từ brief đến final output</div></div><span class="f-chev">▾</span></div>
+        <div class="f-card-l1"><p>Scope điển hình: OOS quản lý toàn bộ production từ script đến delivery. Ê-kíp do OOS tìm, kiểm tra, và quản lý. Client chỉ approve tại milestone.</p></div>
+        <div class="f-card-l2"><div class="f-work">Video corporate: quản lý production — script, casting, quay, edit, color, sound</div><div class="f-work">TVC & quảng cáo: tổ chức ê-kíp, schedule quay, QA từng version</div><div class="f-work">Social content: content calendar, brief creative team, quản lý output hàng loạt</div><div class="f-work">Photo production: tìm photographer, quản lý shoot, giao file đúng format</div><div class="f-work">VO production: casting giọng đọc, quản lý thu âm, master audio</div><div class="f-tags"><span class="f-tag">Production brief</span><span class="f-tag">Shot list</span><span class="f-tag">Storyboard</span><span class="f-tag">QA report</span><span class="f-tag">Final output</span></div></div>
+      </div>
+      <div class="f-card"><div class="f-card-l0" onclick="toggleCard(this)"><div class="glyph" style="background:var(--blue-l);color:var(--blue)">T</div><div style="flex:1"><h3>Thi công & Fit-out</h3><div class="f-pos">Showroom, cửa hàng, văn phòng — quản lý từ bản vẽ đến nghiệm thu</div></div><span class="f-chev">▾</span></div>
+        <div class="f-card-l1"><p>Scope điển hình: OOS nhận design intent, dịch thành scope of work, tìm nhà thầu, giám sát thi công, nghiệm thu. Client nhận bàn giao hoàn thiện.</p></div>
+        <div class="f-card-l2"><div class="f-work">Showroom & cửa hàng: quản lý thi công, giám sát đồng bộ nhiều điểm</div><div class="f-work">Văn phòng: scope of work, phối hợp nhà thầu M&E, nội thất</div><div class="f-work">Biển hiệu & signage: quản lý sản xuất, lắp đặt, kiểm tra chất lượng</div><div class="f-work">Nghiệm thu: inspection checklist, punch list, handover docs</div><div class="f-tags"><span class="f-tag">Scope of work</span><span class="f-tag">BOQ review</span><span class="f-tag">Progress report</span><span class="f-tag">Handover docs</span></div></div>
+      </div>
+      <div class="f-card"><div class="f-card-l0" onclick="toggleCard(this)"><div class="glyph" style="background:var(--purple-l);color:var(--purple)">S</div><div style="flex:1"><h3>Sự kiện & Activation</h3><div class="f-pos">Event, product launch, roadshow — OOS quản lý, bạn chỉ xuất hiện</div></div><span class="f-chev">▾</span></div>
+        <div class="f-card-l1"><p>Scope điển hình: OOS nhận brief event, lên plan, tìm & quản lý tất cả vendor, chạy on-site, báo cáo post-event. Client chỉ duyệt và xuất hiện.</p></div>
+        <div class="f-card-l2"><div class="f-work">Event corporate: tổ chức venue, AV, catering, decor — 1 đầu mối</div><div class="f-work">Product launch: creative production, demo setup, media logistics</div><div class="f-work">Activation & roadshow: multi-location, đồng bộ execution, staffing</div><div class="f-work">On-site: rundown chi tiết, rehearsal, xử lý sự cố real-time</div><div class="f-tags"><span class="f-tag">Event plan</span><span class="f-tag">Rundown</span><span class="f-tag">Budget tracker</span><span class="f-tag">Post-event report</span></div></div>
+      </div>
+      <div class="f-card"><div class="f-card-l0" onclick="toggleCard(this)"><div class="glyph" style="background:var(--amber-l);color:var(--amber)">C</div><div style="flex:1"><h3>Chuỗi cung ứng</h3><div class="f-pos">Procurement, logistics, vendor management, quality control</div></div><span class="f-chev">▾</span></div>
+        <div class="f-card-l1"><p>Scope điển hình: OOS chuẩn hoá quy trình mua sắm, xây vendor database, kiểm tra chất lượng đầu vào, báo cáo monthly. Client nhận hệ thống chạy liên tục.</p></div>
+        <div class="f-card-l2"><div class="f-work">Procurement: chuẩn hoá quy trình, RFQ, so sánh báo giá</div><div class="f-work">Supplier management: đánh giá, xếp hạng, theo dõi hiệu suất</div><div class="f-work">Logistics: quản lý đơn hàng, theo dõi giao nhận</div><div class="f-work">Quality control: kiểm tra đầu vào, sampling, inspection report</div><div class="f-work">Cost optimization: benchmark giá, phân tích chi phí</div><div class="f-tags"><span class="f-tag">Procurement SOP</span><span class="f-tag">Vendor database</span><span class="f-tag">Cost analysis</span><span class="f-tag">QC checklist</span></div></div>
+      </div>
+    </div></div>
+    <div class="sp-l"></div>
+    <div class="ai-bar"><strong>Mọi dịch vụ đều được hỗ trợ bởi AI</strong> — documents, phân tích, matching nhà thầu. Output nhanh hơn, chi phí thấp hơn.</div>
+  </section>
+  <div class="cta"><h2>Không chắc hạng mục nào <em>phù hợp?</em></h2><p>Gửi yêu cầu — OOS sẽ phân tích và đề xuất scope phù hợp nhất.</p><a class="cta-btn" href="#">Gửi yêu cầu →</a></div>
+</div>
+
+<!-- TAB 4: NGÀNH NGHỀ -->
+<div class="tab-content" id="tab-industries">
+  <div class="l0-page">
+    <span class="l0-badge">Ngành nghề · Chi tiết</span>
+    <h1>Cùng 4 năng lực — <em>áp dụng khác nhau theo ngành</em></h1>
+    <p class="l0-pos">Mỗi ngành có rủi ro riêng, tiêu chuẩn riêng, nhà thầu riêng.</p>
+  </div>
+  <div class="l1-frame"><div class="l1-inner">
+    <span class="l1-label">Cấu trúc phần này</span>
+    <p class="l1-narrative">Mỗi ngành được trình bày theo <strong>3 lớp</strong>: đặc thù ngành → pain point cụ thể → cách OOS thích ứng. Tab Dịch vụ cho bạn danh sách công việc — tab này cho bạn hiểu <strong>tại sao cách làm khác nhau giữa các ngành</strong>.</p>
+  </div></div>
+
+  <section class="l2">
+    <div class="l2-head"><span class="l2-num">4 ngành đang hoạt động</span><h2>OOS hiểu từng ngành vì đã làm dự án thật</h2></div>
+    <div class="l1-box"><span class="l1-label">Cách đọc</span><p>Mỗi card có 3 lớp: định vị ngành (ngoài cùng) → đặc thù & rủi ro (nền xám) → pain point vs giải pháp (bên trong).</p></div>
+    <div class="sp"></div>
+    <div class="ind-list">
+      <div class="ind-card">
+        <div class="ind-l0"><div class="glyph" style="background:var(--teal-l);color:var(--teal)">N</div><div><h3>Sản xuất nội dung</h3><div class="ind-pos">Video corporate, TVC, social content, photo, VO — cho doanh nghiệp cần sản xuất liên tục nhưng không muốn nuôi team in-house.</div></div></div>
+        <div class="ind-l1">Ngành content có đặc thù: output mang tính chủ quan cao, ê-kíp freelance không đồng đều, và sửa đổi thường xảy ra vì brief không rõ từ đầu.</div>
+        <div class="ind-l2"><div class="ind-row"><div class="ind-box" style="background:var(--red-l);color:var(--red)"><h5>Pain point</h5>Ê-kíp không đồng đều. Brief hiểu sai. Edit 3–4 vòng. Không ai quản lý khi chạy nhiều project song song.</div><div class="ind-box" style="background:var(--teal-l);color:var(--teal-d)"><h5>OOS thích ứng</h5>Production document chuẩn từ đầu. Scorecard cho ê-kíp. QA tại mỗi milestone. Bạn approve 2 lần, không sửa 4 vòng.</div></div></div>
+      </div>
+      <div class="ind-card">
+        <div class="ind-l0"><div class="glyph" style="background:var(--blue-l);color:var(--blue)">T</div><div><h3>Thi công & Fit-out</h3><div class="ind-pos">Showroom, cửa hàng, văn phòng, biển hiệu — cho thương hiệu cần triển khai đồng bộ nhiều điểm.</div></div></div>
+        <div class="ind-l1">Thi công là ngành có rủi ro phát sinh chi phí cao nhất. Nguyên nhân chính: scope không rõ, vật liệu thay đổi, giám sát không liên tục.</div>
+        <div class="ind-l2"><div class="ind-row"><div class="ind-box" style="background:var(--red-l);color:var(--red)"><h5>Pain point</h5>Nhà thầu hay trễ. Phát sinh chi phí không báo. Chất lượng khác nhau giữa điểm. Vật liệu sai spec phát hiện muộn.</div><div class="ind-box" style="background:var(--teal-l);color:var(--teal-d)"><h5>OOS thích ứng</h5>Scope of work chuẩn hoá. Inspection tại mỗi phase. Giám sát hàng tuần. Phát hiện sớm sai lệch. Báo cáo đồng bộ.</div></div></div>
+      </div>
+      <div class="ind-card">
+        <div class="ind-l0"><div class="glyph" style="background:var(--purple-l);color:var(--purple)">S</div><div><h3>Sự kiện & Activation</h3><div class="ind-pos">Event corporate, product launch, activation, roadshow — cho doanh nghiệp cần execution chuyên nghiệp.</div></div></div>
+        <div class="ind-l1">Sự kiện phối hợp nhiều bên nhất trong thời gian ngắn nhất. Không có margin sai — D-day là deadline cứng.</div>
+        <div class="ind-l2"><div class="ind-row"><div class="ind-box" style="background:var(--red-l);color:var(--red)"><h5>Pain point</h5>Quá nhiều nhà thầu phối hợp. 1 bên trễ = cả event ảnh hưởng. Chi phí phát sinh phút cuối.</div><div class="ind-box" style="background:var(--teal-l);color:var(--teal-d)"><h5>OOS thích ứng</h5>1 đầu mối tất cả vendor. Rundown chi tiết. Rehearsal có checklist. Xử lý sự cố on-site. Budget tracker real-time.</div></div></div>
+      </div>
+      <div class="ind-card">
+        <div class="ind-l0"><div class="glyph" style="background:var(--amber-l);color:var(--amber)">C</div><div><h3>Chuỗi cung ứng</h3><div class="ind-pos">Procurement, logistics, vendor management, quality control — cho doanh nghiệp cần tối ưu chi phí.</div></div></div>
+        <div class="ind-l1">Chuỗi cung ứng là nơi compound effect mạnh nhất — mỗi lần mua sắm có hệ thống đều rẻ hơn lần trước.</div>
+        <div class="ind-l2"><div class="ind-row"><div class="ind-box" style="background:var(--red-l);color:var(--red)"><h5>Pain point</h5>Mua sắm không hệ thống. Nhà cung cấp không đánh giá liên tục. Chi phí tăng không benchmark.</div><div class="ind-box" style="background:var(--teal-l);color:var(--teal-d)"><h5>OOS thích ứng</h5>Vendor database chuẩn hoá. Procurement SOP. Cost benchmark. QC checklist. Báo cáo monthly.</div></div></div>
+      </div>
+    </div>
+  </section>
+  <section class="l2">
+    <div class="l2-head"><span class="l2-num">Hiệu ứng ngành</span><h2>Mỗi ngành hoàn thành = 1 hệ thống dùng lại</h2></div>
+    <div class="l1-box"><span class="l1-label">Tại sao điều này có lợi cho bạn</span><p>Khi OOS đã hoàn thành dự án trong ngành của bạn, toàn bộ template, checklist, vendor database đã sẵn sàng. Dự án của bạn được hưởng lợi từ những dự án trước.</p></div>
+  </section>
+  <div class="cta"><h2>Ngành của bạn <em>chưa có trong danh sách?</em></h2><p>4 năng lực cốt lõi áp dụng được cho bất kỳ ngành nào có outsource.</p><a class="cta-btn" href="#">Gửi yêu cầu →</a></div>
+</div>
+
+<!-- TAB 5: CAREERS -->
+<div class="tab-content" id="tab-careers">
+  <div class="l0-page">
+    <span class="l0-badge">Careers · Bổ trợ</span>
+    <h1>Xây hệ thống cho người khác — <em>bắt đầu bằng xây chính mình</em></h1>
+    <p class="l0-pos">OOS tìm người muốn giải quyết vấn đề thật, không tìm người muốn ngồi đúng chỗ.</p>
+  </div>
+  <div class="l1-frame"><div class="l1-inner">
+    <span class="l1-label">Cấu trúc phần này</span>
+    <p class="l1-narrative">Phần Careers trình bày theo <strong>3 lớp</strong>: văn hoá (nền tảng — OOS vận hành nội bộ thế nào) → vị trí tuyển dụng (cụ thể — cần người gì) → lộ trình phát triển (dài hạn — đi đâu từ đây).</p>
+  </div></div>
+
+  <section class="l2">
+    <div class="l2-head"><span class="l2-num">01 · Văn hoá</span><h2>4 nguyên tắc vận hành nội bộ</h2></div>
+    <div class="l1-box"><span class="l1-label">Tại sao văn hoá quan trọng ở OOS</span><p>OOS bán khả năng tổ chức — nên cách tổ chức nội bộ chính là sản phẩm. Nếu team không vận hành có hệ thống, chúng tôi không thể giúp client vận hành có hệ thống.</p></div>
+    <div class="sp"></div>
+    <div class="culture-grid">
+      <div class="culture-card"><h4>Ownership, không phải task</h4><p>Bạn sở hữu kết quả, không phải to-do list. Được giao bối cảnh đầy đủ, tự quyết cách làm, chịu trách nhiệm output.</p></div>
+      <div class="culture-card"><h4>Hệ thống trước, anh hùng sau</h4><p>Không ai chạy bằng ý chí. Mọi thứ chạy bằng quy trình, template, checklist. Người giỏi là người xây được hệ thống cho người tiếp theo.</p></div>
+      <div class="culture-card"><h4>AI-first mindset</h4><p>AI giúp bạn xử lý phần nặng nhanh hơn. Nếu AI làm tốt hơn, bạn nên để AI làm và tập trung vào phần chỉ con người làm được.</p></div>
+      <div class="culture-card"><h4>Học từ hiện trường</h4><p>Lý thuyết chỉ là điểm bắt đầu. Bạn sẽ đi thực tế, gặp nhà thầu, xem công trường, ngồi với client. Kiến thức đến từ dự án thật.</p></div>
+    </div>
+  </section>
+
+  <section class="l2">
+    <div class="l2-head"><span class="l2-num">02 · Vị trí đang tuyển</span><h2>Tìm người giải quyết vấn đề — không tìm title</h2></div>
+    <div class="l1-box"><span class="l1-label">Cách tuyển dụng tại OOS</span><p>Mỗi vị trí bắt đầu bằng 1 dự án thật. Bạn chứng minh bằng kết quả, không phải CV. Nếu output tốt, bạn ở lại. Nếu không — cả hai đều biết sớm.</p></div>
+    <div class="sp"></div>
+    <div class="role-list">
+      <div class="role-card"><div><span class="role-type" style="color:var(--teal)">Operations</span><h4>Project Coordinator</h4><p>Quản lý timeline, brief, vendor. Cho người thích sắp xếp và theo dõi chi tiết.</p></div><div class="role-badge" style="background:var(--teal-l);color:var(--teal)">Đang tuyển</div></div>
+      <div class="role-card"><div><span class="role-type" style="color:var(--blue)">Quality</span><h4>QA & Compliance Specialist</h4><p>Kiểm tra output, audit quy trình, đảm bảo chuẩn quốc tế.</p></div><div class="role-badge" style="background:var(--blue-l);color:var(--blue)">Đang tuyển</div></div>
+      <div class="role-card"><div><span class="role-type" style="color:var(--purple)">Vendor Network</span><h4>Vendor Scout</h4><p>Tìm, kiểm tra, đánh giá nhà thầu tại hiện trường.</p></div><div class="role-badge" style="background:var(--purple-l);color:var(--purple)">Đang tuyển</div></div>
+      <div class="role-card"><div><span class="role-type" style="color:var(--amber)">Technology</span><h4>AI & Systems Builder</h4><p>Xây tool nội bộ, automation, AI workflow.</p></div><div class="role-badge" style="background:var(--amber-l);color:var(--amber)">Sắp mở</div></div>
+    </div>
+  </section>
+
+  <section class="l2">
+    <div class="l2-head"><span class="l2-num">03 · Lộ trình phát triển</span><h2>Bắt đầu nhỏ — nhưng đi xa</h2></div>
+    <div class="l1-box"><span class="l1-label">Triết lý phát triển</span><p>OOS không phát triển người bằng training class. Bạn phát triển bằng cách sở hữu scope ngày càng lớn — từ 1 phần nhỏ, đến 1 dự án, đến 1 hệ thống, đến 1 ngành.</p></div>
+    <div class="sp"></div>
+    <div class="growth-path">
+      <h3>Từ dự án đầu tiên đến dẫn dắt 1 ngành</h3>
+      <div class="growth-steps">
+        <div class="growth-step"><span class="gs-num">Tháng 1–3</span><h5>Học từ dự án thật</h5><p>Tham gia dự án, hiểu quy trình, sở hữu 1 phần nhỏ</p></div>
+        <div class="growth-step"><span class="gs-num">Tháng 3–6</span><h5>Sở hữu output</h5><p>Chạy 1 dự án đầu cuối, chịu trách nhiệm kết quả</p></div>
+        <div class="growth-step"><span class="gs-num">Tháng 6–12</span><h5>Xây hệ thống</h5><p>Chuẩn hoá quy trình thành template cho người tiếp theo</p></div>
+        <div class="growth-step"><span class="gs-num">Năm 2+</span><h5>Dẫn dắt ngành</h5><p>Sở hữu 1 vertical, xây team, đóng góp chiến lược</p></div>
+      </div>
+    </div>
+  </section>
+  <div class="cta"><h2>Muốn <em>thử trước?</em></h2><p>Gửi 1 thứ bạn đã làm mà bạn tự hào. OOS đánh giá qua output, không qua CV.</p><a class="cta-btn" href="#">Gửi portfolio →</a><div class="cta-sub">Hoặc nhắn trực tiếp qua Zalo — kể về 1 vấn đề bạn đã giải quyết</div></div>
+</div>
+
+<div class="foot">Operating OS — Nhận outsource, tổ chức, giao kết quả đúng chuẩn</div>
+</div>
+
+<script>
+function switchTab(t){document.querySelectorAll('.tab-content').forEach(function(e){e.classList.remove('active')});document.querySelectorAll('.nav-tab').forEach(function(e){e.classList.remove('active')});document.getElementById('tab-'+t).classList.add('active');document.querySelector('[data-tab="'+t+'"]').classList.add('active');window.scrollTo({top:0,behavior:'smooth'})}
+document.querySelectorAll('.nav-tab').forEach(function(t){t.addEventListener('click',function(){switchTab(this.getAttribute('data-tab'))})});
+function switchSvcView(v){document.querySelectorAll('.svc-view').forEach(function(e){e.classList.remove('active')});document.querySelectorAll('.svc-toggle-btn').forEach(function(e){e.classList.remove('active')});document.getElementById('svc-'+v).classList.add('active');document.querySelector('[data-view="'+v+'"]').classList.add('active');document.querySelectorAll('.f-card.open').forEach(function(c){c.classList.remove('open')})}
+function toggleCard(el){el.closest('.f-card').classList.toggle('open')}
+</script>
+</body>
+</html>
