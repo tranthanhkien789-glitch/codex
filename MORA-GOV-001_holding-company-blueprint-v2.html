@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mora · Holding Company Blueprint</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#FAF9F6;--cream-dk:#F2EFE9;--linen:#E8DFD0;--linen-dk:#C4B49A;
+  --ink:#1A1916;--i80:rgba(26,25,22,.8);--i60:rgba(26,25,22,.6);
+  --i30:rgba(26,25,22,.3);--i12:rgba(26,25,22,.12);--i06:rgba(26,25,22,.06);
+  --teal:#0F6E56;--td:#085041;--tl:#E1F5EE;--tm:#5DCAA5;
+  --amber:#854F0B;--ad:#633806;--al:#FAEEDA;--am:#EF9F27;
+  --blue:#185FA5;--bl:#E6F1FB;
+  --w50:#F5F0E8;--w400:#C4B49A;--w600:#8C7A62;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+  --mono:'DM Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.6}
+
+/* ── TOPBAR ── */
+.topbar{position:sticky;top:0;z-index:500;background:var(--ink);height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 36px;gap:16px}
+.topbar-l{display:flex;align-items:center;gap:14px}
+.topbar-brand{font-family:var(--serif);font-size:17px;font-weight:300;color:var(--cream);letter-spacing:.06em}
+.topbar-sep{width:1px;height:20px;background:rgba(250,249,246,.12)}
+.topbar-doc{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--tm)}
+.topbar-r{display:flex;gap:8px;align-items:center}
+.topbar-badge{font-family:var(--mono);font-size:8px;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:2px;border:1px solid rgba(250,249,246,.1);color:var(--w600)}
+.topbar-badge.conf{background:rgba(133,79,11,.15);color:var(--am);border-color:rgba(133,79,11,.3)}
+
+/* ── HERO ── */
+.hero{background:var(--ink);padding:56px 48px 48px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;right:-15%;width:800px;height:800px;background:radial-gradient(ellipse,rgba(15,110,86,.06) 0%,transparent 60%);border-radius:50%}
+.hero-inner{position:relative;z-index:1;max-width:920px;margin:0 auto}
+.hero .ey{font-family:var(--mono);font-size:9px;color:var(--am);letter-spacing:.2em;text-transform:uppercase;margin-bottom:14px}
+.hero h1{font-family:var(--serif);font-size:clamp(32px,5vw,52px);font-weight:300;line-height:1.08;color:var(--cream);margin-bottom:14px;letter-spacing:-.01em}
+.hero h1 em{font-weight:400;font-style:italic;color:var(--tm)}
+.hero-p{font-size:13px;color:var(--w400);max-width:640px;line-height:1.8;margin-bottom:32px}
+.hero-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;padding-top:24px;border-top:1px solid rgba(255,255,255,.06)}
+.hg-v{font-family:var(--serif);font-size:28px;font-weight:300;color:var(--cream)}
+.hg-l{font-family:var(--mono);font-size:8px;color:var(--w600);letter-spacing:.06em;text-transform:uppercase;margin-top:3px;line-height:1.4}
+@media(max-width:640px){.hero{padding:40px 24px 36px}.hero-grid{grid-template-columns:1fr 1fr}}
+
+/* ── TABS ── */
+.tab-wrap{background:var(--cream);border-bottom:1px solid var(--linen);position:sticky;top:52px;z-index:200}
+.tabs{display:flex;padding:0 48px;overflow-x:auto;scrollbar-width:none;max-width:920px;margin:0 auto}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;padding:13px 14px;font-family:var(--mono);font-size:8px;text-transform:uppercase;letter-spacing:.05em;color:var(--w600);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s;background:none;border-top:none;border-left:none;border-right:none}
+.tab:hover{color:var(--ink)}
+.tab.a{color:var(--teal);border-bottom-color:var(--teal);font-weight:500}
+
+/* ── MAIN ── */
+.main{max-width:920px;margin:0 auto;padding:0 48px 100px}
+@media(max-width:640px){.main{padding:0 20px 60px}}
+.pnl{display:none;padding-top:40px}
+.pnl.v{display:block;animation:fi .25s ease}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── TYPOGRAPHY ── */
+.ey{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:var(--i60);margin-bottom:8px}
+.sh{font-family:var(--serif);font-size:clamp(28px,4vw,40px);font-weight:300;line-height:1.1;margin-bottom:10px}
+.sh em{font-style:italic;color:var(--teal)}
+.ss{font-size:13px;color:var(--w600);margin-bottom:28px;max-width:640px;line-height:1.8}
+.sub{font-family:var(--serif);font-size:20px;font-weight:400;color:var(--ink);margin:40px 0 14px}
+.bd{font-size:13px;color:var(--i60);line-height:1.8;margin-bottom:16px}
+hr{border:none;border-top:1px solid var(--i12);margin:44px 0}
+
+/* ── STATEMENT ── */
+.stmt{border-left:2px solid var(--teal);padding:18px 24px;margin:20px 0;background:var(--tl);border-radius:0 3px 3px 0}
+.stmt p{font-family:var(--serif);font-size:16px;font-weight:300;line-height:1.75;color:var(--ink)}
+
+/* ── EXPLAINER — visual callout for key concepts ── */
+.expl{margin:24px 0;border:1px solid var(--i12);border-radius:4px;overflow:hidden}
+.expl-hd{padding:12px 20px;border-bottom:1px solid var(--i12);display:flex;align-items:center;gap:10px}
+.expl-icon{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.expl-icon.teal{background:var(--teal)}
+.expl-icon.amber{background:var(--amber)}
+.expl-icon.blue{background:var(--blue)}
+.expl-title{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);font-weight:500}
+.expl-body{padding:20px}
+.expl-body p{font-size:13px;color:var(--ink);line-height:1.8;margin-bottom:12px}
+.expl-body p:last-child{margin-bottom:0}
+.expl-body strong{color:var(--teal);font-weight:500}
+.expl-body .detail{font-size:12px;color:var(--i60);line-height:1.7;padding-top:12px;margin-top:12px;border-top:1px solid var(--i12)}
+.expl.teal{border-color:var(--teal)}.expl.teal .expl-hd{background:var(--tl)}
+.expl.amber{border-color:var(--amber)}.expl.amber .expl-hd{background:var(--al)}
+.expl.amber .expl-body strong{color:var(--amber)}
+
+/* ── ORG ── */
+.org{margin:28px 0}
+.org-box{padding:20px 24px;border-radius:4px;margin-bottom:4px}
+.org-box.t1{background:var(--ink);color:var(--cream)}
+.org-box.t2{background:rgba(26,25,22,.75);color:var(--cream)}
+.org-box.t3{background:rgba(26,25,22,.55);color:var(--cream)}
+.org-box.t4{background:rgba(26,25,22,.35);color:var(--cream)}
+.org-label{font-family:var(--mono);font-size:8px;letter-spacing:.12em;text-transform:uppercase;opacity:.5;margin-bottom:6px}
+.org-name{font-family:var(--serif);font-size:22px;font-weight:300;margin-bottom:4px}
+.org-desc{font-size:11px;opacity:.7;line-height:1.6}
+.org-own{font-family:var(--mono);font-size:10px;color:var(--tm);margin-top:8px}
+.org-flow{display:flex;justify-content:center;padding:4px 0}
+.org-flow-arrow{font-family:var(--mono);font-size:9px;color:var(--i30);letter-spacing:.1em}
+.org-row{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+@media(max-width:640px){.org-row{grid-template-columns:1fr}}
+
+/* ── CARDS ── */
+.cg{display:grid;gap:12px;margin:20px 0}
+.cg2{grid-template-columns:1fr 1fr}
+.cg3{grid-template-columns:1fr 1fr 1fr}
+@media(max-width:640px){.cg2,.cg3{grid-template-columns:1fr}}
+.cd{background:#fff;border:1px solid var(--linen);border-radius:4px;padding:18px 20px}
+.cd-ey{font-family:var(--mono);font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:var(--w600);margin-bottom:6px}
+.cd-h{font-family:var(--serif);font-size:17px;font-weight:400;color:var(--ink);margin-bottom:6px}
+.cd-b{font-size:12px;color:var(--i60);line-height:1.65}
+.cd.teal{border-color:var(--teal);background:var(--tl)}.cd.teal .cd-ey{color:var(--td)}
+.cd.amber{border-color:var(--amber);background:var(--al)}.cd.amber .cd-ey{color:var(--amber)}
+
+/* ── TABLE ── */
+.tb{width:100%;border-collapse:collapse;margin:16px 0}
+.tb th{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:var(--i60);text-align:left;padding:9px 14px;border-bottom:1px solid var(--i12);background:var(--i06);font-weight:400}
+.tb td{padding:10px 14px;border-bottom:1px solid var(--i12);font-size:12px;vertical-align:top;color:var(--ink);line-height:1.6}
+.tb td.m{color:var(--i60);font-size:11px}
+.tb td.mn{font-family:var(--mono);font-size:11px}
+.tb td.tl{color:var(--teal);font-weight:500}
+.tb td.am{color:var(--amber)}
+.tb tr:hover td{background:var(--i06)}
+
+/* ── CHAIN ── */
+.chain{display:flex;flex-direction:column;gap:0;margin:16px 0}
+.ci{display:flex;gap:16px;padding:12px 0;border-top:1px solid var(--i12);align-items:flex-start}
+.ci:last-child{border-bottom:1px solid var(--i12)}
+.cn{font-family:var(--mono);font-size:10px;color:var(--i30);min-width:28px;padding-top:2px;flex-shrink:0}
+.ct{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:3px}
+.cdd{font-size:12px;color:var(--i60);line-height:1.55}
+
+/* ── ESCALATION ── */
+.esc{margin:24px 0}
+.esc-tier{padding:18px 24px;border-radius:4px;margin-bottom:8px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center}
+.esc-tier.t1{background:var(--ink);color:var(--cream)}
+.esc-tier.t2{background:rgba(26,25,22,.75);color:var(--cream)}
+.esc-tier.t3{background:rgba(26,25,22,.5);color:var(--cream)}
+.esc-left{}
+.esc-label{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;opacity:.5;margin-bottom:4px}
+.esc-name{font-family:var(--serif);font-size:20px;font-weight:300;margin-bottom:4px}
+.esc-items{font-size:11px;opacity:.65;line-height:1.6}
+.esc-threshold{font-family:var(--mono);font-size:12px;padding:8px 16px;border:1px solid var(--am);border-radius:3px;color:var(--am);white-space:nowrap}
+.esc-flow-label{display:flex;justify-content:center;gap:32px;padding:2px 0;font-family:var(--mono);font-size:9px;color:var(--i30);letter-spacing:.08em}
+
+/* ── LEGAL REF ── */
+.law-ref{display:flex;gap:0;margin:16px 0;border:1px solid var(--i12);border-radius:4px;overflow:hidden}
+.law-ref-col{flex:1;padding:16px 18px;border-right:1px solid var(--i12)}
+.law-ref-col:last-child{border-right:none}
+.law-ref-label{font-family:var(--mono);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:8px}
+.law-ref-item{font-size:11px;color:var(--ink);line-height:1.7;margin-bottom:6px}
+.law-ref-item span{font-size:10px;color:var(--i60);display:block;margin-top:1px}
+@media(max-width:640px){.law-ref{flex-direction:column}.law-ref-col{border-right:none;border-bottom:1px solid var(--i12)}.law-ref-col:last-child{border-bottom:none}}
+
+/* ── TIMELINE ── */
+.tl{display:flex;flex-direction:column;gap:0;margin:20px 0}
+.tl-r{display:grid;grid-template-columns:100px 1fr;gap:0;border-top:1px solid var(--i12)}
+.tl-r:last-child{border-bottom:1px solid var(--i12)}
+.tl-w{padding:14px 0;font-family:var(--mono);font-size:10px;color:var(--teal);letter-spacing:.04em;line-height:1.5}
+.tl-c{padding:14px 0 14px 20px;border-left:1px solid var(--i12)}
+.tl-t{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:3px}
+.tl-d{font-size:12px;color:var(--i60);line-height:1.55}
+.tl-tag{display:inline-block;font-family:var(--mono);font-size:8px;padding:2px 8px;border-radius:2px;margin-top:4px}
+.tl-tag.crit{background:var(--tl);color:var(--td)}
+.tl-tag.opt{background:var(--al);color:var(--ad)}
+
+/* ── BUILDING DIAGRAM ── */
+.bldg{margin:24px 0;border-radius:4px;overflow:hidden}
+.bldg-floor{padding:22px 24px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center}
+.bldg-floor-label{font-family:var(--mono);font-size:8px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px}
+.bldg-floor-name{font-family:var(--serif);font-size:22px;font-weight:300;margin-bottom:4px}
+.bldg-floor-desc{font-size:11px;line-height:1.6}
+.bldg-floor-meta{font-family:var(--mono);font-size:10px;text-align:right;line-height:1.6}
+
+/* ── FOOTER ── */
+.footer{max-width:920px;margin:0 auto;padding:28px 48px;border-top:1px solid var(--i12);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.footer-b{font-family:var(--serif);font-size:18px;font-weight:300}
+.footer-n{font-family:var(--mono);font-size:9px;color:var(--w600);letter-spacing:.05em}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-l">
+    <div class="topbar-brand">Mora</div>
+    <div class="topbar-sep"></div>
+    <div class="topbar-doc">Holding Company Blueprint</div>
+  </div>
+  <div class="topbar-r">
+    <div class="topbar-badge conf">Bảo mật · Nội bộ sáng lập</div>
+    <div class="topbar-badge">MORA-GOV-001 · v2.0</div>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="ey">Tài liệu nội bộ · Kiên &amp; Đài · Không phải investor-facing</div>
+    <h1>Holding Company<br><em>Blueprint</em></h1>
+    <p class="hero-p">Kiến trúc tập đoàn gia đình hai nhà sáng lập. Holding đồng sở hữu bởi Kiên và Đài, không bao giờ dilute. Mora và Radio Pictures vận hành riêng, sáng tạo riêng — chia sẻ DNA, shared services, và IP governance từ một nguồn duy nhất. Thiết kế sẵn cho mở rộng quốc tế và các cuộc chơi lớn hơn.</p>
+    <div class="hero-grid">
+      <div><div class="hg-v">1</div><div class="hg-l">Holding · Kiên &amp; Đài<br>đồng sở hữu vĩnh viễn</div></div>
+      <div><div class="hg-v">2+</div><div class="hg-l">Pháp nhân con<br>Mora · Radio Pictures · ...</div></div>
+      <div><div class="hg-v">3</div><div class="hg-l">Tầng quản trị<br>Corporate · Hub · BU</div></div>
+      <div><div class="hg-v">10–15%</div><div class="hg-l">Dự phòng chiến lược<br>Đối tác quyền lực · Quốc tế</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tab-wrap" id="tabs">
+  <div class="tabs">
+    <button class="tab a" onclick="sw(0,this)">01 · Tổng quan</button>
+    <button class="tab" onclick="sw(1,this)">02 · Pháp nhân</button>
+    <button class="tab" onclick="sw(2,this)">03 · IP &amp; License</button>
+    <button class="tab" onclick="sw(3,this)">04 · Shared Services</button>
+    <button class="tab" onclick="sw(4,this)">05 · Governance</button>
+    <button class="tab" onclick="sw(5,this)">06 · Tài chính</button>
+    <button class="tab" onclick="sw(6,this)">07 · Pháp lý</button>
+    <button class="tab" onclick="sw(7,this)">08 · Investor Disclosure</button>
+    <button class="tab" onclick="sw(8,this)">09 · Không gian</button>
+    <button class="tab" onclick="sw(9,this)">10 · Lộ trình</button>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="main" id="content-area">
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 0: TỔNG QUAN                       -->
+<!-- ═══════════════════════════════════════ -->
+<div class="pnl v" id="p0">
+  <div class="ey">Section 01</div>
+  <div class="sh">Tổng quan <em>cấu trúc</em></div>
+  <div class="ss">Tại sao cần holding, tại sao bây giờ, và tại sao cấu trúc này bảo vệ cả hai gia đình, investor, và mọi brand con trong tương lai.</div>
+
+  <div class="stmt">
+    <p>Holding là tầng gia đình — nơi quyền kiểm soát cuối cùng nằm lại, không bao giờ bị dilute bởi bất kỳ vòng gọi vốn nào của bất kỳ brand con nào. Kiên và Đài đồng sở hữu holding. Mọi thứ bên dưới — Mora, Radio Pictures, và các brand tương lai — đều là con của holding.</p>
+  </div>
+
+  <div class="sub">Tại sao cần holding — 5 lý do</div>
+
+  <div class="cg cg2">
+    <div class="cd teal">
+      <div class="cd-ey">01</div>
+      <div class="cd-h">Bảo vệ IP vĩnh viễn</div>
+      <div class="cd-b">Brand IP — Mora, Codex, Radio Pictures, tên thương hiệu tương lai — thuộc holding. Không bao giờ nằm trong entity có investor ngoài. Kể cả nếu Mora pháp nhân con bị liquidate, IP vẫn thuộc hai gia đình.</div>
+    </div>
+    <div class="cd teal">
+      <div class="cd-ey">02</div>
+      <div class="cd-h">Mở rộng không giới hạn</div>
+      <div class="cd-b">Brand mới = entity mới dưới holding. Investor Mora không bị ảnh hưởng. Investor brand mới không liên quan đến Mora. Mỗi brand gọi vốn riêng, fail riêng, scale riêng.</div>
+    </div>
+    <div class="cd teal">
+      <div class="cd-ey">03</div>
+      <div class="cd-h">Shared services hiệu quả</div>
+      <div class="cd-b">Finance, legal, HR, production dùng chung qua holding. Brand con không cần hire CFO riêng khi revenue còn nhỏ. Chi phí allocated minh bạch — giá thị trường, documented.</div>
+    </div>
+    <div class="cd teal">
+      <div class="cd-ey">04</div>
+      <div class="cd-h">Quyền kiểm soát hai gia đình</div>
+      <div class="cd-b">Dù brand con có investor ngoài, holding vẫn sở hữu majority. Kiên và Đài không mất quyền quyết định chiến lược dài hạn — kể cả khi mỗi brand con có 10 investor.</div>
+    </div>
+    <div class="cd teal">
+      <div class="cd-ey">05</div>
+      <div class="cd-h">Sẵn sàng cho cuộc chơi quốc tế</div>
+      <div class="cd-b">Cấu trúc holding cho phép dự phòng 10–15% equity cho đối tác chiến lược — chính phủ, tập đoàn quốc tế, quỹ có ảnh hưởng chính trị. Đây là cách các tập đoàn lớn trao đổi giá trị quyền lực.</div>
+    </div>
+  </div>
+
+  <div class="sub">Cấu trúc sở hữu — Sơ đồ</div>
+
+  <div class="org">
+    <div class="org-box t1">
+      <div class="org-label">Tầng sở hữu tối cao</div>
+      <div class="org-name">Holding Company</div>
+      <div class="org-desc">Sở hữu IP, brand trademarks, Codex. Cung cấp shared services. Quyết định chiến lược dài hạn. Không bao giờ gọi vốn ngoài trừ đối tác chiến lược cấp quốc gia/quốc tế.</div>
+      <div class="org-own">Kiên 50% · Đài 50% · Dự phòng tương lai: 85–90% hai nhà + 10–15% đối tác chiến lược</div>
+    </div>
+    <div class="org-flow"><div class="org-flow-arrow">sở hữu majority</div></div>
+    <div class="org-row">
+      <div class="org-box t2">
+        <div class="org-label">Brand Unit 01</div>
+        <div class="org-name">Mora · Fragrance</div>
+        <div class="org-desc">Bespoke fragrance · Store · Retail. Pháp nhân riêng, gọi vốn riêng.</div>
+        <div class="org-own">Holding 88% · Investor 12%</div>
+      </div>
+      <div class="org-box t2">
+        <div class="org-label">Brand Unit 02</div>
+        <div class="org-name">Radio Pictures · Production</div>
+        <div class="org-desc">Content production · Creative services · Client ngoài. Pháp nhân riêng.</div>
+        <div class="org-own">Holding 100% (hoặc gọi vốn riêng)</div>
+      </div>
+    </div>
+    <div class="org-flow"><div class="org-flow-arrow">mở rộng tương lai</div></div>
+    <div class="org-row">
+      <div class="org-box t3">
+        <div class="org-label">Brand Unit 03 · Tương lai</div>
+        <div class="org-name">Body Care</div>
+        <div class="org-desc">Sữa tắm, lotion, xịt thơm. Cùng IFRA. Cùng Codex.</div>
+        <div class="org-own">Holding majority · Investor riêng</div>
+      </div>
+      <div class="org-box t3">
+        <div class="org-label">Brand Unit 04 · Tương lai</div>
+        <div class="org-name">Hair Care / Nguyên liệu</div>
+        <div class="org-desc">Dầu gội, serum. Hoặc: nền tảng chuẩn hoá nguyên liệu IFRA tại VN.</div>
+        <div class="org-own">Holding majority · Investor riêng</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="expl teal">
+    <div class="expl-hd"><div class="expl-icon teal"></div><div class="expl-title">Giải thích cho người đọc lần đầu</div></div>
+    <div class="expl-body">
+      <p><strong>Holding company</strong> giống như một gia đình sở hữu nhiều cửa hàng. Gia đình không trực tiếp bán hàng — nhưng sở hữu tên tuổi, công thức, và quyền quyết định ai được mở cửa hàng nào.</p>
+      <p>Mỗi cửa hàng — Mora, Radio Pictures — là một công ty riêng biệt, có tiền riêng, nhân sự riêng, có thể mời người ngoài góp vốn. Nhưng gia đình luôn giữ phần lớn, và tên thương hiệu luôn thuộc về gia đình.</p>
+      <div class="detail">Nếu một ngày Mora không còn hoạt động, tên "Mora" vẫn thuộc holding — có thể mở lại với entity mới. Đây là lý do các thương hiệu lớn trên thế giới tồn tại qua nhiều thế hệ dù đã nhiều lần thay đổi người vận hành.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 1: PHÁP NHÂN                       -->
+<!-- ═══════════════════════════════════════ -->
+<div class="pnl" id="p1">
+  <div class="ey">Section 02</div>
+  <div class="sh">Pháp nhân & <em>sở hữu</em></div>
+  <div class="ss">Cấu trúc pháp lý cụ thể. Loại hình công ty, vốn điều lệ, mối quan hệ sở hữu. Thiết kế để mở rộng — không phải chỉ để giải quyết bây giờ.</div>
+
+  <div class="sub">Entity Map — Phase 1</div>
+
+  <table class="tb">
+    <tr><th>Entity</th><th>Loại hình</th><th>Vốn điều lệ</th><th>Sở hữu</th><th>Chức năng</th></tr>
+    <tr>
+      <td><strong>Holding Company</strong></td>
+      <td class="mn">Công ty Cổ phần</td>
+      <td class="mn">500M+ VNĐ<br>(khuyến nghị)</td>
+      <td class="tl">Kiên 50%<br>Đài 50%</td>
+      <td class="m">Sở hữu IP · Shared services · Capital allocation · Governance</td>
+    </tr>
+    <tr>
+      <td><strong>Mora Fragrance Co.</strong></td>
+      <td class="mn">Công ty Cổ phần</td>
+      <td class="mn">Theo vốn gọi<br>~2.66 tỷ total</td>
+      <td class="tl">Holding 88%<br>Investor 12%</td>
+      <td class="m">Vận hành store · Sản xuất · Bán hàng · Marketing</td>
+    </tr>
+    <tr>
+      <td><strong>Radio Pictures Co.</strong></td>
+      <td class="mn">Công ty TNHH<br>hoặc Cổ phần</td>
+      <td class="mn">Tự nuôi từ revenue<br>hoặc gọi vốn riêng</td>
+      <td class="tl">Holding 100%<br>(hoặc + investor)</td>
+      <td class="m">Sản xuất nội dung · Creative services · Client ngoài</td>
+    </tr>
+  </table>
+
+  <div class="expl amber">
+    <div class="expl-hd"><div class="expl-icon amber"></div><div class="expl-title">Tại sao Cổ phần cho Holding — không phải TNHH</div></div>
+    <div class="expl-body">
+      <p>Có hai lựa chọn: <strong>TNHH 2 thành viên</strong> (đơn giản, ít thủ tục, phù hợp giai đoạn đầu) hoặc <strong>Cổ phần</strong> (linh hoạt hơn khi cần thêm cổ đông, chuyển nhượng dễ hơn).</p>
+      <p>Khuyến nghị: <strong>Công ty Cổ phần</strong> — vì trong tương lai holding sẽ cần nhận thêm đối tác chiến lược (10–15%), có thể thêm thành viên gia đình thế hệ sau, và cần cấu trúc phù hợp để mở rộng quốc tế. Cổ phần cho phép tất cả điều này mà không cần chuyển đổi loại hình sau này.</p>
+      <div class="detail">Theo Luật Doanh nghiệp 2020 (Điều 111), Công ty Cổ phần cần tối thiểu 3 cổ đông sáng lập. Giải pháp: Kiên, Đài, và 1 thành viên gia đình tin cậy (sở hữu tượng trưng 1%). Sau 3 năm, cổ đông sáng lập được tự do chuyển nhượng. Luật sư cần review trước khi đăng ký.</div>
+    </div>
+  </div>
+
+  <div class="sub">Thứ tự đăng ký — Critical Path</div>
+
+  <div class="chain">
+    <div class="ci"><div class="cn">01</div><div><div class="ct">Đăng ký Holding Company</div><div class="cdd">Công ty Cổ phần. Ngành nghề: quản lý đầu tư, tư vấn quản lý, cho thuê tài sản trí tuệ. Cổ đông sáng lập: Kiên, Đài, + 1 thành viên gia đình. Vốn điều lệ 500M+ VNĐ.</div></div></div>
+    <div class="ci"><div class="cn">02</div><div><div class="ct">Đăng ký Trademark dưới tên Holding</div><div class="cdd">Tên "Mora" + logo + "Radio Pictures" + logo. Nộp trước khi public. Không cần approved — cần nộp. Trademark thuộc Holding, không thuộc pháp nhân con.</div></div></div>
+    <div class="ci"><div class="cn">03</div><div><div class="ct">Holding đăng ký pháp nhân Mora Co.</div><div class="cdd">Công ty Cổ phần con. Holding là cổ đông sáng lập 100%. Vốn điều lệ ban đầu = vốn founder.</div></div></div>
+    <div class="ci"><div class="cn">04</div><div><div class="ct">Soạn IP License Agreement: Holding → Mora</div><div class="cdd">Hợp đồng license exclusive. Luật sư review. Đây là tài liệu investor Mora sẽ xem khi due diligence.</div></div></div>
+    <div class="ci"><div class="cn">05</div><div><div class="ct">Gọi vốn Mora: Investor mua cổ phần Mora Co.</div><div class="cdd">Holding bán 12% cổ phần Mora cho investor. Tiền vào pháp nhân Mora — không vào holding. Holding giữ 88%.</div></div></div>
+    <div class="ci"><div class="cn">06</div><div><div class="ct">Holding ký master lease toà nhà</div><div class="cdd">Sub-lease tầng trệt cho Mora, tầng 2 cho Radio Pictures, tầng 3 cho holding. Market rate cho mỗi sub-lease.</div></div></div>
+    <div class="ci"><div class="cn">07</div><div><div class="ct">Đăng ký Radio Pictures Co. (khi sẵn sàng)</div><div class="cdd">Pháp nhân riêng dưới holding. Đài là người đại diện pháp luật. Có thể đồng thời hoặc sau Mora.</div></div></div>
+  </div>
+
+  <div class="expl teal">
+    <div class="expl-hd"><div class="expl-icon teal"></div><div class="expl-title">Quan trọng — Thứ tự không được đảo</div></div>
+    <div class="expl-body">
+      <p><strong>Holding phải được đăng ký TRƯỚC khi đăng ký Mora.</strong> Lý do: nếu đăng ký Mora trước rồi mới lập holding, việc chuyển cổ phần Mora sang holding sẽ phát sinh thuế chuyển nhượng và thủ tục phức tạp.</p>
+      <p>Khi holding đăng ký Mora ngay từ đầu, holding tự động là cổ đông sáng lập — không cần chuyển nhượng gì cả. Sạch về thuế, sạch về pháp lý.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 2: IP & LICENSE                     -->
+<!-- ═══════════════════════════════════════ -->
+<div class="pnl" id="p2">
+  <div class="ey">Section 03</div>
+  <div class="sh">IP Ownership & <em>Licensing</em></div>
+  <div class="ss">IP thuộc holding. Brand con license. Đây là cách bảo vệ brand qua nhiều thế hệ — kể cả khi người vận hành thay đổi.</div>
+
+  <div class="sub">IP thuộc Holding — Danh mục</div>
+
+  <table class="tb">
+    <tr><th>Tài sản trí tuệ</th><th>Thuộc về</th><th>License cho</th><th>Điều kiện</th></tr>
+    <tr><td><strong>Trademark "Mora"</strong></td><td class="tl">Holding</td><td>Mora Co.</td><td class="m">Exclusive · Vĩnh viễn · Fragrance &amp; Personal Care</td></tr>
+    <tr><td><strong>Trademark "Radio Pictures"</strong></td><td class="tl">Holding</td><td>Radio Pictures Co.</td><td class="m">Exclusive · Vĩnh viễn · Content Production</td></tr>
+    <tr><td><strong>Codex &amp; Brand Guidelines</strong></td><td class="tl">Holding</td><td>Tất cả brand con</td><td class="m">Bắt buộc tuân thủ · Codex Lock</td></tr>
+    <tr><td><strong>SOP System (8 modules)</strong></td><td class="tl">Holding</td><td>Mora Co.</td><td class="m">Exclusive trong fragrance</td></tr>
+    <tr><td><strong>Store Experience Design</strong></td><td class="tl">Holding</td><td>Mora Co.</td><td class="m">Exclusive · Non-transferable</td></tr>
+    <tr><td><strong>Tên thương hiệu tương lai</strong></td><td class="tl">Holding</td><td>Entity tương lai</td><td class="m">Đăng ký khi sẵn sàng</td></tr>
+  </table>
+
+  <div class="sub">License Agreement — Điều khoản chính</div>
+
+  <div class="cg cg2">
+    <div class="cd">
+      <div class="cd-ey">Phạm vi</div>
+      <div class="cd-h">Exclusive License</div>
+      <div class="cd-b">Mora Co. được quyền sử dụng exclusive toàn bộ IP liên quan đến fragrance và personal care tại Việt Nam. Holding không license cho bên thứ 3 trong cùng phạm vi. Radio Pictures tương tự cho lĩnh vực content production.</div>
+    </div>
+    <div class="cd">
+      <div class="cd-ey">Thời hạn</div>
+      <div class="cd-h">Vĩnh viễn, có điều kiện</div>
+      <div class="cd-b">License không có ngày hết hạn. Chỉ có thể bị thu hồi nếu brand con vi phạm Codex standards nghiêm trọng — không phải vì lý do thương mại hay tài chính.</div>
+    </div>
+    <div class="cd">
+      <div class="cd-ey">License Fee</div>
+      <div class="cd-h">0% rồi tăng dần 1–2%</div>
+      <div class="cd-b">3 năm đầu hoặc cho đến khi revenue vượt 3 tỷ/tháng: 0%. Sau đó: 1–2% net revenue. Rate thấp hơn franchise fee trung bình 5–8%. Cap tại 3% — ghi rõ trong agreement.</div>
+    </div>
+    <div class="cd">
+      <div class="cd-ey">Codex Lock</div>
+      <div class="cd-h">Không ai thay đổi Codex</div>
+      <div class="cd-b">Codex chỉ có thể được thay đổi bởi Kiên thông qua holding. Không investor, không board member, không majority shareholder nào có quyền. Đây là điều không thể thương lượng.</div>
+    </div>
+  </div>
+
+  <div class="expl teal">
+    <div class="expl-hd"><div class="expl-icon teal"></div><div class="expl-title">Tại sao IP thuộc Holding bảo vệ investor — không phải ngược lại</div></div>
+    <div class="expl-body">
+      <p>Nhiều người nghĩ: "Nếu IP không thuộc công ty tôi đầu tư vào, tôi bị thiệt." Thực tế <strong>ngược lại hoàn toàn</strong>.</p>
+      <p>Nếu IP thuộc Mora Co. và Mora gặp khó khăn tài chính, IP có thể bị kéo vào quá trình thanh lý — bị bán rẻ cho chủ nợ, bị tranh chấp. Investor mất cả equity lẫn brand.</p>
+      <p>Khi IP thuộc holding và được license exclusive cho Mora, IP được <strong>bảo vệ tách biệt</strong>. Mora Co. có thể gặp khó khăn, nhưng brand "Mora" vẫn an toàn. Có thể rebuild với entity mới. Investor được bảo vệ bởi liquidation preference — nhận lại vốn trước holding.</p>
+      <div class="detail">Đây là lý do nhiều thương hiệu nổi tiếng thế giới tồn tại qua nhiều lần thay đổi chủ sở hữu, phá sản, tái cấu trúc — vì IP được giữ ở tầng cao hơn tầng vận hành. Cấu trúc này bảo vệ tất cả mọi người: gia đình, investor, và chính thương hiệu.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 3: SHARED SERVICES                  -->
+<!-- ═══════════════════════════════════════ -->
+<div class="pnl" id="p3">
+  <div class="ey">Section 04</div>
+  <div class="sh">Shared Services <em>Model</em></div>
+  <div class="ss">Holding cung cấp dịch vụ cho brand con. Chi phí phân bổ minh bạch. Mọi giao dịch ở giá thị trường — documented, auditable.</div>
+
+  <div class="sub">Services Matrix</div>
+
+  <table class="tb">
+    <tr><th>Dịch vụ</th><th>Cung cấp bởi</th><th>Cho</th><th>Cách tính giá</th><th>Chi phí Phase 1</th></tr>
+    <tr><td><strong>Tài chính &amp; Kế toán</strong></td><td class="mn">Holding</td><td>Mora, Radio Pictures</td><td class="m">Management fee hoặc giờ công</td><td class="mn">~5–10M/tháng</td></tr>
+    <tr><td><strong>Pháp lý &amp; Tuân thủ</strong></td><td class="mn">Holding</td><td>Mora, Radio Pictures</td><td class="m">Retainer + theo giao dịch</td><td class="mn">~3–5M/tháng</td></tr>
+    <tr><td><strong>Nhân sự</strong></td><td class="mn">Holding</td><td>Mora, Radio Pictures</td><td class="m">Theo headcount</td><td class="mn">~2–3M/tháng</td></tr>
+    <tr><td><strong>Sản xuất nội dung</strong></td><td class="mn">Radio Pictures</td><td>Mora</td><td class="m">Rate card · Giá = giá khách ngoài</td><td class="mn">Theo project</td></tr>
+    <tr><td><strong>IT &amp; Hệ thống</strong></td><td class="mn">Holding</td><td>Mora, Radio Pictures</td><td class="m">Theo user/tháng</td><td class="mn">~1–2M/tháng</td></tr>
+    <tr><td><strong>Mặt bằng</strong></td><td class="mn">Holding (master lease)</td><td>Mora, Radio Pictures</td><td class="m">Sub-lease giá thị trường / m²</td><td class="mn">Theo m² thực tế</td></tr>
+  </table>
+
+  <div class="expl amber">
+    <div class="expl-hd"><div class="expl-icon amber"></div><div class="expl-title">Nguyên tắc giá — Radio Pictures charge Mora</div></div>
+    <div class="expl-body">
+      <p><strong>Radio Pictures charge Mora đúng giá Radio Pictures charge khách ngoài.</strong> Không discount nội bộ. Không overcharge.</p>
+      <p>Ví dụ: Radio Pictures charge khách ngoài 30 triệu cho 1 video sản phẩm. Khi làm video cho Mora, giá cũng là 30 triệu — không phải 20 triệu vì "cùng nhà", cũng không phải 40 triệu vì "lấy thêm".</p>
+      <p>Nguyên tắc này gọi là <strong>arm's length</strong> — hai bên giao dịch như hai công ty không liên quan. Điều này bảo vệ cả hai phía:</p>
+      <div class="detail">
+        <strong>Bảo vệ investor Mora:</strong> Họ biết Mora không bị overcharge bởi công ty cùng chủ. Mỗi đồng chi ra đều ở giá hợp lý.<br><br>
+        <strong>Bảo vệ Radio Pictures:</strong> Studio không bị ép giá rẻ chỉ vì cùng holding. Revenue Radio Pictures phản ánh đúng giá trị thị trường.<br><br>
+        <strong>Bảo vệ cả hai gia đình:</strong> Khi mọi thứ sạch, không ai có thể thắc mắc "tiền đi đâu." Nếu sau này có tranh chấp, audit, hoặc mở rộng quốc tế — tất cả đã có cơ sở.
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">Management Fee — Holding thu từ brand con</div>
+
+  <div class="cg cg3">
+    <div class="cd">
+      <div class="cd-ey">Năm 1–3</div>
+      <div class="cd-h">0%</div>
+      <div class="cd-b">Holding không charge management fee. Chi phí shared services phân bổ theo actual cost. Giúp brand con tập trung vào growth.</div>
+    </div>
+    <div class="cd">
+      <div class="cd-ey">Năm 3+</div>
+      <div class="cd-h">1–2% Net Revenue</div>
+      <div class="cd-b">Khi brand stable. Fee bao gồm shared services + IP license. Benchmark ngành franchise trung bình: 5–8%. Holding thu thấp hơn nhiều.</div>
+    </div>
+    <div class="cd">
+      <div class="cd-ey">Trần tối đa</div>
+      <div class="cd-h">Không quá 3%</div>
+      <div class="cd-b">Ghi rõ trong operating agreement. Ngăn holding lấy quá nhiều giá trị từ brand con. Thay đổi trần cần investor consent.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 4: GOVERNANCE                       -->
+<!-- ═══════════════════════════════════════ -->
+<div class="pnl" id="p4">
+  <div class="ey">Section 05</div>
+  <div class="sh">Governance & <em>Escalation</em></div>
+  <div class="ss">Kiến trúc 3 tầng quản trị. Ai quyết định gì, ở ngưỡng nào, khi nào escalate lên tầng cao hơn. Brand con sáng tạo riêng — holding giám sát tài chính và chiến lược.</div>
+
+  <div class="sub">Kiến trúc 3 tầng</div>
+
+  <div class="esc">
+    <div class="esc-tier t1">
+      <div class="esc-left">
+        <div class="esc-label">Tầng 1 — Corporate</div>
+        <div class="esc-name">Holding · Kiên &amp; Đài</div>
+        <div class="esc-items">Strategy · Capital Allocation · Brand IP · Audit · Governance · M&amp;A · Đối tác chiến lược</div>
+      </div>
+      <div class="esc-threshold">&gt; 50M VND</div>
+    </div>
+    <div class="esc-flow-label"><span>Escalate</span><span>Delegate</span></div>
+    <div class="esc-tier t2">
+      <div class="esc-left">
+        <div class="esc-label">Tầng 2 — Regional Hub</div>
+        <div class="esc-name">Shared Services</div>
+        <div class="esc-items">Finance · Legal · HR · Marketing Infrastructure · IT · Logistics</div>
+      </div>
+      <div class="esc-threshold">5–50M VND</div>
+    </div>
+    <div class="esc-flow-label"><span>Escalate</span><span>Delegate</span></div>
+    <div class="esc-tier t3">
+      <div class="esc-left">
+        <div class="esc-label">Tầng 3 — Business Unit</div>
+        <div class="esc-name">Mora · Radio Pictures · Brand con</div>
+        <div class="esc-items">Daily Operations · Sales · Customer Service · Inventory · Staff · Creative</div>
+      </div>
+      <div class="esc-threshold">&lt; 5M VND</div>
+    </div>
+  </div>
+
+  <div class="sub">Decision Authority Matrix</div>
+
+  <table class="tb">
+    <tr><th>Quyết định</th><th>Business Unit</th><th>Hub (Shared)</th><th>Corporate (Holding)</th></tr>
+    <tr><td>Vận hành hằng ngày</td><td class="tl">Quyết định</td><td class="m">Hỗ trợ</td><td class="m">—</td></tr>
+    <tr><td>Sáng tạo &amp; nội dung</td><td class="tl">Quyết định</td><td class="m">—</td><td class="m">Codex alignment check</td></tr>
+    <tr><td>Pricing sản phẩm</td><td class="tl">Quyết định</td><td class="m">Data support</td><td class="m">Codex alignment check</td></tr>
+    <tr><td>Tuyển nhân sự</td><td class="tl">Quyết định</td><td class="m">HR hỗ trợ quy trình</td><td class="m">Store Manager / Director cần approval</td></tr>
+    <tr><td>Chi tiêu dưới 5M</td><td class="tl">Quyết định</td><td class="m">—</td><td class="m">—</td></tr>
+    <tr><td>Chi tiêu 5–50M</td><td class="m">Đề xuất</td><td class="tl">Approval</td><td class="m">Thông báo</td></tr>
+    <tr><td>Chi tiêu trên 50M</td><td class="m">Đề xuất</td><td class="m">Review</td><td class="tl">Approval</td></tr>
+    <tr><td>Brand &amp; Codex</td><td class="m">—</td><td class="m">—</td><td class="tl">Kiên quyết định tuyệt đối</td></tr>
+    <tr><td>Capital raise mới</td><td class="m">—</td><td class="m">Chuẩn bị tài liệu</td><td class="tl">Approval + Investor consent</td></tr>
+    <tr><td>Mở brand mới</td><td class="m">Propose</td><td class="m">Feasibility study</td><td class="tl">Kiên &amp; Đài cùng quyết định</td></tr>
+    <tr><td>M&amp;A / Exit</td><td class="m">—</td><td class="m">—</td><td class="tl">Holding + Investor consent</td></tr>
+    <tr><td>Đối tác chiến lược quốc tế</td><td class="m">—</td><td class="m">—</td><td class="tl">Kiên &amp; Đài cùng quyết định</td></tr>
+  </table>
+
+  <div class="stmt">
+    <p>Nguyên lý cốt lõi: mỗi brand con sáng tạo tự do trong Codex, nhưng tài chính và governance được giám sát từ holding. Mora quyết định cách pha chế, cách tiếp đón, cách kể chuyện. Holding quyết định bao nhiêu vốn được phân bổ, khi nào mở rộng, và ai là đối tác chiến lược.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 5: TÀI CHÍNH                       -->
+<!-- ═══════════════════════════════════════ -->
+<div class="pnl" id="p5">
+  <div class="ey">Section 06</div>
+  <div class="sh">Tài chính & <em>Transfer Pricing</em></div>
+  <div class="ss">Dòng tiền giữa các entity. 4 nguyên tắc arm's length. Related party transactions. Cách để mọi thứ sạch — cho cả thuế, investor, và kiểm toán quốc tế.</div>
+
+  <div class="sub">Dòng tiền — Sơ đồ</div>
+
+  <div class="cg cg2" style="grid-template-columns:2fr 1fr">
+    <div class="cd" style="border-left:3px solid var(--teal)">
+      <div class="cd-ey">Dòng chính</div>
+      <div class="cd-b" style="font-size:13px;color:var(--ink);line-height:1.8">
+        Khách hàng trả tiền cho Mora Co.<br>
+        100% revenue vào pháp nhân Mora<br>
+        Mora chi trả shared services cho Holding (1–6% revenue)<br>
+        Mora chi trả content production cho Radio Pictures (theo rate card)<br>
+        P&L Mora có dòng "Related party transactions" riêng biệt
+      </div>
+    </div>
+    <div class="cd" style="border-left:3px solid var(--amber)">
+      <div class="cd-ey">Nguyên tắc tuyệt đối</div>
+      <div class="cd-b" style="font-size:13px;color:var(--ink);line-height:1.8">
+        Tiền investor vào Mora — không vào holding<br>
+        Tiền khách hàng vào Mora — không vào holding<br>
+        Holding chỉ nhận fee từ dịch vụ thật
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">4 nguyên tắc Transfer Pricing</div>
+
+  <div class="cg cg2">
+    <div class="cd teal">
+      <div class="cd-ey">01 · Arm's Length</div>
+      <div class="cd-h">Giá thị trường</div>
+      <div class="cd-b">Mọi giao dịch giữa Mora và holding/Radio Pictures phải ở giá thị trường. Hai bên giao dịch như hai công ty không liên quan.</div>
+    </div>
+    <div class="cd teal">
+      <div class="cd-ey">02 · Documented</div>
+      <div class="cd-h">Có hợp đồng trước</div>
+      <div class="cd-b">Mọi giao dịch có hợp đồng hoặc PO trước khi thực hiện. Rate card lưu trữ. Sẵn sàng cho audit bất kỳ lúc nào.</div>
+    </div>
+    <div class="cd teal">
+      <div class="cd-ey">03 · Disclosed</div>
+      <div class="cd-h">Investor thấy hết</div>
+      <div class="cd-b">P&L hàng tháng gửi investor có dòng "Related party transactions" riêng biệt. Không gộp. Bao nhiêu tiền đi đâu, investor thấy rõ.</div>
+    </div>
+    <div class="cd teal">
+      <div class="cd-ey">04 · Auditable</div>
+      <div class="cd-h">Kiểm toán độc lập</div>
+      <div class="cd-b">Kiểm toán hàng năm bởi bên thứ 3 bao gồm review tất cả giao dịch nội bộ. Kết quả gửi investor.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 6: PHÁP LÝ                         -->
+<!-- ═══════════════════════════════════════ -->
+<div class="pnl" id="p6">
+  <div class="ey">Section 07</div>
+  <div class="sh">Khung pháp lý <em>Việt Nam &amp; Quốc tế</em></div>
+  <div class="ss">Luật Việt Nam là nền tảng. Chuẩn bị sẵn tiền đề cho luật quốc tế — để khi holding mở rộng ra ngoài biên giới hoặc nhận đối tác chiến lược quốc tế, mọi thứ đã sẵn sàng.</div>
+
+  <div class="sub">Luật Việt Nam — Áp dụng ngay</div>
+
+  <div class="law-ref">
+    <div class="law-ref-col">
+      <div class="law-ref-label">Doanh nghiệp</div>
+      <div class="law-ref-item"><strong>Luật Doanh nghiệp 2020</strong><span>Điều 111–176: Công ty Cổ phần. Điều 46–87: Công ty TNHH. Quy định về cổ đông sáng lập, chuyển nhượng, vốn điều lệ.</span></div>
+      <div class="law-ref-item"><strong>Nghị định 01/2021/NĐ-CP</strong><span>Hướng dẫn đăng ký doanh nghiệp. Thủ tục đăng ký holding và công ty con.</span></div>
+    </div>
+    <div class="law-ref-col">
+      <div class="law-ref-label">Sở hữu trí tuệ</div>
+      <div class="law-ref-item"><strong>Luật Sở hữu trí tuệ 2005 (sửa đổi 2022)</strong><span>Điều 72–106: Nhãn hiệu. Điều 139–156: Hợp đồng license. Đăng ký trademark dưới tên holding.</span></div>
+      <div class="law-ref-item"><strong>Nghị định 65/2023/NĐ-CP</strong><span>Hướng dẫn chi tiết Luật SHTT. Quy trình đăng ký nhãn hiệu.</span></div>
+    </div>
+    <div class="law-ref-col">
+      <div class="law-ref-label">Thuế &amp; Giao dịch liên kết</div>
+      <div class="law-ref-item"><strong>Nghị định 132/2020/NĐ-CP</strong><span>Quản lý thuế đối với giao dịch liên kết. Bắt buộc kê khai. Arm's length pricing là yêu cầu pháp luật.</span></div>
+      <div class="law-ref-item"><strong>Luật Thuế thu nhập doanh nghiệp</strong><span>Thuế suất 20%. Related party transactions phải ở giá thị trường — nếu không, cơ quan thuế có quyền điều chỉnh.</span></div>
+    </div>
+  </div>
+
+  <div class="sub">Luật Đầu tư — Khi có investor ngoài</div>
+
+  <table class="tb">
+    <tr><th>Văn bản</th><th>Áp dụng khi</th><th>Nội dung liên quan</th></tr>
+    <tr><td><strong>Luật Đầu tư 2020</strong></td><td class="m">Investor nước ngoài vào Mora hoặc holding</td><td class="m">Điều 9: Ngành nghề có điều kiện. Điều 17–25: Thủ tục đầu tư. Bán lẻ nước hoa không thuộc ngành hạn chế.</td></tr>
+    <tr><td><strong>Luật Chứng khoán 2019</strong></td><td class="m">Nếu sau này IPO hoặc phát hành rộng rãi</td><td class="m">Quy định về phát hành cổ phần, công bố thông tin, quản trị công ty đại chúng.</td></tr>
+    <tr><td><strong>Bộ luật Dân sự 2015</strong></td><td class="m">Mọi hợp đồng</td><td class="m">Điều 385–429: Hợp đồng. Điều 117–133: Giao dịch dân sự. Nền tảng cho mọi agreement.</td></tr>
+  </table>
+
+  <hr>
+
+  <div class="sub">Chuẩn bị cho quốc tế — Tiền đề</div>
+  <div class="bd">Chưa cần triển khai ngay. Nhưng thiết kế sẵn để khi cần, chỉ cần activate — không phải xây lại từ đầu.</div>
+
+  <div class="cg cg2">
+    <div class="cd">
+      <div class="cd-ey">Cấu trúc holding quốc tế</div>
+      <div class="cd-h">Singapore hoặc Hong Kong</div>
+      <div class="cd-b">Khi mở rộng ra ASEAN hoặc nhận đối tác quốc tế, có thể lập holding quốc tế tại Singapore (thuế thấp, hiệp định tránh đánh thuế hai lần với VN, trung tâm tài chính uy tín). Holding VN vẫn giữ nguyên — holding quốc tế nằm trên hoặc song song.</div>
+    </div>
+    <div class="cd">
+      <div class="cd-ey">Hiệp định thuế</div>
+      <div class="cd-h">Double Taxation Agreements</div>
+      <div class="cd-b">Việt Nam đã ký DTA với 80+ quốc gia (Singapore, Nhật, Hàn, EU, US). Khi license fee hoặc dividend chảy giữa các quốc gia, DTA tránh bị đánh thuế 2 lần. Cần luật sư thuế quốc tế review khi activate.</div>
+    </div>
+    <div class="cd">
+      <div class="cd-ey">Trọng tài quốc tế</div>
+      <div class="cd-h">SIAC / ICC Arbitration</div>
+      <div class="cd-b">Mọi hợp đồng với đối tác quốc tế nên có điều khoản trọng tài quốc tế (Singapore International Arbitration Centre hoặc ICC). Bảo vệ cả hai bên. Thêm clause này vào template agreement từ bây giờ.</div>
+    </div>
+    <div class="cd">
+      <div class="cd-ey">Tiêu chuẩn kế toán</div>
+      <div class="cd-h">VAS rồi chuyển IFRS</div>
+      <div class="cd-b">Hiện tại dùng VAS (Vietnamese Accounting Standards). Khi mở rộng quốc tế hoặc nhận investor lớn, chuyển sang IFRS. Thiết kế hệ thống kế toán từ đầu tương thích cả hai.</div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="sub">Dự phòng chiến lược — 10–15% Equity Holding</div>
+
+  <div class="expl teal">
+    <div class="expl-hd"><div class="expl-icon teal"></div><div class="expl-title">Equity dự phòng cho đối tác chiến lược</div></div>
+    <div class="expl-body">
+      <p>Trong cấu trúc holding, Kiên và Đài nắm 100% ban đầu. Nhưng thiết kế sẵn cho việc <strong>nhường 10–15% holding equity cho đối tác chiến lược</strong> trong tương lai — có thể là:</p>
+      <p>Chính phủ Việt Nam (thông qua quỹ đầu tư nhà nước hoặc cơ quan xúc tiến thương mại) — để đổi lấy hỗ trợ chính sách, tiếp cận thị trường, bảo hộ thương hiệu quốc gia.</p>
+      <p>Tập đoàn quốc tế có ảnh hưởng — để đổi lấy kênh phân phối, know-how, hoặc legitimacy trên thị trường toàn cầu.</p>
+      <p>Quỹ sovereign wealth hoặc development fund — để đổi lấy vốn dài hạn với điều kiện ưu đãi.</p>
+      <div class="detail">
+        <strong>Cách thực hiện:</strong> Khi đến thời điểm, holding phát hành thêm cổ phần mới cho đối tác chiến lược. Kiên và Đài bị dilute từ 100% xuống 85–90% — nhưng đổi lại giá trị chính trị, mạng lưới, và bảo vệ mà 10–15% đó mang lại lớn hơn nhiều so với % bị mất.<br><br>
+        <strong>Điều kiện tiên quyết:</strong> Đối tác chiến lược ở tầng holding không có quyền can thiệp vào vận hành brand con. Chỉ có quyền ở tầng strategy và governance — tham gia advisory, không có quyền veto. Ghi rõ trong shareholders' agreement.<br><br>
+        <strong>Thời điểm:</strong> Không phải bây giờ. Chỉ khi holding đã có ít nhất 2 brand con stable và tầm nhìn mở rộng quốc tế đã rõ ràng. Có thể 3–5 năm sau.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 7: INVESTOR DISCLOSURE              -->
+<!-- ═══════════════════════════════════════ -->
+<div class="pnl" id="p7">
+  <div class="ey">Section 08</div>
+  <div class="sh">Investor <em>Disclosure</em></div>
+  <div class="ss">Không giấu. Không né. Nói thẳng và biến cấu trúc holding thành trust signal. Investor lo không phải vì có holding — mà vì không hiểu holding.</div>
+
+  <div class="sub">3 nỗi lo của investor — 3 giải pháp</div>
+
+  <div class="cg cg3">
+    <div class="cd">
+      <div class="cd-ey">Nỗi lo 01</div>
+      <div class="cd-h">Tiền đi đâu?</div>
+      <div class="cd-b"><strong>Giải pháp:</strong> P&L hàng tháng có dòng "Related party transactions" riêng biệt. Rate card công khai. Kiểm toán hàng năm bao gồm review RPT. Investor có quyền request RPT report bất kỳ lúc nào.</div>
+    </div>
+    <div class="cd">
+      <div class="cd-ey">Nỗi lo 02</div>
+      <div class="cd-h">Ai quyết định?</div>
+      <div class="cd-b"><strong>Giải pháp:</strong> Escalation matrix rõ ràng — Business Unit / Hub / Corporate. Threshold chi tiêu documented. Investor nhận quarterly strategy update. RPT trên 50M/quý phải disclosure.</div>
+    </div>
+    <div class="cd">
+      <div class="cd-ey">Nỗi lo 03</div>
+      <div class="cd-h">Brand mất thì còn gì?</div>
+      <div class="cd-b"><strong>Giải pháp:</strong> IP thuộc holding — bảo vệ tách biệt. License exclusive vĩnh viễn cho Mora Co. Liquidation preference — investor nhận lại vốn trước holding.</div>
+    </div>
+  </div>
+
+  <div class="sub">Điều khoản bảo vệ trong Investor Agreement</div>
+
+  <div class="chain">
+    <div class="ci"><div class="cn">01</div><div><div class="ct">RPT Disclosure Threshold</div><div class="cdd">Related party transactions trên 50M VND/quý cần disclosure trước cho investor. Không cần approval — chỉ cần disclosure.</div></div></div>
+    <div class="ci"><div class="cn">02</div><div><div class="ct">Kiểm toán độc lập hàng năm</div><div class="cdd">Bao gồm review tất cả RPT. Chi phí kiểm toán thuộc Mora Co. Kết quả gửi cho investor.</div></div></div>
+    <div class="ci"><div class="cn">03</div><div><div class="ct">Quyền yêu cầu RPT Report</div><div class="cdd">Investor có quyền request chi tiết RPT bất kỳ lúc nào. Mora cung cấp trong vòng 10 ngày làm việc.</div></div></div>
+    <div class="ci"><div class="cn">04</div><div><div class="ct">Liquidation Preference</div><div class="cdd">Nếu Mora Co. thanh lý, investor được ưu tiên nhận lại vốn trước holding. Standard 1x liquidation preference.</div></div></div>
+    <div class="ci"><div class="cn">05</div><div><div class="ct">Management Fee Cap</div><div class="cdd">Holding management fee không quá 3% net revenue. Ghi rõ trong agreement. Thay đổi cần investor consent.</div></div></div>
+    <div class="ci"><div class="cn">06</div><div><div class="ct">Co-decision chi tiêu lớn</div><div class="cdd">Chi tiêu ngoài budget trên 100M VND cần đồng thuận holding + investor. Bảo vệ cả hai bên.</div></div></div>
+  </div>
+
+  <div class="sub">Script — Cách nói với investor</div>
+  <div class="stmt">
+    <p>"Mora là pháp nhân bạn đầu tư vào. Mora thuộc một holding company gia đình — hai nhà sáng lập đồng sở hữu. Holding sở hữu IP thương hiệu và cung cấp shared services cho Mora. Mọi giao dịch giữa holding và Mora đều ở giá thị trường, có rate card, và được kiểm toán hàng năm. Cấu trúc này bảo vệ bạn: IP không bao giờ bị kéo vào thanh lý, shared services giúp Mora chuyên nghiệp từ ngày 1, và bạn thấy mọi dòng tiền trong P&L hàng tháng."</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 8: KHÔNG GIAN VẬT LÝ               -->
+<!-- ═══════════════════════════════════════ -->
+<div class="pnl" id="p8">
+  <div class="ey">Section 09</div>
+  <div class="sh">Không gian <em>vật lý</em></div>
+  <div class="ss">3 tầng vật lý = 3 tầng quản trị. Toà nhà là biểu hiện vật lý của cấu trúc holding. Mỗi tầng có chức năng, cảm giác, và quy tắc riêng.</div>
+
+  <div class="sub">Sơ đồ toà nhà</div>
+
+  <div class="bldg">
+    <div class="bldg-floor" style="background:var(--ink);color:var(--cream);border-radius:4px 4px 0 0">
+      <div>
+        <div class="bldg-floor-label" style="color:var(--w400)">Tầng 3 — Corporate + Hub</div>
+        <div class="bldg-floor-name">Holding Office</div>
+        <div class="bldg-floor-desc" style="color:var(--w400)">Finance · Legal · HR · Strategy · Meeting rooms · Kiên &amp; Đài</div>
+      </div>
+      <div class="bldg-floor-meta" style="color:var(--w600)">~40–60 m²<br>Lối vào riêng</div>
+    </div>
+    <div class="bldg-floor" style="background:rgba(26,25,22,.7);color:var(--cream)">
+      <div>
+        <div class="bldg-floor-label" style="color:var(--am)">Tầng 2 — Production</div>
+        <div class="bldg-floor-name">Radio Pictures · Studio</div>
+        <div class="bldg-floor-desc" style="color:var(--w400)">Content production · Photo &amp; Video · Post-production · Client meetings</div>
+      </div>
+      <div class="bldg-floor-meta" style="color:var(--w600)">~50–80 m²<br>Lối vào riêng</div>
+    </div>
+    <div class="bldg-floor" style="background:var(--teal);color:var(--cream);border-radius:0 0 4px 4px">
+      <div>
+        <div class="bldg-floor-label" style="color:rgba(255,255,255,.5)">Tầng trệt — Brand Unit</div>
+        <div class="bldg-floor-name">Mora Store</div>
+        <div class="bldg-floor-desc" style="color:rgba(255,255,255,.65)">Z1 Threshold · Z2 Discovery · Z3 Dwell · Z4 Counter Ritual · Z5 Back of House</div>
+      </div>
+      <div class="bldg-floor-meta" style="color:rgba(255,255,255,.6)">35–55 m²<br>Cửa chính · Mặt phố</div>
+    </div>
+  </div>
+
+  <div class="sub">Quy tắc tách biệt — Tính toàn vẹn Mora Store</div>
+
+  <div class="cg cg2">
+    <div class="cd amber">
+      <div class="cd-ey">Bắt buộc</div>
+      <div class="cd-h">Lối vào riêng biệt hoàn toàn</div>
+      <div class="cd-b">Khách Mora không bao giờ thấy cầu thang lên tầng 2–3. Tầng trệt hoạt động như không gian độc lập. Lối vào tầng 2–3 ở mặt bên hoặc phía sau toà nhà.</div>
+    </div>
+    <div class="cd amber">
+      <div class="cd-ey">Bắt buộc</div>
+      <div class="cd-h">Cách âm và cách mùi giữa các tầng</div>
+      <div class="cd-b">Radio Pictures tầng 2 có thể gây tiếng ồn khi quay. Mora cần 45–50dB max. Giải pháp: cách âm sàn tầng 2, lịch quay ngoài giờ peak store.</div>
+    </div>
+    <div class="cd">
+      <div class="cd-ey">Khuyến nghị</div>
+      <div class="cd-h">MEP tách biệt</div>
+      <div class="cd-b">Điện, nước, điều hoà riêng cho mỗi tầng. Dễ phân bổ chi phí. Dễ tách pháp nhân. Dễ sub-lease nếu Radio Pictures mở rộng ra ngoài sau này.</div>
+    </div>
+    <div class="cd">
+      <div class="cd-ey">Khuyến nghị</div>
+      <div class="cd-h">Biển hiệu chỉ Mora tầng trệt</div>
+      <div class="cd-b">Mặt ngoài toà nhà chỉ có signage Mora. Holding và Radio Pictures không có biển hiệu ngoài. Tính "thế giới khác" của store được bảo vệ.</div>
+    </div>
+  </div>
+
+  <div class="sub">Tiêu chí chọn mặt bằng</div>
+
+  <div class="chain">
+    <div class="ci"><div class="cn">01</div><div><div class="ct">Tầng trệt mặt phố — foot traffic</div><div class="cdd">Mora cần visibility. Q.1, Q.3, Phú Nhuận, Bình Thạnh — khu vực target archetype sinh sống và làm việc.</div></div></div>
+    <div class="ci"><div class="cn">02</div><div><div class="ct">Tối thiểu 2 tầng, lý tưởng 3</div><div class="cdd">Nếu ban đầu chỉ 2 tầng: tầng trệt Mora, tầng 1 = Radio Pictures + office chung. Tách khi scale.</div></div></div>
+    <div class="ci"><div class="cn">03</div><div><div class="ct">Lối vào riêng cho tầng trên</div><div class="cdd">Mặt bên, cầu thang ngoài, hoặc hẻm phụ. Không đi qua store. Nhiều nhà phố Sài Gòn có sẵn cấu trúc này.</div></div></div>
+    <div class="ci"><div class="cn">04</div><div><div class="ct">Trần tầng trệt tối thiểu 3.2m</div><div class="cdd">Theo Store Experience Design v1.0. Trần thấp hơn compromise không gian Mora.</div></div></div>
+    <div class="ci"><div class="cn">05</div><div><div class="ct">Master lease dài hạn</div><div class="cdd">Holding ký tối thiểu 3 năm. Right of first refusal cho tầng trên nếu chưa lease ngay. Đàm phán trước.</div></div></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 9: LỘ TRÌNH                        -->
+<!-- ═══════════════════════════════════════ -->
+<div class="pnl" id="p9">
+  <div class="ey">Section 10</div>
+  <div class="sh">Lộ trình <em>triển khai</em></div>
+  <div class="ss">Phased approach. Holding hình thành trước, nhưng chỉ active dần theo nhu cầu. Không xây empire trước khi có revenue.</div>
+
+  <div class="sub">Phase 0 — Foundation · Trước khi gọi vốn</div>
+  <div class="tl">
+    <div class="tl-r"><div class="tl-w">Tuần 1–2</div><div class="tl-c"><div class="tl-t">Đăng ký Holding Company</div><div class="tl-d">Công ty Cổ phần. Cổ đông sáng lập: Kiên, Đài, + 1 thành viên gia đình. Vốn điều lệ 500M+. Ngành nghề: quản lý đầu tư, tư vấn quản lý, cho thuê tài sản trí tuệ.</div><div class="tl-tag crit">Critical path</div></div></div>
+    <div class="tl-r"><div class="tl-w">Tuần 2–3</div><div class="tl-c"><div class="tl-t">Nộp đăng ký Trademark</div><div class="tl-d">Tên "Mora" + "Radio Pictures" dưới tên Holding. Nộp trước khi public.</div><div class="tl-tag crit">Critical path</div></div></div>
+    <div class="tl-r"><div class="tl-w">Tuần 3–4</div><div class="tl-c"><div class="tl-t">Holding đăng ký Mora Co.</div><div class="tl-d">Công ty Cổ phần con. Holding = cổ đông sáng lập 100%.</div><div class="tl-tag crit">Critical path</div></div></div>
+    <div class="tl-r"><div class="tl-w">Tuần 4–5</div><div class="tl-c"><div class="tl-t">Soạn IP License + Investor Agreement</div><div class="tl-d">Holding → Mora license. Investor agreement bao gồm RPT disclosure, liquidation preference, management fee cap. Luật sư review.</div><div class="tl-tag crit">Critical path</div></div></div>
+  </div>
+
+  <div class="sub">Phase 1 — Mora Launch · Tháng 1–6</div>
+  <div class="tl">
+    <div class="tl-r"><div class="tl-w">T-3 → T0</div><div class="tl-c"><div class="tl-t">Gọi vốn + Ký lease</div><div class="tl-d">Investor mua cổ phần Mora Co. Holding ký master lease toà nhà. Mora sub-lease tầng trệt. Fitout bắt đầu.</div></div></div>
+    <div class="tl-r"><div class="tl-w">T0</div><div class="tl-c"><div class="tl-t">Mora Store khai trương</div><div class="tl-d">Tầng trệt hoạt động. Tầng 2–3 có thể chưa fitout hoàn chỉnh.</div></div></div>
+    <div class="tl-r"><div class="tl-w">T1–T3</div><div class="tl-c"><div class="tl-t">Holding cung cấp shared services lean</div><div class="tl-d">Finance, legal do Kiên và Đài + outsource. Management fee = 0%. Chi phí chia theo actual.</div></div></div>
+    <div class="tl-r"><div class="tl-w">T3–T6</div><div class="tl-c"><div class="tl-t">Radio Pictures bắt đầu vận hành</div><div class="tl-d">Đài dọn vào tầng 2. Phục vụ Mora (content) + bắt đầu nhận client ngoài.</div><div class="tl-tag opt">Tuỳ readiness</div></div></div>
+  </div>
+
+  <div class="sub">Phase 2 — System Formation · Tháng 6–18</div>
+  <div class="tl">
+    <div class="tl-r"><div class="tl-w">T6–T9</div><div class="tl-c"><div class="tl-t">Tầng 3 office hình thành</div><div class="tl-d">Shared services bắt đầu có nhân sự (kế toán, HR). Fitout tầng 3 nếu chưa có.</div></div></div>
+    <div class="tl-r"><div class="tl-w">T9–T12</div><div class="tl-c"><div class="tl-t">Radio Pictures đăng ký pháp nhân riêng</div><div class="tl-d">Nếu đủ revenue. Đài là người đại diện pháp luật. Hoặc giữ là division nếu chưa cần.</div><div class="tl-tag opt">Tuỳ revenue</div></div></div>
+    <div class="tl-r"><div class="tl-w">T12–T18</div><div class="tl-c"><div class="tl-t">3 tầng vật lý = 3 tầng quản trị</div><div class="tl-d">Hệ thống hoạt động đầy đủ. Escalation matrix active. P&L riêng từng entity. Kiểm toán lần đầu.</div></div></div>
+  </div>
+
+  <div class="sub">Phase 3 — Expansion · Năm 2+</div>
+  <div class="tl">
+    <div class="tl-r"><div class="tl-w">Năm 2</div><div class="tl-c"><div class="tl-t">Brand con thứ 3</div><div class="tl-d">Body Care hoặc Hair Care. Pháp nhân mới dưới holding. Gọi vốn riêng. Dùng shared services sẵn có.</div><div class="tl-tag opt">Tuỳ strategy</div></div></div>
+    <div class="tl-r"><div class="tl-w">Năm 3</div><div class="tl-c"><div class="tl-t">Franchise Mora nếu SOP locked</div><div class="tl-d">Holding license Mora cho franchisee. Phí franchise + % revenue = recurring revenue cho holding.</div></div></div>
+    <div class="tl-r"><div class="tl-w">Năm 3–5</div><div class="tl-c"><div class="tl-t">Đối tác chiến lược 10–15%</div><div class="tl-d">Holding phát hành cổ phần cho đối tác chiến lược cấp quốc gia/quốc tế. Kiên và Đài giữ 85–90%. Đối tác có ghế advisory, không có quyền veto vận hành.</div><div class="tl-tag opt">Tuỳ thời cơ</div></div></div>
+    <div class="tl-r"><div class="tl-w">Năm 4+</div><div class="tl-c"><div class="tl-t">Chuẩn hoá ngành + Mở rộng quốc tế</div><div class="tl-d">Nền tảng nguyên liệu IFRA tại VN. Holding quốc tế tại Singapore nếu cần. Chuẩn IFRS. Trọng tài quốc tế trong mọi hợp đồng.</div></div></div>
+  </div>
+
+  <hr>
+
+  <div class="stmt">
+    <p>Cấu trúc này không phải xây ngay — mà là thiết kế sẵn. Giống kiến trúc sư vẽ bản vẽ cho toà nhà 3 tầng nhưng xây tầng trệt trước. Foundation được thiết kế để chịu được toàn bộ trọng lượng. Đó là sự khác biệt giữa người cơi nới từng tầng, và người thiết kế toàn bộ từ đầu.</p>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-b">Mora</div>
+  <div class="footer-n">MORA-GOV-001 · Holding Company Blueprint v2.0 · Nội bộ sáng lập · Kiên &amp; Đài</div>
+</div>
+
+<script>
+function sw(i,el){
+  document.querySelectorAll('.pnl').forEach(p=>p.classList.remove('v'));
+  var panel=document.getElementById('p'+i);
+  panel.classList.add('v');
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('a'));
+  el.classList.add('a');
+  // scroll to top of panel content
+  var offset=document.getElementById('tabs').offsetTop+document.getElementById('tabs').offsetHeight;
+  window.scrollTo({top:offset-2,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
