@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MORAQ · Operating Pattern · 8 Lớp · v1.0</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1A1916;--teal:#0F6E56;--td:#085041;--tl:#E1F5EE;--amber:#854F0B;--ad:#633806;--al:#FAEEDA;--cream:#FAF9F6;--linen:#E8DFD0;--w50:#F5F0E8;--w400:#C4B49A;--w600:#8C7A62;--red:#B44A3F;--blue:#185FA5;--bl:#E6F1FB}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased}
+
+/* ── Nav ── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--ink);padding:12px 40px;display:flex;align-items:center;gap:24px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--w400)}.nav .brand{color:var(--cream);font-family:'Cormorant Garamond',serif;font-weight:300;font-size:16px;letter-spacing:.04em;text-transform:none}
+
+/* ── Page ── */
+.page{max-width:1000px;margin:0 auto;padding:80px 40px 80px}
+
+/* ── Hero ── */
+.hero{padding:60px 0 40px;border-bottom:1px solid var(--linen);margin-bottom:60px}
+.doc-label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--w600);margin-bottom:20px}
+.hero h1{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(36px,5vw,52px);line-height:1.15;margin-bottom:16px}
+.hero h1 em{font-style:italic;color:var(--teal)}
+.hero .subtitle{font-size:14px;color:var(--w600);max-width:680px;line-height:1.8}
+
+/* ── Sections ── */
+.section{margin-bottom:72px;scroll-margin-top:80px}
+.section-label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:8px}
+.section h2{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:clamp(26px,3.5vw,36px);line-height:1.2;margin-bottom:8px}
+.section h2 em{font-style:italic;color:var(--teal)}
+.section .desc{color:var(--w600);font-size:13px;max-width:640px;margin-bottom:32px;line-height:1.75}
+h3{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:20px;margin:36px 0 14px}
+
+/* ── Principle ── */
+.principle{background:#fff;border:1px solid var(--linen);border-left:3px solid var(--teal);border-radius:0 6px 6px 0;padding:20px 24px;margin:24px 0}
+.principle p{font-size:14px;line-height:1.75;max-width:700px}
+.principle strong{color:var(--teal)}
+
+/* ── Layer Cards ── */
+.layer{background:#fff;border:1px solid var(--linen);border-radius:8px;margin:20px 0;overflow:hidden}
+.layer-head{display:grid;grid-template-columns:56px 1fr;align-items:stretch;border-bottom:1px solid var(--linen)}
+.layer-num{background:var(--ink);color:var(--cream);font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;display:flex;align-items:center;justify-content:center}
+.layer-num.l0{background:var(--teal)}
+.layer-num.l7{background:var(--amber)}
+.layer-info{padding:16px 20px}
+.layer-name{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;margin-bottom:2px}
+.layer-en{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--w600)}
+.layer-def{font-size:13px;color:var(--w600);line-height:1.6;margin-top:4px}
+
+.layer-body{padding:0}
+.scale-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.scale-cell{padding:14px 16px;border-right:1px solid var(--linen);border-bottom:1px solid var(--linen);font-size:12px;line-height:1.6;color:var(--ink)}
+.scale-cell:nth-child(4n){border-right:none}
+.scale-cell:nth-last-child(-n+4){border-bottom:none}
+.scale-label{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:var(--w600);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.scale-label::before{content:'';width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.s1 .scale-label::before{background:var(--teal)}
+.s2 .scale-label::before{background:var(--amber)}
+.s3 .scale-label::before{background:var(--blue)}
+.s4 .scale-label::before{background:var(--ink)}
+
+/* ── Dep table ── */
+.dep{width:100%;border-collapse:collapse;margin:20px 0;font-size:13px}
+.dep th{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--w600);text-align:left;padding:10px 14px;border-bottom:2px solid var(--linen)}
+.dep td{padding:10px 14px;border-bottom:1px solid var(--w50);vertical-align:top}
+.dep td:first-child{font-weight:600;white-space:nowrap}
+.dep .arrow{color:var(--teal);font-weight:600}
+
+/* ── Sequence ── */
+.seq{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:24px 0}
+.seq-card{background:#fff;border:1px solid var(--linen);border-radius:6px;padding:16px;text-align:center}
+.seq-card .phase{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:6px}
+.seq-card .layers{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;margin-bottom:4px}
+.seq-card .what{font-size:11px;color:var(--w600);line-height:1.5}
+
+/* ── Status ── */
+.status{display:inline-block;font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:2px}
+.status.done{background:var(--tl);color:var(--teal)}
+.status.next{background:var(--al);color:var(--amber)}
+.status.wait{background:var(--w50);color:var(--w600)}
+
+/* ── Footer ── */
+.foot{text-align:center;padding:40px 0;border-top:1px solid var(--linen);margin-top:40px}
+.foot .logo{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:24px;letter-spacing:.15em;margin-bottom:8px}
+.foot .meta{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--w600)}
+
+hr.div{border:none;border-top:1px solid var(--linen);margin:56px 0}
+
+@media(max-width:768px){
+.page{padding:80px 20px 60px}.nav{padding:12px 20px}
+.scale-grid{grid-template-columns:1fr 1fr}.seq{grid-template-columns:1fr 1fr}
+}
+@media(max-width:480px){
+.scale-grid{grid-template-columns:1fr}.seq{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+<span class="brand">MORAQ</span>
+<span>Operating Pattern · v1.0</span>
+</nav>
+
+<div class="page">
+
+<header class="hero">
+<div class="doc-label">MORAQ · Operating Pattern · OPS-001 · v1.0</div>
+<h1>Operating<br><em>Pattern</em></h1>
+<p class="subtitle">Khung vận hành 8 lớp — áp dụng đồng nhất từ 1 sản phẩm đến holding đa ngành. Thay nội dung, không thay cấu trúc. Mỗi lớp có đầu vào, đầu ra, chủ sở hữu, tần suất cập nhật. Đây là bản đồ nền — mọi tài liệu vận hành MORAQ đều ngồi trên khung này.</p>
+</header>
+
+<!-- ═══ NGUYÊN TẮC NỀN ═══ -->
+<section class="section" id="principle">
+<div class="section-label">Nguyên tắc nền</div>
+<h2>Fractal — <em>cùng cấu trúc, mọi cấp độ</em></h2>
+<p class="desc">Pattern này không phải checklist. Là cấu trúc sống — tồn tại ở mọi cấp độ với cùng 8 lớp, chỉ thay nội dung bên trong.</p>
+
+<div class="principle">
+<p><strong>Quy tắc fractal:</strong> Nếu một lớp không tồn tại ở một cấp độ nào đó — hoặc cấp độ đó chưa đủ trưởng thành, hoặc cấu trúc đang thiếu. Không có ngoại lệ.</p>
+</div>
+
+<h3>4 cấp độ áp dụng</h3>
+<table class="dep">
+<thead><tr><th>Cấp</th><th>Phạm vi</th><th>Ví dụ MORAQ</th></tr></thead>
+<tr><td>① Sản phẩm</td><td>1 đơn vị giá trị nhỏ nhất</td><td>1 chai Bespoke 50ml</td></tr>
+<tr><td>② Mảng kinh doanh</td><td>1 doanh nghiệp / 1 thương hiệu</td><td>MORAQ (toàn bộ cửa hàng + online)</td></tr>
+<tr><td>③ Ngành</td><td>Nhiều mảng cùng ngành</td><td>Nước hoa + Body care + Hair care</td></tr>
+<tr><td>④ Đa ngành</td><td>Holding / Group</td><td>MORAQ + Radio Pictures + OOS</td></tr>
+</table>
+</section>
+
+<hr class="div">
+
+<!-- ═══ 8 LỚP ═══ -->
+<section class="section" id="layers">
+<div class="section-label">8 Lớp</div>
+<h2>Định nghĩa <em>từng lớp</em></h2>
+<p class="desc">Mỗi lớp có 1 câu hỏi duy nhất. Trả lời được câu hỏi đó = lớp đó đã khoá.</p>
+
+<!-- LỚP 0 -->
+<div class="layer">
+<div class="layer-head">
+<div class="layer-num l0">0</div>
+<div class="layer-info">
+<div class="layer-name">Bất biến</div>
+<div class="layer-en">Codex · Invariants</div>
+<div class="layer-def">Câu hỏi: <strong>Cái gì không bao giờ thay đổi?</strong> — Giá trị cốt lõi, tiêu chuẩn chất lượng, ranh giới không vượt.</div>
+</div>
+</div>
+<div class="layer-body"><div class="scale-grid">
+<div class="scale-cell s1"><div class="scale-label">Sản phẩm</div>Tiêu chuẩn IFRA, nồng độ tối thiểu, chất liệu bao bì, cam kết pha chế trước mặt khách</div>
+<div class="scale-cell s2"><div class="scale-label">Mảng KD</div>Founder's Codex 7 invariants, brand invariants, Exploration Boundaries, tiêu chuẩn trải nghiệm cửa hàng</div>
+<div class="scale-cell s3"><div class="scale-label">Ngành</div>IFRA/ISO cho toàn bộ danh mục chăm sóc cá nhân, cam kết minh bạch nguyên liệu, chuẩn quốc tế</div>
+<div class="scale-cell s4"><div class="scale-label">Đa ngành</div>Group Codex — giá trị chung xuyên suốt mọi thương hiệu trong holding</div>
+</div></div>
+</div>
+
+<!-- LỚP 1 -->
+<div class="layer">
+<div class="layer-head">
+<div class="layer-num">1</div>
+<div class="layer-info">
+<div class="layer-name">Giá trị</div>
+<div class="layer-en">Value · Revenue Architecture</div>
+<div class="layer-def">Câu hỏi: <strong>Tạo giá trị gì, cho ai, giá bao nhiêu?</strong> — Sản phẩm, khách hàng, pricing, dòng doanh thu.</div>
+</div>
+</div>
+<div class="layer-body"><div class="scale-grid">
+<div class="scale-cell s1"><div class="scale-label">Sản phẩm</div>1 chai Bespoke 50ml · COGS 180K · Giá 1.0–1.79M · Margin 85–90% · Khách: người trẻ chi cho trải nghiệm</div>
+<div class="scale-cell s2"><div class="scale-label">Mảng KD</div>6 dòng doanh thu · Pricing 3 tầng (Essential / Signature / Artisan) · Weighted average 1.37M · Refill LTV model</div>
+<div class="scale-cell s3"><div class="scale-label">Ngành</div>Danh mục: nước hoa → body care → hair care · Franchise fees · B2B nguyên liệu đạt chuẩn</div>
+<div class="scale-cell s4"><div class="scale-label">Đa ngành</div>Portfolio giá trị: MORAQ (sản phẩm), Radio Pictures (sáng tạo), OOS (phương pháp luận) · Synergy map</div>
+</div></div>
+</div>
+
+<!-- LỚP 2 -->
+<div class="layer">
+<div class="layer-head">
+<div class="layer-num">2</div>
+<div class="layer-info">
+<div class="layer-name">Nguồn lực</div>
+<div class="layer-en">Supply · Resource Architecture</div>
+<div class="layer-def">Câu hỏi: <strong>Cần gì để tạo ra giá trị đó?</strong> — Nguyên liệu, nhà cung cấp, tồn kho, QC, compliance.</div>
+</div>
+</div>
+<div class="layer-body"><div class="scale-grid">
+<div class="scale-cell s1"><div class="scale-label">Sản phẩm</div>BOM 1 chai: hương liệu 50K + cồn 20K + vỏ 60K + bao bì 50K · 1 nhà cung cấp IFRA · QC checklist</div>
+<div class="scale-cell s2"><div class="scale-label">Mảng KD</div>Supply chain: MOQ 75kg, lead time, EOQ, safety stock, reorder point · Danh sách NCC + backup · FX hedging</div>
+<div class="scale-cell s3"><div class="scale-label">Ngành</div>Chuẩn hoá nguyên liệu IFRA toàn ngành · Procurement tập trung · Shared supplier network</div>
+<div class="scale-cell s4"><div class="scale-label">Đa ngành</div>Group procurement · Shared logistics · Cross-brand supplier qualification</div>
+</div></div>
+</div>
+
+<!-- LỚP 3 -->
+<div class="layer">
+<div class="layer-head">
+<div class="layer-num">3</div>
+<div class="layer-info">
+<div class="layer-name">Chuyển giao</div>
+<div class="layer-en">Delivery · Operations Architecture</div>
+<div class="layer-def">Câu hỏi: <strong>Giá trị đến tay khách bằng cách nào?</strong> — Không gian, kênh, quy trình vận hành, công suất, trải nghiệm.</div>
+</div>
+</div>
+<div class="layer-body"><div class="scale-grid">
+<div class="scale-cell s1"><div class="scale-label">Sản phẩm</div>35 phút pha chế trước mặt · 5 giác quan · Khắc tên · Đóng gói · Trao bằng hai tay</div>
+<div class="scale-cell s2"><div class="scale-label">Mảng KD</div>Cửa hàng (2 station, 12h, 37 TX/ngày max) + Website (limited edition + refill) · SOP 8 mô-đun · Checklist mở/đóng</div>
+<div class="scale-cell s3"><div class="scale-label">Ngành</div>Mạng lưới cửa hàng + franchise · Training center · Chuẩn hoá trải nghiệm cross-store</div>
+<div class="scale-cell s4"><div class="scale-label">Đa ngành</div>Shared retail space · Shared distribution · Cross-brand experience (ví dụ: cửa hàng MORAQ + Radio Pictures event)</div>
+</div></div>
+</div>
+
+<!-- LỚP 4 -->
+<div class="layer">
+<div class="layer-head">
+<div class="layer-num">4</div>
+<div class="layer-info">
+<div class="layer-name">Con người</div>
+<div class="layer-en">People · Organization Architecture</div>
+<div class="layer-def">Câu hỏi: <strong>Ai thực hiện, được tổ chức và đãi ngộ ra sao?</strong> — Sơ đồ tổ chức, vai trò, năng lực, đãi ngộ, văn hoá.</div>
+</div>
+</div>
+<div class="layer-body"><div class="scale-grid">
+<div class="scale-cell s1"><div class="scale-label">Sản phẩm</div>1 Artisan pha chế · Năng lực: Codex + kỹ thuật + kể chuyện · Đào tạo 5 ngày</div>
+<div class="scale-cell s2"><div class="scale-label">Mảng KD</div>5–6 người phased theo doanh thu · Compensation 5 tier · Partnership model · Milestone funds · Turnover protocol</div>
+<div class="scale-cell s3"><div class="scale-label">Ngành</div>Store Manager pipeline · Franchise owner training · Regional manager · Training center staff</div>
+<div class="scale-cell s4"><div class="scale-label">Đa ngành</div>Founder's office · Shared People & Culture · Cross-brand career path · Group Profit Pool</div>
+</div></div>
+</div>
+
+<!-- LỚP 5 -->
+<div class="layer">
+<div class="layer-head">
+<div class="layer-num">5</div>
+<div class="layer-info">
+<div class="layer-name">Tài chính</div>
+<div class="layer-en">Finance · Financial Architecture</div>
+<div class="layer-def">Câu hỏi: <strong>Tiền chảy ra sao?</strong> — Unit economics, P&L, dòng tiền, vốn, rủi ro, sensitivity.</div>
+</div>
+</div>
+<div class="layer-body"><div class="scale-grid">
+<div class="scale-cell s1"><div class="scale-label">Sản phẩm</div>COGS 180K · Margin 87.5% · Contribution/TX sau COGS + marketing</div>
+<div class="scale-cell s2"><div class="scale-label">Mảng KD</div>P&L 3 kịch bản + slow ramp · Cash flow 18 tháng · Break-even 4.3 TX/ngày · Dự phòng 3 tầng · Investor returns</div>
+<div class="scale-cell s3"><div class="scale-label">Ngành</div>P&L consolidated multi-store · Inter-company pricing · Franchise economics · Category P&L</div>
+<div class="scale-cell s4"><div class="scale-label">Đa ngành</div>Group treasury · Capital allocation across brands · Dividend policy · Group valuation</div>
+</div></div>
+</div>
+
+<!-- LỚP 6 -->
+<div class="layer">
+<div class="layer-head">
+<div class="layer-num">6</div>
+<div class="layer-info">
+<div class="layer-name">Hạ tầng</div>
+<div class="layer-en">Infrastructure · Support Architecture</div>
+<div class="layer-def">Câu hỏi: <strong>Cái gì nâng đỡ mọi thứ nhưng không tạo doanh thu trực tiếp?</strong> — Tech, kế toán, pháp lý, bảo hiểm, admin.</div>
+</div>
+</div>
+<div class="layer-body"><div class="scale-grid">
+<div class="scale-cell s1"><div class="scale-label">Sản phẩm</div>Máy tính tiền (POS) ghi nhận 1 giao dịch · Label printer · Barcode</div>
+<div class="scale-cell s2"><div class="scale-label">Mảng KD</div>POS + CRM + Booking · Kế toán (VAT, CIT, sổ sách) · Pháp lý (trademark, hợp đồng, BH) · BHXH · Onboarding admin</div>
+<div class="scale-cell s3"><div class="scale-label">Ngành</div>ERP · Franchise management system · Centralised accounting · IP portfolio management</div>
+<div class="scale-cell s4"><div class="scale-label">Đa ngành</div>Shared services: Finance, Legal, Data/Dashboard, Tech · Group ERP · Consolidated reporting</div>
+</div></div>
+</div>
+
+<!-- LỚP 7 -->
+<div class="layer">
+<div class="layer-head">
+<div class="layer-num l7">7</div>
+<div class="layer-info">
+<div class="layer-name">Thông minh</div>
+<div class="layer-en">Intelligence · Feedback Architecture</div>
+<div class="layer-def">Câu hỏi: <strong>Hệ thống học và điều chỉnh bằng cách nào?</strong> — KPI, feedback loop, risk sensing, decision protocol.</div>
+</div>
+</div>
+<div class="layer-body"><div class="scale-grid">
+<div class="scale-cell s1"><div class="scale-label">Sản phẩm</div>NPS 1 giao dịch · Feedback khách tại quầy · Tỷ lệ refill 90 ngày</div>
+<div class="scale-cell s2"><div class="scale-label">Mảng KD</div>Dashboard: leading + lagging KPIs · Milestone NĐT · Ngưỡng cảnh báo · Slow Ramp Protocol · Review hàng tuần</div>
+<div class="scale-cell s3"><div class="scale-label">Ngành</div>Benchmark cross-store · Franchise performance scoring · Category trend sensing</div>
+<div class="scale-cell s4"><div class="scale-label">Đa ngành</div>Group dashboard · Capital reallocation triggers · Portfolio health score · Quarterly strategy review</div>
+</div></div>
+</div>
+
+</section>
+
+<hr class="div">
+
+<!-- ═══ DEPENDENCY ═══ -->
+<section class="section" id="dep">
+<div class="section-label">Quan hệ giữa các lớp</div>
+<h2>Đầu vào — <em>Đầu ra</em></h2>
+<p class="desc">Mỗi lớp nhận input từ lớp trước và truyền output cho lớp sau. Lớp 0 xuyên suốt — kiểm soát mọi lớp khác.</p>
+
+<table class="dep">
+<thead><tr><th>Từ</th><th></th><th>Đến</th><th>Truyền cái gì</th></tr></thead>
+<tr><td>Lớp 0</td><td class="arrow">→</td><td>Tất cả</td><td>Ranh giới + tiêu chuẩn chất lượng — gate kiểm tra cho mọi quyết định</td></tr>
+<tr><td>Lớp 1</td><td class="arrow">→</td><td>Lớp 2</td><td>Cần mua gì (BOM), bao nhiêu (demand forecast từ pricing × capacity)</td></tr>
+<tr><td>Lớp 2</td><td class="arrow">→</td><td>Lớp 3</td><td>Hàng sẵn sàng khi nào, số lượng → lên lịch vận hành</td></tr>
+<tr><td>Lớp 3</td><td class="arrow">→</td><td>Lớp 4</td><td>Capacity → cần bao nhiêu người, ca nào, kỹ năng gì</td></tr>
+<tr><td>Lớp 1–4</td><td class="arrow">→</td><td>Lớp 5</td><td>Mọi con số tài chính derive từ 4 lớp trên — không tự sinh</td></tr>
+<tr><td>Lớp 1–5</td><td class="arrow">→</td><td>Lớp 6</td><td>Yêu cầu hạ tầng: tech nào, dịch vụ nào, compliance nào</td></tr>
+<tr><td>Lớp 7</td><td class="arrow">→</td><td>Lớp 1–6</td><td>Feedback ngược: số thực tế lệch → trigger cập nhật lớp gốc</td></tr>
+</table>
+
+<div class="principle">
+<p><strong>Nguyên tắc truy ngược:</strong> Mọi con số trong Lớp 5 (Tài chính) phải truy ngược được về 1 input cụ thể ở Lớp 1–4. Nếu không truy ngược được = giả định chưa kiểm chứng = rủi ro.</p>
+</div>
+</section>
+
+<hr class="div">
+
+<!-- ═══ TRÌNH TỰ TRIỂN KHAI ═══ -->
+<section class="section" id="sequence">
+<div class="section-label">Trình tự triển khai</div>
+<h2>Từ pattern đến <em>thực chiến</em></h2>
+<p class="desc">Pattern là bản đồ. Trình tự dưới đây là cách đi trên bản đồ — khoá cái ít thay đổi nhất trước.</p>
+
+<div class="seq">
+<div class="seq-card"><div class="phase">Đợt 1 · Nền</div><div class="layers">0 → 1 → 2</div><div class="what">Bất biến + Giá trị + Nguồn lực<br>Khoá input gốc</div></div>
+<div class="seq-card"><div class="phase">Đợt 2 · Vận hành</div><div class="layers">3 → 4</div><div class="what">Chuyển giao + Con người<br>Khoá cách thực hiện</div></div>
+<div class="seq-card"><div class="phase">Đợt 3 · Hệ thống</div><div class="layers">5 → 6</div><div class="what">Tài chính + Hạ tầng<br>Tổng hợp thành quản lý</div></div>
+<div class="seq-card"><div class="phase">Đợt 4 · Vòng lặp</div><div class="layers">7</div><div class="what">Thông minh<br>Đo, học, điều chỉnh</div></div>
+</div>
+
+<h3>Trạng thái hiện tại — Cấp ② Mảng kinh doanh (MORAQ)</h3>
+<table class="dep">
+<thead><tr><th>Lớp</th><th>Trạng thái</th><th>Nguồn hiện có</th><th>Cần làm</th></tr></thead>
+<tr><td>0 · Bất biến</td><td><span class="status done">Có nền</span></td><td>Founder's Codex, Brand Guidelines v2.1, Exploration Boundaries</td><td>Chuẩn hoá thành input form cho pattern</td></tr>
+<tr><td>1 · Giá trị</td><td><span class="status done">Có nền</span></td><td>FIN-015 §02–03: Unit Economics, Pricing Architecture, Revenue Streams</td><td>Tách thành input sheet riêng, thêm BOM chi tiết</td></tr>
+<tr><td>2 · Nguồn lực</td><td><span class="status next">Rải rác</span></td><td>FIN-015: MOQ, FX trong text · Chưa có supplier database, EOQ sheet, QC checklist</td><td>Xây từ đầu — ưu tiên cao nhất</td></tr>
+<tr><td>3 · Chuyển giao</td><td><span class="status done">Có nền</span></td><td>Store Experience Design, 8 mô-đun SOP, Counter Ritual</td><td>Gắn capacity model + checklist vào pattern</td></tr>
+<tr><td>4 · Con người</td><td><span class="status done">Có nền</span></td><td>FIN-015 §05–06: Phased staffing, Compensation 5 tier, Partnership model</td><td>Thêm JD chi tiết, training curriculum, turnover playbook</td></tr>
+<tr><td>5 · Tài chính</td><td><span class="status done">Đã xây</span></td><td>FIN-015 v4.0 đầy đủ: P&L, Cash flow, Sensitivity, 4 kịch bản</td><td>Gắn truy ngược (mỗi dòng → input lớp nào)</td></tr>
+<tr><td>6 · Hạ tầng</td><td><span class="status wait">Chưa có</span></td><td>1 dòng "Tech + Kế toán + PL + BH = 14M/th" trong P&L</td><td>Xây từ đầu — tech stack, kế toán, pháp lý, admin</td></tr>
+<tr><td>7 · Thông minh</td><td><span class="status next">Có khung</span></td><td>FIN-015 §17: KPI Framework (leading + lagging + milestone)</td><td>Thêm dashboard spec, alert rules, review cadence</td></tr>
+</table>
+</section>
+
+<hr class="div">
+
+<!-- ═══ QUY ƯỚC TÀI LIỆU ═══ -->
+<section class="section" id="convention">
+<div class="section-label">Quy ước</div>
+<h2>Mã tài liệu <em>theo lớp</em></h2>
+<p class="desc">Mỗi tài liệu thuộc đúng 1 lớp. Mã tài liệu chứa lớp + số thứ tự.</p>
+
+<table class="dep">
+<thead><tr><th>Lớp</th><th>Mã</th><th>Ví dụ</th></tr></thead>
+<tr><td>0 · Bất biến</td><td>L0-xxx</td><td>L0-001 Founder's Codex · L0-002 Brand Invariants · L0-003 IFRA Standards</td></tr>
+<tr><td>1 · Giá trị</td><td>L1-xxx</td><td>L1-001 Product Catalogue · L1-002 Pricing Architecture · L1-003 Revenue Streams</td></tr>
+<tr><td>2 · Nguồn lực</td><td>L2-xxx</td><td>L2-001 BOM Master · L2-002 Supplier Database · L2-003 Inventory Policy</td></tr>
+<tr><td>3 · Chuyển giao</td><td>L3-xxx</td><td>L3-001 Store Operations Manual · L3-002 Channel Strategy · L3-003 Capacity Model</td></tr>
+<tr><td>4 · Con người</td><td>L4-xxx</td><td>L4-001 Org Chart · L4-002 Compensation Architecture · L4-003 Training Curriculum</td></tr>
+<tr><td>5 · Tài chính</td><td>L5-xxx</td><td>L5-001 Unit Economics · L5-002 P&L Model · L5-003 Cash Flow · L5-004 Risk Register</td></tr>
+<tr><td>6 · Hạ tầng</td><td>L6-xxx</td><td>L6-001 Tech Stack · L6-002 Accounting Manual · L6-003 Legal & Compliance</td></tr>
+<tr><td>7 · Thông minh</td><td>L7-xxx</td><td>L7-001 KPI Framework · L7-002 Dashboard Spec · L7-003 Review Cadence</td></tr>
+</table>
+
+<div class="principle">
+<p><strong>FIN-015 hiện tại</strong> = output tổng hợp từ L1 + L2 + L3 + L4 → L5, đóng gói cho nhà đầu tư. Trong hệ thống vận hành, nó sẽ được tách thành nhiều tài liệu L5-xxx, mỗi tài liệu truy ngược rõ ràng về input gốc.</p>
+</div>
+</section>
+
+<div class="foot">
+<div class="logo">MORAQ</div>
+<div class="meta">Operating Pattern · OPS-001 · v1.0 · Khoá ngày 07/04/2026<br>Áp dụng: mọi cấp độ · mọi module · mọi thương hiệu trong hệ sinh thái</div>
+</div>
+
+</div>
+</body>
+</html>
