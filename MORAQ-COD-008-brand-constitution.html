@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>MORAQ Brand Playbook</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1A1916;--ink2:#111010;
+  --teal:#0F6E56;--teal2:#085041;--teal-l:#E1F5EE;--teal-m:#9FE1CB;
+  --amber:#854F0B;--amber-l:#FAEEDA;--amber-m:#FAC775;--amber-d:#633806;
+  --cream:#FAF9F6;--linen:#E8DFD0;--linen2:#D4C9B5;--linen3:#C0B49A;
+  --muted:#8A857F;--muted2:#B8B3AD;
+  --gold:#C8A84B;--gold-l:rgba(200,168,75,.15);--gold-ll:rgba(200,168,75,.06);
+  --ease:cubic-bezier(.4,0,.2,1);
+}
+html,body{height:100%;overflow:hidden;background:var(--ink2);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#fff}
+
+.shell{width:100vw;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+
+/* ── TOP ── */
+.topbar{
+  height:50px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 22px;
+  background:rgba(17,16,16,0.96);
+  border-bottom:0.5px solid rgba(255,255,255,0.06);
+  z-index:100;
+}
+.tb-brand{font-family:'Menlo','Monaco','Courier New',monospace;font-size:10px;letter-spacing:0.2em;color:var(--gold);opacity:.8}
+.tb-title{font-family:'Georgia','Times New Roman',serif;font-size:13px;font-weight:300;font-style:italic;color:rgba(255,255,255,.35);letter-spacing:.04em}
+.tb-doc{font-family:'Menlo','Monaco','Courier New',monospace;font-size:7.5px;letter-spacing:.08em;color:rgba(255,255,255,.15)}
+
+/* ── STAGE ── */
+.stage{flex:1;position:relative;overflow:hidden}
+.slide{
+  position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;
+  opacity:0;transform:translateY(20px);
+  transition:opacity .4s var(--ease),transform .4s var(--ease);
+  pointer-events:none;
+  scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.08) transparent;
+}
+.slide::-webkit-scrollbar{width:3px}
+.slide::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px}
+.slide.active{opacity:1;transform:translateY(0);pointer-events:all}
+.slide.prev{transform:translateY(-20px)}
+
+/* ── BOTTOM ── */
+.botbar{
+  height:46px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 22px;
+  background:rgba(17,16,16,.96);
+  border-top:0.5px solid rgba(255,255,255,.05);
+  z-index:100;
+}
+.chapter-tabs{display:flex;gap:0;overflow-x:auto;scrollbar-width:none;flex:1;justify-content:center}
+.chapter-tabs::-webkit-scrollbar{display:none}
+.ch-tab{
+  font-family:'Menlo','Monaco','Courier New',monospace;font-size:8px;letter-spacing:.08em;
+  color:rgba(255,255,255,.2);padding:5px 10px;cursor:pointer;
+  border-top:1.5px solid transparent;white-space:nowrap;
+  transition:all .2s var(--ease);user-select:none;
+}
+.ch-tab:hover{color:rgba(255,255,255,.5)}
+.ch-tab.active{color:rgba(255,255,255,.8);border-top-color:var(--gold)}
+.nav-arrow{
+  font-family:'Menlo','Monaco','Courier New',monospace;font-size:9px;letter-spacing:.06em;
+  color:rgba(255,255,255,.25);cursor:pointer;padding:5px 8px;
+  border:0.5px solid rgba(255,255,255,.08);border-radius:2px;
+  transition:all .2s var(--ease);user-select:none;white-space:nowrap;
+}
+.nav-arrow:hover{color:rgba(255,255,255,.6);border-color:rgba(255,255,255,.2)}
+.nav-arrow.off{opacity:.15;pointer-events:none}
+
+/* ── SHARED ATOMS ── */
+.eyebrow{font-family:'Menlo','Monaco','Courier New',monospace;font-size:7.5px;letter-spacing:.16em;color:var(--gold);opacity:.8;margin-bottom:8px}
+.serif-xl{font-family:'Georgia','Times New Roman',serif;font-size:clamp(32px,5vw,52px);font-weight:300;line-height:.98;color:#fff}
+.serif-xl em{font-style:italic;color:rgba(255,255,255,.45)}
+.serif-lg{font-family:'Georgia','Times New Roman',serif;font-size:clamp(24px,3.5vw,36px);font-weight:300;line-height:1.05;color:#fff}
+.serif-lg em{font-style:italic;color:var(--gold)}
+.serif-md{font-family:'Georgia','Times New Roman',serif;font-size:18px;font-weight:300;color:#fff;line-height:1.25}
+.serif-md em{font-style:italic;color:rgba(255,255,255,.5)}
+.body-sm{font-size:12px;color:rgba(255,255,255,.38);line-height:1.75}
+.rule-gold{width:28px;height:1px;background:var(--gold);opacity:.6;margin:10px 0 12px}
+.rule-dim{height:.5px;background:rgba(255,255,255,.07);margin:0}
+.mono-tag{font-family:'Menlo','Monaco','Courier New',monospace;font-size:7px;letter-spacing:.08em;padding:2px 7px;border-radius:2px;display:inline-block}
+.tag-gold{background:var(--gold-l);color:var(--gold)}
+.tag-teal{background:rgba(15,110,86,.15);color:var(--teal-m)}
+
+/* ════════════════════════════════
+   SLIDE 0 — COVER
+════════════════════════════════ */
+#s0{background:var(--ink2)}
+.s0-inner{
+  min-height:100%;display:flex;flex-direction:column;
+  padding:36px 32px 28px;position:relative;overflow:hidden;
+}
+.s0-bg{position:absolute;inset:0;pointer-events:none}
+.s0-top{display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:2;margin-bottom:auto}
+.s0-seal{
+  width:52px;height:52px;border-radius:50%;
+  border:0.5px solid rgba(200,168,75,.25);
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:1px;
+}
+.s0-seal-m{font-family:'Georgia','Times New Roman',serif;font-size:16px;font-weight:600;letter-spacing:.1em;color:var(--gold);opacity:.7;line-height:1}
+.s0-seal-sub{font-family:'Menlo','Monaco','Courier New',monospace;font-size:5px;letter-spacing:.1em;color:rgba(200,168,75,.4)}
+.s0-conf{font-family:'Menlo','Monaco','Courier New',monospace;font-size:7px;letter-spacing:.1em;color:rgba(255,255,255,.15);text-align:right;line-height:1.9}
+.s0-mid{padding:24px 0 20px;position:relative;z-index:2}
+.s0-pre{font-family:'Menlo','Monaco','Courier New',monospace;font-size:7.5px;letter-spacing:.18em;color:var(--gold);opacity:.7;margin-bottom:14px}
+.s0-title{font-family:'Georgia','Times New Roman',serif;font-size:clamp(44px,8vw,72px);font-weight:300;line-height:.92;color:#fff;margin-bottom:6px}
+.s0-title em{font-style:italic;color:rgba(255,255,255,.3)}
+.s0-sub{font-family:'Georgia','Times New Roman',serif;font-size:16px;font-weight:300;font-style:italic;color:rgba(255,255,255,.22);margin-bottom:20px}
+.s0-rule{width:32px;height:1px;background:var(--gold);opacity:.5;margin-bottom:18px}
+.s0-desc{font-size:12.5px;color:rgba(255,255,255,.35);line-height:1.8;max-width:440px}
+.s0-desc strong{color:rgba(255,255,255,.6);font-weight:400}
+.s0-begin{
+  display:inline-flex;align-items:center;gap:8px;margin-top:22px;
+  font-family:'Menlo','Monaco','Courier New',monospace;font-size:8.5px;letter-spacing:.1em;
+  color:var(--gold);opacity:.7;border:0.5px solid rgba(200,168,75,.2);
+  padding:8px 16px;border-radius:2px;cursor:pointer;
+  transition:all .25s var(--ease);
+}
+.s0-begin:hover{opacity:1;background:var(--gold-l);border-color:rgba(200,168,75,.4)}
+.s0-footer{display:flex;justify-content:space-between;align-items:flex-end;padding-top:20px;border-top:.5px solid rgba(255,255,255,.05);position:relative;z-index:2}
+.s0-footer-meta{font-family:'Menlo','Monaco','Courier New',monospace;font-size:6.5px;color:rgba(255,255,255,.14);letter-spacing:.06em;line-height:2}
+.s0-version{font-family:'Georgia','Times New Roman',serif;font-size:10px;font-style:italic;color:rgba(255,255,255,.12)}
+
+/* ════════════════════════════════
+   SLIDE 1 — PREAMBLE
+════════════════════════════════ */
+#s1{background:var(--ink)}
+.s1-inner{min-height:100%;display:flex;flex-direction:column;padding:32px 32px 28px;gap:0}
+.preamble-block{
+  max-width:620px;margin:auto;display:flex;flex-direction:column;gap:20px;
+  padding:20px 0;
+}
+.pb-num{font-family:'Menlo','Monaco','Courier New',monospace;font-size:7px;letter-spacing:.12em;color:rgba(255,255,255,.18)}
+.pb-quote{
+  font-family:'Georgia','Times New Roman',serif;font-size:clamp(18px,3vw,26px);
+  font-weight:300;font-style:italic;line-height:1.5;
+  color:rgba(255,255,255,.7);
+  border-left:1.5px solid var(--gold);padding-left:18px;
+  opacity:.8;
+}
+.pb-body{font-size:12.5px;color:rgba(255,255,255,.35);line-height:1.8;max-width:540px}
+.pb-divider{height:.5px;background:rgba(255,255,255,.06)}
+.what-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;border:0.5px solid rgba(255,255,255,.06);border-radius:6px;overflow:hidden}
+.wg-cell{padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.wg-cell.is{background:rgba(15,110,86,.06)}
+.wg-cell.not{background:rgba(163,45,45,.04)}
+.wg-label{font-family:'Menlo','Monaco','Courier New',monospace;font-size:7px;letter-spacing:.12em}
+.wg-cell.is .wg-label{color:var(--teal-m)}
+.wg-cell.not .wg-label{color:rgba(163,45,45,.7)}
+.wg-text{font-family:'Georgia','Times New Roman',serif;font-size:14px;font-weight:300;font-style:italic;line-height:1.45}
+.wg-cell.is .wg-text{color:rgba(255,255,255,.65)}
+.wg-cell.not .wg-text{color:rgba(255,255,255,.3)}
+
+/* ════════════════════════════════
+   SLIDE 2 — 7 INVARIANTS
+════════════════════════════════ */
+#s2{background:var(--ink2)}
+.s2-inner{min-height:100%;display:flex;flex-direction:column;padding:28px 24px}
+.invariants-header{margin-bottom:20px;flex-shrink:0}
+.invariant-list{display:flex;flex-direction:column;gap:0}
+.inv-item{
+  display:flex;align-items:flex-start;gap:0;
+  border-bottom:.5px solid rgba(255,255,255,.06);
+  cursor:pointer;
+  transition:background .2s var(--ease);
+  border-radius:0;
+  overflow:hidden;
+}
+.inv-item:first-child{border-top:.5px solid rgba(255,255,255,.06)}
+.inv-item:hover{background:rgba(255,255,255,.025)}
+.inv-item.open{background:var(--gold-ll)}
+.inv-num{
+  font-family:'Georgia','Times New Roman',serif;font-size:28px;font-weight:300;
+  color:var(--gold);opacity:.25;
+  width:56px;flex-shrink:0;padding:14px 0 14px 4px;
+  line-height:1;transition:opacity .2s;
+}
+.inv-item.open .inv-num,.inv-item:hover .inv-num{opacity:.7}
+.inv-body{flex:1;padding:14px 14px 14px 0;display:flex;flex-direction:column;gap:0}
+.inv-statement{
+  font-family:'Georgia','Times New Roman',serif;font-size:clamp(14px,2.2vw,18px);
+  font-weight:400;color:rgba(255,255,255,.72);line-height:1.4;
+  transition:color .2s;
+}
+.inv-item.open .inv-statement,.inv-item:hover .inv-statement{color:#fff}
+.inv-expand{
+  max-height:0;overflow:hidden;
+  transition:max-height .35s var(--ease),opacity .3s;
+  opacity:0;
+}
+.inv-item.open .inv-expand{max-height:200px;opacity:1}
+.inv-detail{font-size:11.5px;color:rgba(255,255,255,.35);line-height:1.75;margin-top:8px;max-width:560px}
+.inv-detail strong{color:rgba(255,255,255,.55);font-weight:400}
+.inv-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+.inv-arrow{
+  width:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  font-size:12px;color:rgba(255,255,255,.15);padding:14px 0;
+  transition:all .2s;
+}
+.inv-item.open .inv-arrow,.inv-item:hover .inv-arrow{color:var(--gold);opacity:.7}
+.inv-item.open .inv-arrow{transform:rotate(90deg)}
+
+/* ════════════════════════════════
+   SLIDE 3 — TRIẾT LÝ NGỮ PHÁP HƯƠNG (SCENT GRAMMAR)
+════════════════════════════════ */
+#s3{background:var(--ink)}
+.s3-inner{min-height:100%;display:flex;flex-direction:column;padding:28px 28px;gap:18px}
+.philosophy-cols{flex:1;display:flex;gap:16px;min-height:0}
+.phil-left{width:200px;flex-shrink:0;display:flex;flex-direction:column;gap:14px}
+.phil-right{flex:1;display:flex;flex-direction:column;gap:14px;overflow-y:auto}
+/* scent family spectrum */
+.spectrum{display:flex;flex-direction:column;gap:8px}
+.spectrum-bar{height:100%;flex:1;position:relative;border-radius:6px;overflow:hidden;min-height:60px}
+.sb-fill{position:absolute;inset:0}
+.sb-label{position:absolute;bottom:10px;left:12px}
+.sb-name{font-family:'Georgia','Times New Roman',serif;font-size:14px;color:#fff;line-height:1.2}
+.sb-notes{font-family:'Menlo','Monaco','Courier New',monospace;font-size:6px;letter-spacing:.07em;color:rgba(255,255,255,.45);margin-top:2px}
+/* grammar grid */
+.grammar-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gg-card{padding:12px;border:0.5px solid rgba(255,255,255,.07);border-radius:6px;background:rgba(255,255,255,.025);display:flex;flex-direction:column;gap:6px}
+.gg-label{font-family:'Menlo','Monaco','Courier New',monospace;font-size:7px;letter-spacing:.1em;color:var(--gold);opacity:.7}
+.gg-title{font-family:'Georgia','Times New Roman',serif;font-size:15px;color:rgba(255,255,255,.8);line-height:1.3}
+.gg-body{font-size:11px;color:rgba(255,255,255,.32);line-height:1.65}
+/* doctrine */
+.doctrine-box{padding:16px;background:var(--gold-ll);border:0.5px solid rgba(200,168,75,.15);border-radius:6px}
+.db-label{font-family:'Menlo','Monaco','Courier New',monospace;font-size:7px;letter-spacing:.12em;color:var(--gold);opacity:.8;margin-bottom:8px}
+.db-text{font-family:'Georgia','Times New Roman',serif;font-size:16px;font-weight:300;font-style:italic;color:rgba(255,255,255,.65);line-height:1.55}
+
+/* ════════════════════════════════
+   SLIDE 4 — RITUAL DOCTRINE
+════════════════════════════════ */
+#s4{background:var(--ink2)}
+.s4-inner{min-height:100%;display:flex;flex-direction:column;padding:28px 28px;gap:18px}
+/* ritual steps */
+.ritual-flow{display:flex;flex-direction:column;gap:0}
+.rf-step{
+  display:flex;gap:0;position:relative;
+  cursor:pointer;padding:14px 0;
+  border-bottom:.5px solid rgba(255,255,255,.05);
+  transition:background .2s;
+}
+.rf-step:hover{background:rgba(255,255,255,.02)}
+.rf-line{
+  width:28px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;
+  padding-top:4px;
+}
+.rf-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--ink2);border:1px solid rgba(255,255,255,.2);
+  flex-shrink:0;transition:all .2s;
+}
+.rf-step.active-step .rf-dot,.rf-step:hover .rf-dot{background:var(--gold);border-color:var(--gold)}
+.rf-connector{width:1px;flex:1;background:rgba(255,255,255,.07);margin-top:4px}
+.rf-content{flex:1;padding-right:16px}
+.rf-phase{font-family:'Menlo','Monaco','Courier New',monospace;font-size:7px;letter-spacing:.1em;color:rgba(255,255,255,.2);margin-bottom:5px}
+.rf-step.active-step .rf-phase,.rf-step:hover .rf-phase{color:var(--gold);opacity:.8}
+.rf-title{font-family:'Georgia','Times New Roman',serif;font-size:17px;color:rgba(255,255,255,.65);line-height:1.3;margin-bottom:4px;transition:color .2s}
+.rf-step.active-step .rf-title,.rf-step:hover .rf-title{color:#fff}
+.rf-body{font-size:11px;color:rgba(255,255,255,.3);line-height:1.7;max-width:520px}
+.rf-body strong{color:rgba(255,255,255,.5);font-weight:400}
+/* city chapter rule */
+.city-rule{display:grid;grid-template-columns:1fr 1fr;gap:10px;flex-shrink:0}
+.cr-card{padding:12px;border-radius:6px;border:.5px solid rgba(255,255,255,.07)}
+.cr-card.can{background:rgba(15,110,86,.07)}
+.cr-card.cannot{background:rgba(163,45,45,.05)}
+.cr-label{font-family:'Menlo','Monaco','Courier New',monospace;font-size:7px;letter-spacing:.1em;margin-bottom:8px}
+.cr-card.can .cr-label{color:var(--teal-m)}
+.cr-card.cannot .cr-label{color:rgba(163,45,45,.7)}
+.cr-list{display:flex;flex-direction:column;gap:4px}
+.cr-item{display:flex;gap:6px;align-items:baseline;font-size:11.5px;color:rgba(255,255,255,.38);line-height:1.55}
+.cr-bullet{width:4px;height:4px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.cr-card.can .cr-bullet{background:var(--teal)}
+.cr-card.cannot .cr-bullet{background:rgba(163,45,45,.6)}
+
+/* ════════════════════════════════
+   SLIDE 5 — SIGNATURE / COMMITMENT
+════════════════════════════════ */
+#s5{background:var(--ink2)}
+.s5-inner{
+  min-height:100%;display:flex;flex-direction:column;
+  padding:32px 32px 28px;position:relative;
+}
+.s5-bg{position:absolute;inset:0;pointer-events:none}
+.s5-body{flex:1;display:flex;flex-direction:column;max-width:560px;margin:0 auto;width:100%;gap:20px;position:relative;z-index:1;justify-content:center}
+.commitment-box{
+  padding:24px;border:0.5px solid rgba(200,168,75,.15);border-radius:6px;
+  background:var(--gold-ll);
+}
+.cb-label{font-family:'Menlo','Monaco','Courier New',monospace;font-size:7px;letter-spacing:.14em;color:var(--gold);opacity:.8;margin-bottom:14px}
+.cb-text{font-family:'Georgia','Times New Roman',serif;font-size:clamp(15px,2.2vw,19px);font-weight:300;font-style:italic;color:rgba(255,255,255,.65);line-height:1.65}
+.cb-text em{color:rgba(255,255,255,.9);font-style:italic}
+/* amendment rules */
+.amendment{padding:14px;border:.5px solid rgba(255,255,255,.06);border-radius:6px;background:rgba(255,255,255,.02)}
+.am-label{font-family:'Menlo','Monaco','Courier New',monospace;font-size:7px;letter-spacing:.12em;color:rgba(255,255,255,.22);margin-bottom:10px}
+.am-list{display:flex;flex-direction:column;gap:6px}
+.am-item{display:flex;gap:8px;font-size:11px;color:rgba(255,255,255,.3);line-height:1.6;align-items:baseline}
+.am-num{font-family:'Menlo','Monaco','Courier New',monospace;font-size:7px;color:var(--gold);opacity:.6;min-width:16px;flex-shrink:0}
+/* sign fields */
+.sign-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.sign-field{display:flex;flex-direction:column;gap:4px}
+.sf-label{font-family:'Menlo','Monaco','Courier New',monospace;font-size:7px;letter-spacing:.1em;color:rgba(255,255,255,.2)}
+.sf-line{height:32px;border-bottom:.5px solid rgba(255,255,255,.12)}
+.sf-sub{font-family:'Menlo','Monaco','Courier New',monospace;font-size:6.5px;color:rgba(255,255,255,.12);letter-spacing:.06em;margin-top:4px}
+/* effective seal */
+.effective-row{display:flex;align-items:center;justify-content:space-between}
+.eff-text{font-family:'Menlo','Monaco','Courier New',monospace;font-size:8px;letter-spacing:.08em;color:rgba(255,255,255,.2);line-height:1.8}
+.eff-seal{
+  width:64px;height:64px;border-radius:50%;
+  border:.5px solid rgba(200,168,75,.2);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:2px;
+}
+.eff-seal-m{font-family:'Georgia','Times New Roman',serif;font-size:18px;font-weight:600;letter-spacing:.1em;color:var(--gold);opacity:.5;line-height:1}
+.eff-seal-sub{font-family:'Menlo','Monaco','Courier New',monospace;font-size:5px;letter-spacing:.1em;color:rgba(200,168,75,.3)}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- ── TOP BAR ── -->
+<div class="topbar">
+  <div class="tb-brand">MORAQ</div>
+  <div class="tb-title">Brand Playbook</div>
+  <div class="tb-doc">BC-001 · V1.0</div>
+</div>
+
+<!-- ── STAGE ── -->
+<div class="stage" id="stage">
+
+<!-- ════════════ S0: COVER ════════════ -->
+<div class="slide active" id="s0">
+<div class="s0-inner">
+  <svg class="s0-bg" viewBox="0 0 600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <rect width="600" height="900" fill="#111010"/>
+    <radialGradient id="cg1" cx="20%" cy="80%" r="60%"><stop offset="0%" stop-color="#C8A84B" stop-opacity=".07"/><stop offset="100%" stop-color="#111" stop-opacity="0"/></radialGradient>
+    <radialGradient id="cg2" cx="80%" cy="20%" r="50%"><stop offset="0%" stop-color="#0F6E56" stop-opacity=".07"/><stop offset="100%" stop-color="#111" stop-opacity="0"/></radialGradient>
+    <rect width="600" height="900" fill="url(#cg1)"/><rect width="600" height="900" fill="url(#cg2)"/>
+    <!-- fine grid -->
+    <g stroke="rgba(255,255,255,0.025)" stroke-width=".5">
+      <line x1="150" y1="0" x2="150" y2="900"/><line x1="300" y1="0" x2="300" y2="900"/>
+      <line x1="450" y1="0" x2="450" y2="900"/>
+      <line x1="0" y1="225" x2="600" y2="225"/><line x1="0" y1="450" x2="600" y2="450"/>
+      <line x1="0" y1="675" x2="600" y2="675"/>
+    </g>
+    <!-- center circle watermark -->
+    <circle cx="300" cy="420" r="180" fill="none" stroke="rgba(200,168,75,0.04)" stroke-width="1"/>
+    <circle cx="300" cy="420" r="140" fill="none" stroke="rgba(200,168,75,0.03)" stroke-width="0.5"/>
+    <!-- horizontal gold accent -->
+    <line x1="44" y1="720" x2="556" y2="720" stroke="rgba(200,168,75,.12)" stroke-width=".5"/>
+  </svg>
+
+  <div class="s0-top">
+    <div class="s0-seal">
+      <div class="s0-seal-m">M</div>
+      <div class="s0-seal-sub">MORAQ</div>
+    </div>
+    <div class="s0-conf">STRICTLY CONFIDENTIAL<br>FOUNDING DOCUMENT<br>NOT FOR DISTRIBUTION</div>
+  </div>
+
+  <div class="s0-mid">
+    <div class="s0-pre">FOUNDING DOCUMENT · BC-001</div>
+    <div class="s0-title">Brand<br><em>Playbook</em></div>
+    <div class="s0-sub">Các nguyên tắc cốt lõi (Invariants) của MORAQ</div>
+    <div class="s0-rule"></div>
+    <div class="s0-desc">
+      Tài liệu này không phải hướng dẫn thương hiệu (brand guidelines). Không phải sổ tay phong cách (style guide). Không phải sổ tay quy tắc (rulebook).<br><br>
+      Đây là <strong>những điều MORAQ là</strong> — và những điều MORAQ sẽ không bao giờ trở thành, dù có bao nhiêu áp lực thị trường, xu hướng, hay cơ hội thương mại.<br><br>
+      Mọi quyết định của MORAQ — từ quầy pha chế (counter) đến thành phố mới, từ giá bán đến cách gói hàng — phải được kiểm tra bằng tài liệu này trước tiên.
+    </div>
+    <div class="s0-begin" id="beginBtn">ĐỌC HIẾN PHÁP ›</div>
+  </div>
+
+  <div class="s0-footer">
+    <div class="s0-footer-meta">BC-001 · VERSION 1.0 · APRIL 2026<br>EFFECTIVE: 05/04/2026 · BRAND RENAME: MORAQ<br>AMENDMENT REQUIRES: FOUNDER APPROVAL</div>
+    <div class="s0-version">Edition I · 2026</div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════ S1: PREAMBLE ════════════ -->
+<div class="slide" id="s1">
+<div class="s1-inner">
+  <div style="flex-shrink:0;margin-bottom:20px">
+    <div class="eyebrow">CHƯƠNG I · PREAMBLE</div>
+    <div class="serif-lg">Tại sao tài liệu này <em>tồn tại</em></div>
+    <div class="rule-gold"></div>
+  </div>
+
+  <div style="max-width:640px;display:flex;flex-direction:column;gap:18px">
+
+    <div class="pb-quote">"Một thương hiệu không có bộ quy tắc sẽ trở thành bất cứ thứ gì thị trường muốn. Đó không phải là thương hiệu — đó là dịch vụ."</div>
+
+    <div class="body-sm">MORAQ được xây dựng dựa trên một quan sát: hầu hết nước hoa cao cấp ở Việt Nam được bán như hàng hóa có phụ giá (markup) — không phải như trải nghiệm có ý nghĩa. Người mua biết giá, nhưng không biết tại sao. Nhân viên (staff) biết sản phẩm, nhưng không biết tại sao hương thơm lại quan trọng với con người.<br><br>MORAQ tồn tại để thay đổi điều đó. Không phải bằng cách bán nước hoa đắt hơn — mà bằng cách khiến người ta hiểu tại sao hương thơm là ngôn ngữ riêng tư nhất của con người.</div>
+
+    <div class="rule-dim"></div>
+
+    <div>
+      <div class="eyebrow" style="margin-bottom:10px">MORAQ LÀ GÌ — VÀ KHÔNG PHẢI GÌ</div>
+      <div class="what-grid">
+        <div class="wg-cell is">
+          <div class="wg-label">✓ MORAQ LÀ</div>
+          <div class="wg-text">Một xưởng hương (atelier) biết cách bán lẻ (retail)</div>
+        </div>
+        <div class="wg-cell not">
+          <div class="wg-label">✗ MORAQ KHÔNG PHẢI</div>
+          <div class="wg-text">Một cửa hàng nước hoa có nhận diện thương hiệu (branding) đẹp</div>
+        </div>
+        <div class="wg-cell is">
+          <div class="wg-label">✓ MORAQ LÀ</div>
+          <div class="wg-text">Điểm đến của trải nghiệm cá nhân</div>
+        </div>
+        <div class="wg-cell not">
+          <div class="wg-label">✗ MORAQ KHÔNG PHẢI</div>
+          <div class="wg-text">Điểm giao dịch có âm thanh và ánh sáng (ambient) đẹp</div>
+        </div>
+        <div class="wg-cell is">
+          <div class="wg-label">✓ MORAQ LÀ</div>
+          <div class="wg-text">Người dẫn đường vào bản sắc hương của khách</div>
+        </div>
+        <div class="wg-cell not">
+          <div class="wg-label">✗ MORAQ KHÔNG PHẢI</div>
+          <div class="wg-text">Người thuyết phục khách mua sản phẩm đắt nhất</div>
+        </div>
+        <div class="wg-cell is">
+          <div class="wg-label">✓ MORAQ LÀ</div>
+          <div class="wg-text">Nhân rộng sự nhất quán — tại Việt Nam trước, từng bước mở rộng</div>
+        </div>
+        <div class="wg-cell not">
+          <div class="wg-label">✗ MORAQ KHÔNG PHẢI</div>
+          <div class="wg-text">Thương hiệu thích ứng (adapt) theo từng thị trường để dễ bán hơn</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rule-dim"></div>
+
+    <div class="body-sm" style="font-style:italic;color:rgba(255,255,255,.28)">Bộ quy tắc này không dài. MORAQ có 7 nguyên tắc cốt lõi. Nếu một quyết định vi phạm bất kỳ nguyên tắc nào trong số đó — dù lý do thương mại có hấp dẫn đến đâu — câu trả lời là không.</div>
+
+  </div>
+</div>
+</div>
+
+<!-- ════════════ S2: 7 INVARIANTS ════════════ -->
+<div class="slide" id="s2">
+<div class="s2-inner">
+  <div class="invariants-header">
+    <div class="eyebrow">CHƯƠNG II · BẢY NGUYÊN TẮC CỐT LÕI (THE SEVEN INVARIANTS)</div>
+    <div class="serif-lg" style="font-size:clamp(20px,3vw,28px)">7 nguyên tắc <em>không bao giờ thay đổi</em></div>
+    <div class="rule-gold"></div>
+    <div class="body-sm" style="max-width:500px">Bấm vào từng nguyên tắc để đọc giải thích đầy đủ. Mỗi quyết định của MORAQ phải vượt qua được 7 bài kiểm tra này.</div>
+  </div>
+
+  <div class="invariant-list" id="invList">
+
+    <div class="inv-item" data-inv="0">
+      <div class="inv-num">I</div>
+      <div class="inv-body">
+        <div class="inv-statement">Chúng ta tồn tại để kết nối người với bản sắc hương của họ — không phải để bán nước hoa.</div>
+        <div class="inv-expand">
+          <div class="inv-detail">Doanh thu (revenue) là kết quả của việc làm điều này tốt — không phải là mục tiêu. Khi nhân viên tư vấn, câu hỏi phải là "hương nào phù hợp với bạn?" — không phải "hương nào có biên lợi nhuận (margin) cao nhất?". Khách mua đúng sản phẩm và quay lại nhiều lần > khách mua sản phẩm đắt nhất và không quay lại.</div>
+          <div class="inv-tags"><span class="mono-tag tag-gold">MỤC ĐÍCH CỐT LÕI (CORE PURPOSE)</span><span class="mono-tag tag-teal">ĐÀO TẠO NHÂN VIÊN (STAFF TRAINING)</span></div>
+        </div>
+      </div>
+      <div class="inv-arrow">›</div>
+    </div>
+
+    <div class="inv-item" data-inv="1">
+      <div class="inv-num">II</div>
+      <div class="inv-body">
+        <div class="inv-statement">Mọi điểm chạm đều quan trọng — không có tương tác nào là "nhỏ".</div>
+        <div class="inv-expand">
+          <div class="inv-detail">Cách nhân viên cầm chai, cách gói hộp, cách bật nhạc, cách đặt tờ giấy vào túi — tất cả đều được nhìn thấy. <strong>Một chi tiết bất cẩn không làm hỏng một bước</strong> — nó làm hỏng toàn bộ hành trình. Quy trình không phải là chuỗi bước — quy trình là trạng thái chú ý liên tục.</div>
+          <div class="inv-tags"><span class="mono-tag tag-gold">VẬN HÀNH (OPERATIONS)</span><span class="mono-tag tag-teal">TƯ DUY NHÂN VIÊN (STAFF MINDSET)</span></div>
+        </div>
+      </div>
+      <div class="inv-arrow">›</div>
+    </div>
+
+    <div class="inv-item" data-inv="2">
+      <div class="inv-num">III</div>
+      <div class="inv-body">
+        <div class="inv-statement">Quầy hàng là sân khấu — mọi thứ đặt lên đó đều là quyết định thẩm mỹ.</div>
+        <div class="inv-expand">
+          <div class="inv-detail">Điện thoại cá nhân, ly nước, chìa khóa — tất cả đều phá vỡ sân khấu. Không có "chỉ để tạm thời". Sân khấu hoặc hoàn hảo hoặc không phải sân khấu. <strong>Nếu khách nhìn thấy thứ không thuộc về đó, họ không nhìn thấy thứ đáng phải nhìn.</strong></div>
+          <div class="inv-tags"><span class="mono-tag tag-gold">TIÊU CHUẨN HÌNH ẢNH (VISUAL STANDARD)</span><span class="mono-tag tag-teal">QUY TRÌNH TẠI QUẦY (COUNTER RITUAL)</span></div>
+        </div>
+      </div>
+      <div class="inv-arrow">›</div>
+    </div>
+
+    <div class="inv-item" data-inv="3">
+      <div class="inv-num">IV</div>
+      <div class="inv-body">
+        <div class="inv-statement">Nhân sự giữ trung tính về mùi hương — sự hiện diện của họ phục vụ sản phẩm, không phải ngược lại.</div>
+        <div class="inv-expand">
+          <div class="inv-detail">Không nước hoa cá nhân. Không kem tay có mùi. Không thực phẩm nặng mùi trong vòng 1 giờ trước ca. <strong>Đây không phải quy định khắt khe — đây là sự tôn trọng đối với giác quan của khách.</strong> Đây là tiêu chuẩn trong ngành nước hoa cao cấp, không ngoại lệ.</div>
+          <div class="inv-tags"><span class="mono-tag tag-gold">QUY TẮC TRUNG TÍNH HƯƠNG (FRAGRANCE-NEUTRAL PROTOCOL)</span><span class="mono-tag tag-teal">KHÔNG THƯƠNG LƯỢNG (NON-NEGOTIABLE)</span></div>
+        </div>
+      </div>
+      <div class="inv-arrow">›</div>
+    </div>
+
+    <div class="inv-item" data-inv="4">
+      <div class="inv-num">V</div>
+      <div class="inv-body">
+        <div class="inv-statement">Chúng ta không thích ứng (adapt) thương hiệu cho thị trường — chúng ta mời thị trường vào thương hiệu.</div>
+        <div class="inv-expand">
+          <div class="inv-detail">Mỗi cửa hàng có thể có yếu tố địa phương riêng — nhưng đó là cách MORAQ <strong>mở rộng</strong>, không phải thích nghi. Ngữ pháp Hương (Scent Grammar) không thay đổi theo thị trường. 2700K không thay đổi vì "khách thích sáng hơn". Quy trình 60 giây không rút ngắn vì "cửa hàng này bận rộn". <strong>Sự nhất quán (consistency) là đẳng cấp (luxury).</strong></div>
+          <div class="inv-tags"><span class="mono-tag tag-gold">MARKET ENTRY</span><span class="mono-tag tag-teal">CITY CHAPTER</span></div>
+        </div>
+      </div>
+      <div class="inv-arrow">›</div>
+    </div>
+
+    <div class="inv-item" data-inv="5">
+      <div class="inv-num">VI</div>
+      <div class="inv-body">
+        <div class="inv-statement">Chất lượng trước tốc độ — chúng ta không bao giờ rút ngắn quy trình để phục vụ số lượng.</div>
+        <div class="inv-expand">
+          <div class="inv-detail">Nếu có hàng dài, nhân viên thực hiện đúng quy trình với từng khách thay vì rút ngắn quy trình với tất cả. <strong>Khách chờ để được trải nghiệm đúng cách còn tốt hơn tất cả mọi người được trải nghiệm không đúng cách.</strong> Đây là lý do cửa hàng nhỏ (boutique) tồn tại — không phải hiệu quả, mà là sự chú ý.</div>
+          <div class="inv-tags"><span class="mono-tag tag-gold">TRIẾT LÝ THỦ CÔNG (CRAFT PHILOSOPHY)</span><span class="mono-tag tag-teal">TRÁNH BẪY MỞ RỘNG (ANTI-SCALE TRAP)</span></div>
+        </div>
+      </div>
+      <div class="inv-arrow">›</div>
+    </div>
+
+    <div class="inv-item" data-inv="6">
+      <div class="inv-num">VII</div>
+      <div class="inv-body">
+        <div class="inv-statement">Mỗi cửa hàng bổ sung cho MORAQ — không bao giờ pha loãng nó.</div>
+        <div class="inv-expand">
+          <div class="inv-detail">Khi MORAQ mở thêm cửa hàng, cửa hàng đó thêm vào giá trị của MORAQ — không phải thêm một phiên bản "chỉnh sửa" của MORAQ. <strong>Mỗi cửa hàng là bổ sung, không phải thoả hiệp.</strong> Nếu một vị trí đòi hỏi thay đổi bản sắc cốt lõi để vào — đó không phải vị trí phù hợp, hoặc thời điểm chưa đúng.</div>
+          <div class="inv-tags"><span class="mono-tag tag-gold">NGUYÊN TẮC NHẤT QUÁN (FRACTAL PRINCIPLE)</span><span class="mono-tag tag-teal">QUY TẮC CỬA HÀNG</span></div>
+        </div>
+      </div>
+      <div class="inv-arrow">›</div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- ════════════ S3: SCENT PHILOSOPHY ════════════ -->
+<div class="slide" id="s3">
+<div class="s3-inner">
+  <div style="flex-shrink:0;margin-bottom:14px">
+    <div class="eyebrow">CHƯƠNG III · TRIẾT LÝ NGỮ PHÁP HƯƠNG (SCENT GRAMMAR)</div>
+    <div class="serif-lg">Ngôn ngữ của <em>hương thơm</em></div>
+    <div class="rule-gold"></div>
+  </div>
+
+  <div class="philosophy-cols">
+    <!-- LEFT: spectrum -->
+    <div class="phil-left">
+      <div class="eyebrow" style="font-size:6.5px">4 GIA ĐÌNH HƯƠNG</div>
+      <div class="spectrum">
+        <div class="spectrum-bar" style="min-height:75px">
+          <svg style="position:absolute;inset:0;width:100%;height:100%" viewBox="0 0 120 75" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <rect width="120" height="75" fill="#1D9E75"/>
+            <radialGradient id="sp1" cx="30%" cy="20%" r="80%"><stop offset="0%" stop-color="#9FE1CB" stop-opacity=".7"/><stop offset="100%" stop-color="#04342C" stop-opacity="0"/></radialGradient>
+            <rect width="120" height="75" fill="url(#sp1)"/>
+            <rect x="0" y="52" width="120" height="23" fill="rgba(26,25,22,.6)"/>
+          </svg>
+          <div class="sb-label"><div class="sb-name">Fresh</div><div class="sb-notes">CITRUS · GREEN · AQUATIC</div></div>
+        </div>
+        <div class="spectrum-bar" style="min-height:75px">
+          <svg style="position:absolute;inset:0;width:100%;height:100%" viewBox="0 0 120 75" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <rect width="120" height="75" fill="#854F0B"/>
+            <radialGradient id="sp2" cx="70%" cy="25%" r="80%"><stop offset="0%" stop-color="#FAC775" stop-opacity=".6"/><stop offset="100%" stop-color="#412402" stop-opacity="0"/></radialGradient>
+            <rect width="120" height="75" fill="url(#sp2)"/>
+            <rect x="0" y="52" width="120" height="23" fill="rgba(26,25,22,.6)"/>
+          </svg>
+          <div class="sb-label"><div class="sb-name">Floral</div><div class="sb-notes">ROSE · JASMINE · IRIS</div></div>
+        </div>
+        <div class="spectrum-bar" style="min-height:75px">
+          <svg style="position:absolute;inset:0;width:100%;height:100%" viewBox="0 0 120 75" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <rect width="120" height="75" fill="#085041"/>
+            <radialGradient id="sp3" cx="50%" cy="0%" r="80%"><stop offset="0%" stop-color="#1D9E75" stop-opacity=".5"/><stop offset="100%" stop-color="#04342C" stop-opacity="0"/></radialGradient>
+            <rect width="120" height="75" fill="url(#sp3)"/>
+            <rect x="0" y="52" width="120" height="23" fill="rgba(26,25,22,.6)"/>
+          </svg>
+          <div class="sb-label"><div class="sb-name">Woody</div><div class="sb-notes">CEDAR · SANDALWOOD · VETIVER</div></div>
+        </div>
+        <div class="spectrum-bar" style="min-height:75px">
+          <svg style="position:absolute;inset:0;width:100%;height:100%" viewBox="0 0 120 75" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <rect width="120" height="75" fill="#1A1916"/>
+            <radialGradient id="sp4" cx="50%" cy="55%" r="55%"><stop offset="0%" stop-color="#2A2724" stop-opacity="1"/><stop offset="100%" stop-color="#1A1916" stop-opacity="1"/></radialGradient>
+            <rect width="120" height="75" fill="url(#sp4)"/>
+            <rect x="0" y="52" width="120" height="23" fill="rgba(26,25,22,.7)"/>
+          </svg>
+          <div class="sb-label"><div class="sb-name">Oriental</div><div class="sb-notes">OUD · AMBER · MUSK</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: grammar cards + doctrine -->
+    <div class="phil-right">
+      <div class="grammar-grid">
+        <div class="gg-card">
+          <div class="gg-label">NGUYÊN TẮC 01</div>
+          <div class="gg-title">Hành trình, không phải bảng xếp hạng</div>
+          <div class="gg-body">Fresh → Floral → Woody → Oriental không phải thứ tự bảng chữ cái (alphabet) hay thứ tự giá. Đây là hành trình cảm xúc từ nhẹ nhàng đến phức tạp — giống như một cuộc trò chuyện bắt đầu bằng "xin chào" và kết thúc bằng điều sâu sắc nhất.</div>
+        </div>
+        <div class="gg-card">
+          <div class="gg-label">NGUYÊN TẮC 02</div>
+          <div class="gg-title">Trái sang phải — khách đọc như văn bản</div>
+          <div class="gg-body">Không có thứ tự nào khác được chấp nhận. Không phải "theo doanh số", không phải "theo nhập hàng", không phải "theo sở thích nhân viên tư vấn (BA)". Ngữ pháp Hương (Scent Grammar) là nguyên tắc cốt lõi (invariant) — nó đồng nhất tại mọi điểm bán MORAQ.</div>
+        </div>
+        <div class="gg-card">
+          <div class="gg-label">NGUYÊN TẮC 03</div>
+          <div class="gg-title">Tối đa 12 mã sản phẩm (SKU) — tập trung thắng số lượng (focus beats volume)</div>
+          <div class="gg-body">Các thương hiệu nước hoa hàng đầu có hàng chục hương nhưng không bày tất cả cùng lúc. Ít lựa chọn = quyết định dễ hơn = trải nghiệm tốt hơn. Đây là nghiên cứu của Sheena Iyengar (hiệu ứng quá nhiều lựa chọn), không phải ý kiến — và MORAQ tuân theo dữ liệu (data).</div>
+        </div>
+        <div class="gg-card">
+          <div class="gg-label">NGUYÊN TẮC 04</div>
+          <div class="gg-title">3 câu hỏi trước 1 đề xuất</div>
+          <div class="gg-body">Dịp/mục đích — hương nền yêu thích — ngân sách (budget). Chỉ sau khi có đủ 3 câu trả lời mới đề xuất. Không hơn 3 lựa chọn. BA không phải người thuyết phục — BA là người phiên dịch giữa khách và hương thơm.</div>
+        </div>
+      </div>
+
+      <div class="doctrine-box">
+        <div class="db-label">TRIẾT LÝ GỐC RỄ</div>
+        <div class="db-text">"Hương thơm là ngôn ngữ riêng tư nhất của con người. Nó không có hình dạng, không có màu sắc, không có biên giới ngôn ngữ. Nó là thứ duy nhất bạn mang theo bên mình mà không ai nhìn thấy — chỉ cảm nhận được. MORAQ không bán nước hoa. Chúng ta dạy người ta nói ngôn ngữ đó."</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════ S4: RITUAL DOCTRINE ════════════ -->
+<div class="slide" id="s4">
+<div class="s4-inner">
+  <div style="flex-shrink:0;margin-bottom:14px">
+    <div class="eyebrow">CHƯƠNG IV · QUY TRÌNH TRẢI NGHIỆM (RITUAL DOCTRINE)</div>
+    <div class="serif-lg">Mỗi tương tác có <em>đầu — giữa — cuối</em></div>
+    <div class="rule-gold"></div>
+  </div>
+
+  <div style="display:flex;gap:18px;flex:1;min-height:0">
+
+    <!-- ritual flow -->
+    <div style="flex:1;display:flex;flex-direction:column;gap:0">
+      <div class="eyebrow" style="margin-bottom:10px;font-size:6.5px">QUY TRÌNH TRẢI NGHIỆM KHÁCH HÀNG (CUSTOMER RITUAL FLOW)</div>
+      <div class="ritual-flow">
+        <div class="rf-step">
+          <div class="rf-line"><div class="rf-dot"></div><div class="rf-connector"></div></div>
+          <div class="rf-content">
+            <div class="rf-phase">GIAI ĐOẠN 01 · ENTRY</div>
+            <div class="rf-title">60 giây im lặng — của khách, không phải của nhân viên</div>
+            <div class="rf-body">Nhân viên đứng quan sát từ khoảng cách ≥ 2m. Không tiếp cận, không hỏi. Đây là 60 giây khách cần để <strong>thích nghi (orient)</strong> — để cơ thể họ điều chỉnh với không khí, ánh sáng, hương của không gian. Bị ngắt quãng ngay = cảm giác bị theo dõi, không phải được chào đón.</div>
+          </div>
+        </div>
+        <div class="rf-step">
+          <div class="rf-line"><div class="rf-dot"></div><div class="rf-connector"></div></div>
+          <div class="rf-content">
+            <div class="rf-phase">GIAI ĐOẠN 02 · APPROACH</div>
+            <div class="rf-title">Tiếp cận khi khách phát tín hiệu sẵn sàng</div>
+            <div class="rf-body">Tín hiệu: khách dừng lại trước một chai, khách nhìn xung quanh tìm kiếm, khách cầm một chai lên. <strong>Câu mở đầu bắt buộc: "Bạn đang tìm hương cho dịp nào?"</strong> — không bao giờ "Em có thể giúp gì không?". Câu sau trao quyền cho nhân viên; câu trước trao quyền cho khách.</div>
+          </div>
+        </div>
+        <div class="rf-step">
+          <div class="rf-line"><div class="rf-dot"></div><div class="rf-connector"></div></div>
+          <div class="rf-content">
+            <div class="rf-phase">GIAI ĐOẠN 03 · KHÁM PHÁ (DISCOVERY)</div>
+            <div class="rf-title">Hành trình Ngữ pháp Hương (Scent Grammar journey) — hướng dẫn, không thuyết phục</div>
+            <div class="rf-body">Giới thiệu 4 gia đình hương trong 2 phút. Hỏi 3 câu xác định nhu cầu (qualifying). Đề xuất tối đa 3 hương. <strong>Không đề xuất thêm dù khách hỏi thêm</strong> — nếu 3 lựa chọn không đủ, hỏi lại câu xác định nhu cầu (qualifying), không mở rộng danh sách.</div>
+          </div>
+        </div>
+        <div class="rf-step">
+          <div class="rf-line"><div class="rf-dot"></div><div class="rf-connector"></div></div>
+          <div class="rf-content">
+            <div class="rf-phase">GIAI ĐOẠN 04 · QUY TRÌNH PHA CHẾ (RITUAL)</div>
+            <div class="rf-title">Đặt tên — cá nhân hóa — gói trước mặt khách</div>
+            <div class="rf-body">Khắc tên trên chai (name-on-bottle) nếu khách muốn. <strong>Toàn bộ quá trình gói hàng diễn ra trước mặt khách — không ra phòng sau.</strong> Đóng gói (packaging) là màn trình diễn cuối. Thẻ cảm ơn (thank-you card) viết tay. Thẻ sau mua (post-purchase card) đính kèm theo hương đã chọn.</div>
+          </div>
+        </div>
+        <div class="rf-step" style="border-bottom:none">
+          <div class="rf-line"><div class="rf-dot"></div></div>
+          <div class="rf-content">
+            <div class="rf-phase">GIAI ĐOẠN 05 · CLOSURE</div>
+            <div class="rf-title">Tiễn khách — không phải kết thúc giao dịch</div>
+            <div class="rf-body">Không "cảm ơn anh/chị". Thay bằng: <strong>"Hương này sẽ thay đổi theo thời gian trên da bạn — đây là điều khiến nó trở nên của riêng bạn."</strong> Khách rời đi với một thứ gì đó để nghĩ về — không phải chỉ một hộp nước hoa.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- City Chapter rules -->
+    <div style="width:220px;flex-shrink:0;display:flex;flex-direction:column;gap:10px">
+      <div class="eyebrow" style="font-size:6.5px">CITY CHAPTER — ĐƯỢC & KHÔNG ĐƯỢC</div>
+      <div class="city-rule" style="display:flex;flex-direction:column;gap:8px">
+        <div class="cr-card can">
+          <div class="cr-label">CITY CHAPTER CÓ THỂ ↑ THÊM</div>
+          <div class="cr-list">
+            <div class="cr-item"><div class="cr-bullet"></div>Hương độc quyền theo cửa hàng</div>
+            <div class="cr-item"><div class="cr-bullet"></div>Vật liệu địa phương trong thiết kế cửa hàng (store design)</div>
+            <div class="cr-item"><div class="cr-bullet"></div>Báo cáo văn hoá địa phương (cultural insight report) gửi lên trụ sở (maison)</div>
+            <div class="cr-item"><div class="cr-bullet"></div>Hợp tác nghệ sĩ địa phương (local artist collaboration) — trong khuôn khổ thương hiệu</div>
+            <div class="cr-item"><div class="cr-bullet"></div>Khay chào đón theo mùa (seasonal welcome tray) theo địa phương</div>
+          </div>
+        </div>
+        <div class="cr-card cannot">
+          <div class="cr-label">CITY CHAPTER KHÔNG BAO GIỜ ✗</div>
+          <div class="cr-list">
+            <div class="cr-item"><div class="cr-bullet"></div>Thay đổi thứ tự Ngữ pháp Hương (Scent Grammar order)</div>
+            <div class="cr-item"><div class="cr-bullet"></div>Bỏ quy tắc (protocol) 60 giây quan sát (observe)</div>
+            <div class="cr-item"><div class="cr-bullet"></div>Dùng ánh sáng khác 2700K</div>
+            <div class="cr-item"><div class="cr-bullet"></div>Cho phép nhân viên dùng nước hoa cá nhân</div>
+            <div class="cr-item"><div class="cr-bullet"></div>Đề xuất > 3 lựa chọn (options) cho khách</div>
+            <div class="cr-item"><div class="cr-bullet"></div>Gói hàng ra phòng sau</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════ S5: SIGNATURE ════════════ -->
+<div class="slide" id="s5">
+<div class="s5-inner">
+  <svg class="s5-bg" viewBox="0 0 600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <rect width="600" height="900" fill="#111010"/>
+    <radialGradient id="sg1" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#C8A84B" stop-opacity=".05"/><stop offset="100%" stop-color="#111" stop-opacity="0"/></radialGradient>
+    <rect width="600" height="900" fill="url(#sg1)"/>
+    <circle cx="300" cy="420" r="220" fill="none" stroke="rgba(200,168,75,0.04)" stroke-width="1"/>
+    <circle cx="300" cy="420" r="160" fill="none" stroke="rgba(200,168,75,0.03)" stroke-width=".5"/>
+    <line x1="44" y1="600" x2="556" y2="600" stroke="rgba(200,168,75,.08)" stroke-width=".5"/>
+  </svg>
+
+  <div class="s5-body">
+    <div style="text-align:center;flex-shrink:0">
+      <div class="eyebrow" style="justify-content:center;text-align:center">CHƯƠNG V · COMMITMENT</div>
+      <div class="serif-xl" style="text-align:center;font-size:clamp(28px,4.5vw,42px)">Cam kết<br><em>thực thi</em></div>
+      <div class="rule-gold" style="margin:12px auto"></div>
+    </div>
+
+    <div class="commitment-box">
+      <div class="cb-label">LỜI CAM KẾT — NHỮNG NGƯỜI ĐẠI DIỆN CHO MORAQ</div>
+      <div class="cb-text">
+        Tôi hiểu rằng MORAQ không phải là thương hiệu tôi đang phục vụ — MORAQ là <em>tiêu chuẩn tôi đang sống</em>. Mỗi quyết định tôi đưa ra, dù lớn hay nhỏ, đều phản ánh hoặc phá vỡ những gì tài liệu này xây dựng.<br><br>
+        Tôi cam kết: bảy nguyên tắc trước thương mại, chất lượng trước tốc độ, nhất quán trước sự thuận tiện. Và khi tôi không chắc — <em>tôi sẽ hỏi Bộ quy tắc này trước</em>.
+      </div>
+    </div>
+
+    <div class="amendment">
+      <div class="am-label">QUY TRÌNH SỬA ĐỔI · AMENDMENT PROCESS</div>
+      <div class="am-list">
+        <div class="am-item"><div class="am-num">§1</div>Bộ quy tắc chỉ được sửa đổi bởi Người sáng lập.</div>
+        <div class="am-item"><div class="am-num">§2</div>7 nguyên tắc cốt lõi (invariants) yêu cầu đồng thuận (quorum) 100% — không có ngoại lệ thương mại.</div>
+        <div class="am-item"><div class="am-num">§3</div>Cửa hàng có thể đề xuất sửa đổi (amendment) nhưng không có quyền quyết định.</div>
+        <div class="am-item"><div class="am-num">§4</div>Rà soát (review) định kỳ mỗi 12 tháng — Nguyên tắc cốt lõi (invariants) có thể được làm rõ, không phải bị bãi bỏ.</div>
+      </div>
+    </div>
+
+    <div class="sign-grid">
+      <div class="sign-field">
+        <div class="sf-label">FOUNDER · TRẦN THANH KIÊN</div>
+        <div class="sf-line"></div>
+        <div class="sf-sub">CHỮ KÝ XÁC NHẬN · NGÀY ____/____/2026</div>
+      </div>
+    </div>
+
+    <div class="effective-row">
+      <div class="eff-text">
+        EFFECTIVE DATE: 05/04/2026<br>
+        DOCUMENT: BC-001 · VERSION 1.0<br>
+        NEXT REVIEW: APRIL 2027<br>
+        PHẠM VI: TẤT CẢ CỬA HÀNG MORAQ
+      </div>
+      <div class="eff-seal">
+        <div class="eff-seal-m">M</div>
+        <div class="eff-seal-sub">MORAQ · BC-001</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+</div><!-- /stage -->
+
+<!-- ── BOTTOM BAR ── -->
+<div class="botbar">
+  <div class="nav-arrow off" id="prevBtn">‹</div>
+  <div class="chapter-tabs" id="chapterTabs">
+    <div class="ch-tab active" data-slide="0">COVER</div>
+    <div class="ch-tab" data-slide="1">PREAMBLE</div>
+    <div class="ch-tab" data-slide="2">7 INVARIANTS</div>
+    <div class="ch-tab" data-slide="3">SCENT GRAMMAR</div>
+    <div class="ch-tab" data-slide="4">RITUAL DOCTRINE</div>
+    <div class="ch-tab" data-slide="5">COMMITMENT</div>
+  </div>
+  <div class="nav-arrow" id="nextBtn">›</div>
+</div>
+
+</div><!-- /shell -->
+
+<script>
+const SLIDES = ['s0','s1','s2','s3','s4','s5'];
+let cur = 0;
+
+function goTo(idx) {
+  if(idx < 0 || idx >= SLIDES.length) return;
+  SLIDES.forEach((id,i) => {
+    const el = document.getElementById(id);
+    el.classList.remove('active','prev');
+    if(i === idx) el.classList.add('active');
+    else if(i < idx) el.classList.add('prev');
+    el.scrollTop = 0;
+  });
+  document.querySelectorAll('.ch-tab').forEach((t,i) => t.classList.toggle('active', i===idx));
+  document.getElementById('prevBtn').classList.toggle('off', idx===0);
+  document.getElementById('nextBtn').classList.toggle('off', idx===SLIDES.length-1);
+  document.querySelectorAll('.ch-tab')[idx]?.scrollIntoView({behavior:'smooth',inline:'nearest',block:'nearest'});
+  cur = idx;
+}
+
+document.getElementById('prevBtn').addEventListener('click', () => goTo(cur-1));
+document.getElementById('nextBtn').addEventListener('click', () => goTo(cur+1));
+document.querySelectorAll('.ch-tab').forEach((t,i) => t.addEventListener('click', () => goTo(i)));
+document.getElementById('beginBtn').addEventListener('click', () => goTo(1));
+
+// Invariant expand/collapse
+document.querySelectorAll('.inv-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.inv-item').forEach(i => i.classList.remove('open'));
+    if(!isOpen) item.classList.add('open');
+  });
+});
+
+// Swipe
+let tx = 0;
+document.getElementById('stage').addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, {passive:true});
+document.getElementById('stage').addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - tx;
+  if(Math.abs(dx) > 55) { if(dx < 0) goTo(cur+1); else goTo(cur-1); }
+}, {passive:true});
+
+// Keyboard
+document.addEventListener('keydown', e => {
+  if(e.key==='ArrowRight') goTo(cur+1);
+  if(e.key==='ArrowLeft') goTo(cur-1);
+});
+
+goTo(0);
+</script>
+</body>
+</html>
