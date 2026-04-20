@@ -1,0 +1,1794 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atelier Identity — Hình ảnh đúng tầm</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════
+   TOKENS
+═══════════════════════════════════ */
+:root{
+  --ink:#0B0A07; --deep:#141210; --layer:#1E1B16; --lift:#28241C;
+  --cream:#EAE4D8; --linen:#C8BCA8; --muted:#7A7268; --dim:#52493E;
+  --gold:#C2A060; --gold-dim:rgba(194,160,96,.18);
+  --border:rgba(234,228,216,.07); --border2:rgba(234,228,216,.12);
+  --ease:cubic-bezier(.16,1,.3,1); --ease2:cubic-bezier(.4,0,.2,1);
+  --nav-h:66px;
+}
+body.m-gom{--ink:#130E06;--deep:#1A1308;--layer:#241A0C;--lift:#2E2010;--gold:#C08040}
+body.m-oil{--ink:#080C12;--deep:#0E1420;--layer:#14202E;--lift:#1A2A3C;--gold:#7AAABE;--cream:#D8E4EE}
+body.m-wed{--ink:#EEE8DC;--deep:#E4DCCC;--layer:#D8CEB8;--lift:#CCBEA8;--gold:#8A6438;--cream:#1A1408;--muted:#6A6050;--border:rgba(26,20,8,.07);--border2:rgba(26,20,8,.12)}
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;text-size-adjust:100%}
+body{background:var(--ink);color:var(--cream);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;transition:background .7s var(--ease),color .7s var(--ease)}
+button{cursor:pointer;border:none;background:none;font-family:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
+a{color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent}
+img{display:block;max-width:100%}
+
+/* grain */
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9900;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.032'/%3E%3C/svg%3E");
+  mix-blend-mode:overlay;opacity:.6}
+
+/* ═══════════════════════════════════
+   NAV — HIERARCHICAL (LVMH / ACCENTURE MODEL)
+═══════════════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:700;height:var(--nav-h);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 44px;
+  background:linear-gradient(180deg,rgba(11,10,7,.97) 0%,transparent 100%);
+  backdrop-filter:blur(0px);
+  transition:background .5s,backdrop-filter .5s;
+}
+nav.scrolled{background:rgba(11,10,7,.97);backdrop-filter:blur(16px);box-shadow:0 1px 0 var(--border)}
+body.m-wed nav.scrolled{background:rgba(238,232,220,.97)}
+
+.nav-logo{
+  font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:500;
+  letter-spacing:.26em;text-transform:uppercase;color:var(--cream);
+  transition:color .7s var(--ease);flex-shrink:0;
+}
+.nav-logo em{font-style:italic;color:var(--gold)}
+
+/* ── Desktop nav links ── */
+.nav-links{display:flex;align-items:center;gap:0;list-style:none}
+.nav-links>li{position:relative}
+
+.nav-link-btn{
+  display:flex;align-items:center;gap:5px;
+  padding:8px 15px;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);transition:color .22s;white-space:nowrap;position:relative;
+}
+.nav-link-btn::after{
+  content:'';position:absolute;bottom:-1px;left:15px;right:15px;height:1px;
+  background:var(--gold);transform:scaleX(0);transition:transform .25s var(--ease);
+}
+.nav-link-btn:hover,.nav-links>li:hover .nav-link-btn{color:var(--cream)}
+.nav-links>li:hover .nav-link-btn::after{transform:scaleX(1)}
+.nav-link-btn .chevron{
+  width:10px;height:10px;display:flex;align-items:center;justify-content:center;
+  transition:transform .28s var(--ease);opacity:.5;
+}
+.nav-link-btn .chevron svg{width:8px;height:8px}
+.nav-links>li:hover .chevron{transform:rotate(180deg);opacity:1}
+
+/* ── Standard dropdown ── */
+.dropdown{
+  position:absolute;top:calc(100% + 1px);left:0;
+  background:rgba(14,12,9,.97);border:1px solid var(--border2);
+  border-top:1px solid var(--gold);
+  min-width:260px;padding:6px 0 10px;
+  opacity:0;pointer-events:none;
+  transform:translateY(-4px);
+  transition:opacity .22s var(--ease),transform .22s var(--ease);
+  backdrop-filter:blur(20px);
+}
+.nav-links>li:hover .dropdown,
+.nav-links>li:focus-within .dropdown{opacity:1;pointer-events:all;transform:none}
+
+/* ── Dropdown item — gold left-bar hierarchy ── */
+.dropdown-item{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:9px 20px;transition:background .18s;cursor:pointer;position:relative;
+}
+.dropdown-item::before{
+  content:'';position:absolute;left:0;top:50%;
+  width:2px;height:0;background:var(--gold);
+  transform:translateY(-50%);transition:height .2s var(--ease);
+}
+.dropdown-item:hover{background:var(--layer)}
+.dropdown-item:hover::before{height:60%}
+.di-tier{
+  font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.12em;
+  color:var(--gold);opacity:.5;padding-top:2px;flex-shrink:0;min-width:18px;
+}
+.di-body{display:flex;flex-direction:column;gap:2px}
+.di-label{font-size:12px;color:var(--cream);letter-spacing:.03em;font-weight:400}
+.di-sub{font-size:10px;color:var(--muted);letter-spacing:.03em;line-height:1.5}
+.dropdown-sep{height:1px;background:var(--border);margin:6px 0}
+.dropdown-cta{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 20px;margin-top:4px;
+  background:var(--gold-dim);cursor:pointer;transition:background .2s;
+}
+.dropdown-cta:hover{background:rgba(194,160,96,.28)}
+.dropdown-cta .di-label{color:var(--gold);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+
+/* ── Mega menu (Khuôn hình — 9 items in 2 columns) ── */
+.dropdown.mega{
+  min-width:500px;left:50%;transform:translateX(-50%) translateY(-4px);
+  padding:0;overflow:hidden;
+}
+.nav-links>li:hover .dropdown.mega,
+.nav-links>li:focus-within .dropdown.mega{
+  opacity:1;pointer-events:all;
+  transform:translateX(-50%) translateY(0);
+}
+.mega-cols{display:flex}
+.mega-col{flex:1;padding:14px 0}
+.mega-col+.mega-col{border-left:1px solid var(--border)}
+.mega-group-label{
+  font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--gold);opacity:.6;padding:4px 20px 10px;
+}
+.mega-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 20px;border-top:1px solid var(--border);background:var(--layer);
+}
+.mega-footer-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.mega-footer-link{
+  font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gold);cursor:pointer;transition:opacity .2s;
+}
+.mega-footer-link:hover{opacity:.7}
+
+/* ── Nav right ── */
+.nav-r{display:flex;align-items:center;gap:12px}
+.nav-cta{
+  font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gold);border:1px solid rgba(194,160,96,.45);
+  padding:8px 20px;transition:all .25s;white-space:nowrap;
+}
+.nav-cta:hover{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+
+/* ── Hamburger ── */
+.hamburger{
+  display:none;flex-direction:column;gap:5px;
+  padding:8px;cursor:pointer;
+}
+.hamburger span{
+  display:block;width:22px;height:1px;
+  background:var(--cream);transition:all .35s var(--ease);
+  transform-origin:center;
+}
+.hamburger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+
+/* ═══════════════════════════════════
+   MOBILE NAV — LVMH HIERARCHY
+═══════════════════════════════════ */
+.mobile-nav{
+  position:fixed;inset:0;z-index:650;
+  background:var(--deep);
+  transform:translateX(100%);transition:transform .48s var(--ease);
+  overflow-y:auto;overflow-x:hidden;
+  display:flex;flex-direction:column;
+}
+.mobile-nav.open{transform:translateX(0)}
+
+/* Header bar inside mobile nav */
+.mn-topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 22px;height:var(--nav-h);
+  border-bottom:1px solid var(--border);flex-shrink:0;
+}
+.mn-topbar-logo{
+  font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:500;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--cream);
+}
+.mn-topbar-logo em{font-style:italic;color:var(--gold)}
+.mn-close{
+  width:36px;height:36px;display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--border2);cursor:pointer;transition:border-color .2s,color .2s;
+  font-size:18px;color:var(--muted);flex-shrink:0;
+}
+.mn-close:hover{border-color:var(--gold);color:var(--cream)}
+
+/* Nav body */
+.mn-body{flex:1;padding:8px 0 0;}
+
+/* Section accordion */
+.mn-section{border-bottom:1px solid var(--border)}
+.mn-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 22px;height:58px;cursor:pointer;
+  transition:background .2s;
+}
+.mn-header:active{background:var(--layer)}
+.mn-header-left{display:flex;align-items:center;gap:14px}
+.mn-title{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--cream);font-weight:400}
+.mn-count{
+  font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;
+  color:var(--gold);background:var(--gold-dim);padding:2px 7px;border-radius:1px;
+}
+.mn-chevron{
+  width:28px;height:28px;display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--border);color:var(--muted);font-size:10px;
+  transition:transform .32s var(--ease),border-color .2s,color .2s;flex-shrink:0;
+}
+.mn-section.open .mn-chevron{transform:rotate(90deg);border-color:var(--gold);color:var(--gold)}
+
+/* Accordion items — smooth max-height animation */
+.mn-items{
+  max-height:0;overflow:hidden;
+  transition:max-height .4s var(--ease);
+}
+.mn-section.open .mn-items{max-height:600px}
+
+.mn-item{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:11px 22px 11px 36px;
+  cursor:pointer;transition:background .18s;position:relative;
+}
+.mn-item::before{
+  content:'';position:absolute;left:22px;top:50%;
+  transform:translateY(-50%);
+  width:6px;height:1px;background:var(--gold);opacity:.4;
+  transition:opacity .2s,width .2s;
+}
+.mn-item:hover,.mn-item:active{background:var(--layer)}
+.mn-item:hover::before{opacity:1;width:10px}
+.mn-item-idx{
+  font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;
+  color:var(--gold);opacity:.5;padding-top:2px;flex-shrink:0;
+}
+.mn-item-body{display:flex;flex-direction:column;gap:2px}
+.mn-item-label{font-size:13px;color:var(--cream)}
+.mn-item-sub{font-size:10px;color:var(--muted);letter-spacing:.02em}
+.mn-item-sub:empty{display:none}
+
+/* Direct nav links (no dropdown) */
+.mn-direct{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 22px;height:54px;
+  font-size:13px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);border-bottom:1px solid var(--border);
+  cursor:pointer;transition:color .2s,background .18s;
+}
+.mn-direct:hover,.mn-direct:active{color:var(--cream);background:var(--layer)}
+.mn-direct-arr{font-size:14px;color:var(--gold);opacity:0;transition:opacity .2s,transform .2s}
+.mn-direct:hover .mn-direct-arr{opacity:1;transform:translateX(3px)}
+
+/* Footer CTA */
+.mn-footer{padding:20px 22px 40px;margin-top:auto}
+.mn-cta{
+  display:block;background:var(--gold);color:var(--ink);
+  padding:16px 22px;text-align:center;
+  font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;
+  cursor:pointer;transition:opacity .2s;width:100%;
+}
+.mn-cta:hover,.mn-cta:active{opacity:.85}
+.mn-cta-note{
+  text-align:center;font-size:10px;color:var(--dim);
+  letter-spacing:.08em;margin-top:10px;
+}
+
+@media(max-width:900px){
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  nav{padding:0 22px}
+}
+@media(min-width:901px){.mobile-nav{display:none!important}}
+
+/* ═══════════════════════════════════
+   HERO
+═══════════════════════════════════ */
+.hero{
+  min-height:100svh;min-height:-webkit-fill-available;
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:0 44px 72px;
+  padding-top:var(--nav-h);
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 65% 55% at 75% 38%,rgba(194,160,96,.09) 0%,transparent 65%),
+    radial-gradient(ellipse 35% 45% at 12% 70%,rgba(194,160,96,.04) 0%,transparent 55%);
+  transition:background .7s var(--ease);
+}
+.hero-photo{
+  position:absolute;inset:0;
+  background-image:url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1800&q=72');
+  background-size:cover;background-position:center 35%;opacity:.15;
+  transition:opacity .7s;
+}
+.hero-photo::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to right,var(--ink) 0%,transparent 60%),
+              linear-gradient(to top,var(--ink) 0%,transparent 45%);
+}
+.hero-rule{position:absolute;top:0;right:28%;width:1px;height:100%;background:linear-gradient(180deg,transparent,var(--gold) 40%,var(--gold) 60%,transparent);opacity:.08}
+
+.hero-content{position:relative;z-index:1;max-width:820px}
+.hero-kicker{
+  font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:28px;
+  opacity:0;animation:up .9s .2s var(--ease) forwards;
+}
+.hero-h{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(52px,8vw,114px);
+  font-weight:300;line-height:.92;letter-spacing:-.025em;
+  opacity:0;animation:up 1s .35s var(--ease) forwards;
+}
+.hero-h em{font-style:italic;color:var(--gold)}
+.hero-h .ln{display:block}
+.hero-foot{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  gap:20px;flex-wrap:wrap;margin-top:48px;
+  border-top:1px solid var(--border);padding-top:32px;
+  opacity:0;animation:up .9s .6s var(--ease) forwards;
+}
+.hero-sub{font-size:13px;color:var(--muted);max-width:360px;line-height:1.9}
+.hero-btns{display:flex;gap:14px;align-items:center;flex-shrink:0}
+.btn-p{background:var(--gold);color:var(--ink);padding:13px 34px;font-size:11px;letter-spacing:.15em;text-transform:uppercase;font-weight:400;transition:opacity .25s;white-space:nowrap}
+.btn-p:hover{opacity:.82}
+.btn-g{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);padding:13px 0;transition:color .25s;white-space:nowrap}
+.btn-g:hover{color:var(--cream)}
+
+/* Stats bar */
+.hero-stats{
+  display:flex;gap:0;border-top:1px solid var(--border);
+  margin-top:0;
+  opacity:0;animation:up .8s .85s var(--ease) forwards;
+}
+.stat{padding:20px 32px 20px 0;margin-right:32px;border-right:1px solid var(--border)}
+.stat:last-child{border-right:none;margin-right:0}
+.stat-n{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--gold);line-height:1}
+.stat-l{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+
+@media(max-width:640px){
+  .hero{padding:0 22px 56px;padding-top:var(--nav-h)}
+  .hero-rule{display:none}
+  .hero-foot{flex-direction:column;align-items:flex-start}
+  .hero-stats{flex-wrap:wrap;gap:0}
+  .stat{flex:1;min-width:120px;padding:16px 16px 16px 0}
+}
+
+/* ═══════════════════════════════════
+   THREE WORLDS
+═══════════════════════════════════ */
+.worlds{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  border-top:1px solid var(--border);
+  background:var(--deep);transition:background .7s var(--ease);
+}
+.world{
+  padding:44px 36px;border-right:1px solid var(--border);
+  cursor:pointer;transition:background .3s;position:relative;overflow:hidden;
+}
+.world:last-child{border-right:none}
+.world:hover{background:var(--layer)}
+.w-num{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.24em;color:var(--gold);margin-bottom:24px}
+/* CSS-art icons */
+.w-icon{width:48px;height:48px;position:relative;margin-bottom:24px;flex-shrink:0}
+/* World 1 — nested squares */
+.wi-space::before,.wi-space::after{content:'';position:absolute;border:1px solid var(--gold);transition:border-color .7s}
+.wi-space::before{inset:0;opacity:.3}
+.wi-space::after{inset:10px 10px 0 0;background:rgba(194,160,96,.05);opacity:.6}
+/* World 2 — rings */
+.wi-event::before,.wi-event::after{content:'';position:absolute;border-radius:50%;border:1px solid var(--gold);top:50%;left:50%;transform:translate(-50%,-50%)}
+.wi-event{border-radius:50%;border:1px solid rgba(194,160,96,.25)}
+.wi-event::before{width:30px;height:30px}
+.wi-event::after{width:12px;height:12px;background:rgba(194,160,96,.18)}
+/* World 3 — dot grid */
+.wi-life{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:2px}
+.wi-life i{display:block;width:7px;height:7px;border-radius:50%;background:var(--gold);font-style:normal}
+.wi-life i:nth-child(even){opacity:.25}
+.wi-life i:nth-child(3n){opacity:.55}
+
+.w-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;margin-bottom:12px;line-height:1.2}
+.w-poem{font-size:12px;color:var(--muted);line-height:1.85;font-style:italic}
+.w-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
+.wtag{font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:rgba(194,160,96,.55);border:1px solid var(--gold-dim);padding:4px 10px;transition:all .25s}
+.world:hover .wtag{color:var(--gold);border-color:rgba(194,160,96,.35)}
+.w-arrow{position:absolute;bottom:28px;right:28px;font-size:14px;color:var(--gold);opacity:0;transition:opacity .25s,transform .25s}
+.world:hover .w-arrow{opacity:1;transform:translateX(3px)}
+
+@media(max-width:720px){
+  .worlds{grid-template-columns:1fr}
+  .world{border-right:none;border-bottom:1px solid var(--border);padding:32px 22px}
+}
+
+/* ═══════════════════════════════════
+   SECTION BASE
+═══════════════════════════════════ */
+.sec{padding:96px 44px}
+.sec.alt{background:var(--deep);transition:background .7s var(--ease)}
+.sec.lift{background:var(--layer);transition:background .7s var(--ease)}
+@media(max-width:640px){.sec{padding:64px 22px}}
+.eyebrow{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;transition:color .7s}
+.sec-h{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,3.6vw,50px);font-weight:300;line-height:1.1}
+.sec-h em{font-style:italic;color:var(--gold)}
+.sec-lead{font-size:13px;color:var(--muted);max-width:460px;line-height:1.9;margin-top:14px}
+.rul{width:32px;height:1px;background:var(--gold);opacity:.45;margin:20px 0}
+.rv{opacity:0;transform:translateY(20px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.rv.in{opacity:1;transform:none}
+
+/* ═══════════════════════════════════
+   WHY SECTION — supplementary layer
+═══════════════════════════════════ */
+.why-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:2px;background:var(--border);margin-top:48px;
+}
+.why-card{
+  background:var(--layer);padding:40px 36px;
+  display:flex;gap:20px;align-items:flex-start;
+  transition:background .3s;
+}
+.why-card:hover{background:var(--lift)}
+.why-icon{
+  width:40px;height:40px;flex-shrink:0;
+  border:1px solid var(--gold-dim);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--gold);
+}
+.why-body{}
+.why-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;margin-bottom:10px;line-height:1.3}
+.why-desc{font-size:12px;color:var(--muted);line-height:1.85}
+@media(max-width:640px){.why-grid{grid-template-columns:1fr}.why-card{padding:28px 22px}}
+
+/* ═══════════════════════════════════
+   PERSONA SECTION — who is this for
+═══════════════════════════════════ */
+.persona-row{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:2px;background:var(--border);margin-top:48px;
+}
+.persona{
+  background:var(--deep);padding:36px 28px;cursor:pointer;
+  border:1px solid transparent;transition:all .3s;
+  display:flex;flex-direction:column;gap:0;
+}
+.persona:hover{background:var(--layer);border-color:var(--gold)}
+.p-num{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;color:var(--gold);margin-bottom:16px}
+/* Abstract portrait CSS art */
+.p-art{width:44px;height:44px;position:relative;margin-bottom:16px;border-radius:50%;overflow:hidden}
+.p-art::before{content:'';position:absolute;inset:0;background:var(--gold);opacity:.12}
+.p-art::after{
+  content:'';position:absolute;
+  width:18px;height:18px;border-radius:50%;
+  background:rgba(194,160,96,.35);
+  top:6px;left:13px;
+}
+.pa-body::before{content:'';position:absolute;bottom:0;left:7px;right:7px;height:22px;background:rgba(194,160,96,.2);border-radius:50% 50% 0 0}
+.p-name{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;margin-bottom:8px;line-height:1.2}
+.p-desc{font-size:12px;color:var(--muted);line-height:1.8;flex:1}
+.p-pain{
+  margin-top:16px;font-size:11px;font-style:italic;
+  color:rgba(194,160,96,.65);border-top:1px solid var(--border);padding-top:14px;line-height:1.6;
+}
+@media(max-width:900px){.persona-row{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.persona-row{grid-template-columns:1fr}}
+
+/* ═══════════════════════════════════
+   MOOD SWITCHER
+═══════════════════════════════════ */
+.mood-tabs{
+  display:flex;border:1px solid var(--border2);
+  width:fit-content;overflow:hidden;margin-bottom:36px;
+  transition:border-color .7s;
+}
+.m-tab{
+  padding:10px 24px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);border-right:1px solid var(--border2);transition:all .35s;
+}
+.m-tab:last-child{border-right:none}
+.m-tab.on{background:var(--gold);color:var(--ink)}
+@media(max-width:640px){
+  .mood-tabs{width:100%;flex-wrap:wrap}
+  .m-tab{flex:1 1 50%;font-size:10px;padding:10px 8px;text-align:center;border-bottom:1px solid var(--border2)}
+}
+
+.mood-stage{
+  display:grid;grid-template-columns:1.45fr 1fr;
+  grid-template-rows:280px 180px;gap:2px;background:var(--border);
+}
+.mp{position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;padding:24px}
+.mp-bg{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .7s var(--ease)}
+.mp:hover .mp-bg{transform:scale(1.04)}
+.mp-veil{position:absolute;inset:0;background:linear-gradient(to top,rgba(11,10,7,.85) 0%,transparent 60%);transition:background .7s}
+body.m-wed .mp-veil{background:linear-gradient(to top,rgba(238,232,220,.88) 0%,transparent 55%)}
+.mp-in{position:relative;z-index:1}
+.mp-tag{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;transition:color .7s}
+.mp-title{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:300;line-height:1.3;color:var(--cream);transition:color .7s}
+body.m-wed .mp-title{color:var(--cream)}
+.mp-pal{display:flex;gap:6px;margin-top:12px}
+.pd{width:15px;height:15px;border-radius:50%;border:1px solid rgba(255,255,255,.18);transition:background .5s}
+body.m-wed .pd{border-color:rgba(0,0,0,.15)}
+.mp-main{grid-row:1/3;grid-column:1}
+.mp-r1{grid-row:1;grid-column:2}
+.mp-r2{grid-row:2;grid-column:2}
+@media(max-width:640px){
+  .mood-stage{grid-template-columns:1fr;grid-template-rows:220px 150px 130px}
+  .mp-main{grid-row:1;grid-column:1}
+  .mp-r1{grid-row:2;grid-column:1}
+  .mp-r2{grid-row:3;grid-column:1}
+}
+
+/* ═══════════════════════════════════
+   MATERIAL PALETTE
+═══════════════════════════════════ */
+.mat-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;margin-top:44px;background:var(--border)}
+.mat{position:relative;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;justify-content:flex-end;padding:22px 18px;min-height:180px;border:1px solid transparent;transition:border-color .3s}
+.mat:hover{border-color:var(--gold)}
+.mat-tex{position:absolute;inset:0;transition:transform .6s var(--ease)}
+.mat:hover .mat-tex{transform:scale(1.05)}
+.tex-paper{background-color:#C4B8A4;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23p)' opacity='.1'/%3E%3C/svg%3E")}
+.tex-linen{background-color:#B0A08A;background-image:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.06) 3px,rgba(0,0,0,.06) 4px),repeating-linear-gradient(90deg,transparent,transparent 3px,rgba(0,0,0,.04) 3px,rgba(0,0,0,.04) 4px)}
+.tex-ceramic{background-color:#A09890;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='turbulence' baseFrequency='.35' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23c)' opacity='.12'/%3E%3C/svg%3E")}
+.tex-wood{background-color:#8C6C44;background-image:repeating-linear-gradient(174deg,transparent,transparent 5px,rgba(0,0,0,.07) 5px,rgba(0,0,0,.07) 6px),repeating-linear-gradient(174deg,transparent,transparent 16px,rgba(255,255,255,.04) 16px,rgba(255,255,255,.04) 17px)}
+.tex-leather{background-color:#4E3018;background-image:radial-gradient(ellipse 3px 2px at 8px 8px,rgba(0,0,0,.18) 0%,transparent 100%),radial-gradient(ellipse 2px 3px at 18px 5px,rgba(0,0,0,.12) 0%,transparent 100%),radial-gradient(ellipse 3px 2px at 3px 16px,rgba(0,0,0,.15) 0%,transparent 100%);background-size:22px 22px}
+.mat-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.75) 0%,transparent 58%)}
+.mat-body{position:relative;z-index:1}
+.mat-name{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:400;color:#fff;margin-bottom:4px}
+.mat-use{font-size:10px;color:rgba(255,255,255,.45);line-height:1.55;letter-spacing:.04em}
+@media(max-width:900px){.mat-strip{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.mat-strip{grid-template-columns:repeat(2,1fr)}}
+
+/* ═══════════════════════════════════
+   SHOT TYPES — HORIZONTAL SCROLL
+═══════════════════════════════════ */
+.shots-outer{overflow:hidden;padding:80px 0}
+.shots-hdr{padding:0 44px 40px}
+@media(max-width:640px){.shots-hdr{padding:0 22px 28px}}
+.shots-track{
+  display:flex;gap:2px;overflow-x:auto;scroll-snap-type:x mandatory;
+  scrollbar-width:none;-ms-overflow-style:none;
+  padding:0 44px;cursor:grab;touch-action:pan-x;
+  -webkit-overflow-scrolling:touch;
+}
+.shots-track:active{cursor:grabbing}
+.shots-track::-webkit-scrollbar{display:none}
+@media(max-width:640px){.shots-track{padding:0 22px;gap:2px}}
+.sc{
+  scroll-snap-align:start;flex-shrink:0;
+  width:300px;height:440px;
+  position:relative;overflow:hidden;
+  cursor:pointer;border:1px solid transparent;transition:border-color .3s;
+  display:flex;flex-direction:column;justify-content:flex-end;
+}
+.sc:first-child{width:380px}
+.sc:hover{border-color:var(--gold)}
+@media(max-width:640px){
+  .sc{width:72vw;height:360px}
+  .sc:first-child{width:80vw}
+}
+.sc-img{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .7s var(--ease)}
+.sc:hover .sc-img{transform:scale(1.05)}
+.sc-veil{position:absolute;inset:0;background:linear-gradient(to top,rgba(11,10,7,.92) 0%,rgba(11,10,7,.2) 50%,transparent 100%)}
+.sc-body{position:relative;z-index:1;padding:22px}
+.sc-num{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;color:var(--gold);margin-bottom:12px}
+.sc-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--cream);line-height:1.2;margin-bottom:6px}
+.sc-poem{font-size:11px;color:rgba(234,228,216,.45);line-height:1.65;font-style:italic}
+.sc-hint{margin-top:16px;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);opacity:0;transition:opacity .25s;display:flex;align-items:center;gap:8px}
+.sc:hover .sc-hint{opacity:1}
+.shots-foot{padding:14px 44px 0;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);display:flex;align-items:center;gap:10px}
+.shots-foot::before{content:'';width:24px;height:1px;background:var(--dim)}
+@media(max-width:640px){.shots-foot{padding:12px 22px 0}}
+
+/* ═══════════════════════════════════
+   THREE LAYERS
+═══════════════════════════════════ */
+.layers-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);margin-top:48px}
+.lc{
+  background:var(--layer);padding:48px 36px 40px;
+  cursor:pointer;border:1px solid transparent;
+  transition:background .3s,border-color .3s;
+  display:flex;flex-direction:column;position:relative;overflow:hidden;
+}
+.lc:hover{background:var(--lift);border-color:var(--gold)}
+.lc-wm{
+  position:absolute;top:-24px;right:12px;
+  font-family:'Cormorant Garamond',serif;font-size:140px;font-weight:300;
+  color:var(--gold);opacity:.04;line-height:1;pointer-events:none;user-select:none;
+  transition:opacity .3s;
+}
+.lc:hover .lc-wm{opacity:.07}
+.lc-tag{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+.lc-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;margin-bottom:6px;line-height:1.15}
+.lc-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:var(--muted);margin-bottom:22px}
+.lc-desc{font-size:12px;color:var(--muted);line-height:1.85;flex:1}
+.lc-more{margin-top:28px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:8px}
+.lc-more::after{content:'→';transition:transform .25s}
+.lc:hover .lc-more::after{transform:translateX(4px)}
+@media(max-width:720px){.layers-grid{grid-template-columns:1fr}.lc{padding:36px 22px 32px}}
+
+/* ═══════════════════════════════════
+   TESTIMONIALS — supplementary
+═══════════════════════════════════ */
+.testi-strip{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:2px;background:var(--border);margin-top:48px;
+}
+.testi{
+  background:var(--deep);padding:36px 30px;
+  display:flex;flex-direction:column;gap:16px;
+}
+.testi-quote{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:17px;line-height:1.65;color:var(--cream);flex:1;
+}
+.testi-quote::before{content:'❝ ';color:var(--gold);font-size:20px}
+.testi-author{
+  display:flex;align-items:center;gap:12px;
+  border-top:1px solid var(--border);padding-top:16px;
+}
+.testi-avatar{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--layer);flex-shrink:0;overflow:hidden;
+  border:1px solid var(--gold-dim);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--gold);
+}
+.testi-name{font-size:12px;color:var(--cream);letter-spacing:.04em}
+.testi-role{font-size:10px;color:var(--muted);letter-spacing:.04em;margin-top:2px}
+@media(max-width:720px){.testi-strip{grid-template-columns:1fr}}
+
+/* ═══════════════════════════════════
+   PROCESS
+═══════════════════════════════════ */
+.proc-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin-top:60px;position:relative}
+.proc-grid::before{content:'';position:absolute;top:21px;left:6%;right:6%;height:1px;background:linear-gradient(90deg,transparent,var(--gold) 20%,var(--gold) 80%,transparent);opacity:.14}
+.ps{padding:0 14px;text-align:center}
+.ps-dot{width:42px;height:42px;border:1px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-family:'DM Mono',monospace;font-size:11px;color:var(--gold);background:var(--ink);position:relative;z-index:1;transition:background .3s,color .3s}
+.ps:hover .ps-dot{background:var(--gold);color:var(--ink)}
+.ps-lbl{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.ps-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:400;margin-bottom:8px}
+.ps-desc{font-size:11px;color:var(--muted);line-height:1.78}
+@media(max-width:720px){.proc-grid{grid-template-columns:1fr 1fr;gap:28px}.proc-grid::before{display:none}}
+@media(max-width:440px){.proc-grid{grid-template-columns:1fr}}
+
+/* ═══════════════════════════════════
+   FAQ — supplementary
+═══════════════════════════════════ */
+.faq-list{margin-top:48px;border-top:1px solid var(--border)}
+.faq-item{border-bottom:1px solid var(--border);overflow:hidden}
+.faq-q{
+  width:100%;display:flex;align-items:center;justify-content:space-between;
+  padding:22px 0;gap:16px;cursor:pointer;text-align:left;
+  font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;
+  color:var(--cream);transition:color .25s;
+}
+.faq-q:hover{color:var(--gold)}
+.faq-ico{
+  width:28px;height:28px;border:1px solid var(--gold-dim);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;color:var(--gold);transition:transform .35s var(--ease),border-color .25s;
+}
+.faq-item.open .faq-ico{transform:rotate(45deg);border-color:var(--gold)}
+.faq-a{
+  font-size:13px;color:var(--muted);line-height:1.9;
+  max-height:0;overflow:hidden;transition:max-height .5s var(--ease),padding .35s;
+  padding:0;
+}
+.faq-item.open .faq-a{max-height:400px;padding-bottom:22px}
+
+/* ═══════════════════════════════════
+   CTA
+═══════════════════════════════════ */
+.cta-sec{padding:130px 44px;text-align:center;position:relative;overflow:hidden}
+.cta-glow{position:absolute;inset:0;background:radial-gradient(ellipse 55% 50% at 50% 50%,rgba(194,160,96,.07) 0%,transparent 68%)}
+.cta-h{font-family:'Cormorant Garamond',serif;font-size:clamp(40px,5vw,74px);font-weight:300;line-height:1.06;max-width:620px;margin:0 auto 24px;position:relative}
+.cta-h em{font-style:italic;color:var(--gold)}
+.cta-note{font-size:12px;color:var(--muted);letter-spacing:.06em;margin-bottom:44px;position:relative}
+.cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative}
+@media(max-width:440px){.cta-sec{padding:88px 22px}}
+
+/* ═══════════════════════════════════
+   FOOTER
+═══════════════════════════════════ */
+footer{
+  padding:32px 44px;border-top:1px solid var(--border);
+  display:grid;grid-template-columns:auto 1fr auto;
+  align-items:center;gap:20px;
+  transition:border-color .7s;
+}
+.f-logo{font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:500;letter-spacing:.22em;text-transform:uppercase}
+.f-mid{display:flex;gap:20px;justify-content:center;flex-wrap:wrap}
+.f-link{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);transition:color .25s}
+.f-link:hover{color:var(--cream)}
+.f-copy{font-family:'DM Mono',monospace;font-size:10px;color:var(--dim);letter-spacing:.08em;text-align:right}
+@media(max-width:640px){
+  footer{grid-template-columns:1fr;text-align:center;padding:24px 22px;gap:16px}
+  .f-mid{justify-content:center}
+  .f-copy{text-align:center}
+}
+
+/* ═══════════════════════════════════
+   DRAWER
+═══════════════════════════════════ */
+.ov{position:fixed;inset:0;background:rgba(5,4,3,.82);backdrop-filter:blur(10px);z-index:800;opacity:0;pointer-events:none;transition:opacity .4s}
+.ov.open{opacity:1;pointer-events:all}
+.drawer{
+  position:fixed;top:0;right:0;bottom:0;
+  width:min(580px,100vw);
+  background:var(--deep);border-left:1px solid var(--border2);
+  z-index:900;overflow-y:auto;
+  transform:translateX(110%);
+  transition:transform .55s var(--ease),background .7s var(--ease);
+  display:flex;flex-direction:column;
+  -webkit-overflow-scrolling:touch;
+}
+.drawer.open{transform:translateX(0)}
+@media(max-width:640px){
+  .drawer{
+    top:auto;left:0;right:0;width:100%;
+    height:92svh;height:92vh;
+    border-left:none;border-top:1px solid var(--border2);
+    border-radius:16px 16px 0 0;
+    transform:translateY(110%);
+  }
+  .drawer.open{transform:translateY(0)}
+  /* pull handle */
+  .drawer::before{
+    content:'';display:block;width:40px;height:4px;border-radius:2px;
+    background:var(--border2);margin:14px auto 0;flex-shrink:0;
+  }
+}
+.dr-hero{position:relative;height:240px;flex-shrink:0;overflow:hidden}
+.dr-img{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .6s var(--ease)}
+.dr-hero:hover .dr-img{transform:scale(1.03)}
+.dr-veil{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 30%,rgba(20,18,12,1) 100%)}
+.dr-close{position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:50%;background:rgba(20,18,12,.7);backdrop-filter:blur(4px);z-index:10;display:flex;align-items:center;justify-content:center;font-size:14px;color:rgba(234,228,216,.55);transition:all .25s}
+.dr-close:hover{color:var(--cream);background:rgba(40,36,28,.9)}
+.dr-label{position:absolute;bottom:20px;left:28px;right:56px}
+.dr-tag{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:7px}
+.dr-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;color:var(--cream);line-height:1.15}
+@media(max-width:640px){.dr-hero{height:200px}.dr-label{left:22px}}
+
+.dr-body{padding:24px 28px 56px;flex:1}
+@media(max-width:640px){.dr-body{padding:20px 22px 48px}}
+
+.chapter{padding:22px 0;border-bottom:1px solid var(--border)}
+.chapter:last-of-type{border-bottom:none}
+.ch-head{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.ch-head::after{content:'';flex:1;height:1px;background:rgba(194,160,96,.18)}
+.ch-h{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;margin-bottom:10px;line-height:1.3}
+.ch-p{font-size:12px;color:var(--muted);line-height:1.9}
+.ch-p em{font-style:italic;color:rgba(234,228,216,.65)}
+.ch-p strong{color:var(--cream);font-weight:400}
+
+/* Senses */
+.sense-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin:14px 0}
+.sense{background:var(--layer);padding:12px 10px;text-align:center;transition:background .7s}
+.sense-ic{font-size:16px;display:block;margin-bottom:5px}
+.sense-lb{font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:3px}
+.sense-vl{font-size:10px;color:var(--muted);line-height:1.45;font-style:italic}
+
+.dr-ul{list-style:none;margin-top:10px}
+.dr-ul li{padding:9px 0;border-bottom:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.6;display:flex;gap:12px;align-items:flex-start}
+.dr-ul li::before{content:attr(data-i);font-family:'DM Mono',monospace;font-size:9px;color:var(--gold);min-width:16px;margin-top:1px;flex-shrink:0}
+.dr-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.dr-tag-pill{font-size:10px;letter-spacing:.08em;color:var(--gold);border:1px solid var(--gold-dim);padding:4px 12px}
+.dr-note{background:var(--layer);border-left:2px solid var(--gold);padding:12px 16px;font-size:11px;color:var(--muted);line-height:1.85;margin-top:14px;font-style:italic;transition:background .7s}
+.dr-cta{margin-top:20px;display:flex;flex-direction:column;gap:12px}
+.dr-lnk{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);border-bottom:1px solid rgba(194,160,96,.25);padding-bottom:2px;width:fit-content;transition:border-color .25s}
+.dr-lnk:hover{border-color:var(--gold)}
+
+/* ═══════════════════════════════════
+   ANIMATIONS
+═══════════════════════════════════ */
+@keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+@keyframes pulse{0%,100%{opacity:.25}50%{opacity:.75}}
+</style>
+</head>
+<body>
+
+<!-- ═══════ NAV ═══════ -->
+<nav id="mainNav">
+  <a href="#" class="nav-logo">Atelier <em>Identity</em></a>
+
+  <!-- Desktop links with dropdowns -->
+  <ul class="nav-links">
+
+    <!-- Dịch vụ — standard dropdown with tier hierarchy -->
+    <li>
+      <button class="nav-link-btn">
+        Dịch vụ
+        <span class="chevron"><svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+      </button>
+      <div class="dropdown" style="min-width:300px">
+        <div class="dropdown-item" onclick="openLayer(0)">
+          <span class="di-tier">I</span>
+          <div class="di-body">
+            <span class="di-label">Bộ quy tắc hình ảnh</span>
+            <span class="di-sub">Màu sắc · Phông chữ · Chất liệu · Giọng văn</span>
+          </div>
+        </div>
+        <div class="dropdown-item" onclick="openLayer(1)">
+          <span class="di-tier">II</span>
+          <div class="di-body">
+            <span class="di-label">9 Khuôn hình chuẩn</span>
+            <span class="di-sub">Lên kế hoạch · Sản xuất · Bàn giao</span>
+          </div>
+        </div>
+        <div class="dropdown-item" onclick="openLayer(2)">
+          <span class="di-tier">III</span>
+          <div class="di-body">
+            <span class="di-label">Ấn phẩm đầu ra</span>
+            <span class="di-sub">Vật lý & kỹ thuật số · Thiệp · Website</span>
+          </div>
+        </div>
+        <div class="dropdown-sep"></div>
+        <div class="dropdown-cta" onclick="openContact()">
+          <span class="di-label">Tư vấn miễn phí · 60 phút →</span>
+        </div>
+      </div>
+    </li>
+
+    <!-- Khuôn hình — mega menu 2 columns -->
+    <li>
+      <button class="nav-link-btn">
+        Khuôn hình
+        <span class="chevron"><svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+      </button>
+      <div class="dropdown mega">
+        <div class="mega-cols">
+          <!-- Col 1 -->
+          <div class="mega-col">
+            <div class="mega-group-label">Ngữ cảnh & Không gian</div>
+            <div class="dropdown-item" onclick="openShot(0)">
+              <span class="di-tier">01</span>
+              <div class="di-body"><span class="di-label">Hero Context</span><span class="di-sub">Không gian & bối cảnh chính</span></div>
+            </div>
+            <div class="dropdown-item" onclick="openShot(1)">
+              <span class="di-tier">02</span>
+              <div class="di-body"><span class="di-label">Human Connection</span><span class="di-sub">Tương tác & nghi thức</span></div>
+            </div>
+            <div class="dropdown-item" onclick="openShot(2)">
+              <span class="di-tier">03</span>
+              <div class="di-body"><span class="di-label">Atmosphere</span><span class="di-sub">Không khí & cảm xúc</span></div>
+            </div>
+            <div class="dropdown-item" onclick="openShot(3)">
+              <span class="di-tier">04</span>
+              <div class="di-body"><span class="di-label">Micro Detail</span><span class="di-sub">Cận cảnh chất liệu</span></div>
+            </div>
+          </div>
+          <!-- Col 2 -->
+          <div class="mega-col">
+            <div class="mega-group-label">Hành trình & Tâm hồn</div>
+            <div class="dropdown-item" onclick="openShot(4)">
+              <span class="di-tier">05</span>
+              <div class="di-body"><span class="di-label">The Process</span><span class="di-sub">Hậu trường sáng tạo</span></div>
+            </div>
+            <div class="dropdown-item" onclick="openShot(5)">
+              <span class="di-tier">06</span>
+              <div class="di-body"><span class="di-label">The Unveiling</span><span class="di-sub">Khoảnh khắc khai mở</span></div>
+            </div>
+            <div class="dropdown-item" onclick="openShot(6)">
+              <span class="di-tier">07</span>
+              <div class="di-body"><span class="di-label">Architectural Portrait</span><span class="di-sub">Chân dung trong kiến trúc</span></div>
+            </div>
+            <div class="dropdown-item" onclick="openShot(7)">
+              <span class="di-tier">08</span>
+              <div class="di-body"><span class="di-label">Curated Still Life</span><span class="di-sub">Sắp đặt đời sống</span></div>
+            </div>
+            <div class="dropdown-item" onclick="openShot(8)">
+              <span class="di-tier">09</span>
+              <div class="di-body"><span class="di-label">The Soul Moment</span><span class="di-sub">Khoảnh khắc tự nhiên</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="mega-footer">
+          <span class="mega-footer-label">9 loại khuôn hình · Toàn bộ câu chuyện</span>
+          <span class="mega-footer-link" onclick="scrollTo('shots-sec')">Xem tất cả →</span>
+        </div>
+      </div>
+    </li>
+
+    <li><button class="nav-link-btn" onclick="scrollTo('mat-sec')">Chất liệu</button></li>
+    <li><button class="nav-link-btn" onclick="scrollTo('proc-sec')">Quy trình</button></li>
+    <li><button class="nav-link-btn" onclick="scrollTo('faq-sec')">FAQ</button></li>
+  </ul>
+
+  <div class="nav-r">
+    <button class="nav-cta" onclick="openContact()">Đặt lịch tư vấn</button>
+    <button class="hamburger" id="burger" onclick="toggleMobileNav()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ═══════ MOBILE NAV ═══════ -->
+<div class="mobile-nav" id="mobileNav">
+  <!-- Topbar with logo + close -->
+  <div class="mn-topbar">
+    <span class="mn-topbar-logo">Atelier <em>Identity</em></span>
+    <button class="mn-close" onclick="closeMobileNav()" aria-label="Đóng">✕</button>
+  </div>
+
+  <div class="mn-body">
+    <!-- Dịch vụ accordion -->
+    <div class="mn-section" id="mns-0">
+      <div class="mn-header" onclick="toggleMnSection(0)">
+        <div class="mn-header-left">
+          <span class="mn-title">Dịch vụ</span>
+          <span class="mn-count">3 gói</span>
+        </div>
+        <span class="mn-chevron">›</span>
+      </div>
+      <div class="mn-items">
+        <div class="mn-item" onclick="openLayer(0);closeMobileNav()">
+          <span class="mn-item-idx">I</span>
+          <div class="mn-item-body">
+            <span class="mn-item-label">Bộ quy tắc hình ảnh</span>
+            <span class="mn-item-sub">Màu · Phông · Chất liệu</span>
+          </div>
+        </div>
+        <div class="mn-item" onclick="openLayer(1);closeMobileNav()">
+          <span class="mn-item-idx">II</span>
+          <div class="mn-item-body">
+            <span class="mn-item-label">9 Khuôn hình chuẩn</span>
+            <span class="mn-item-sub">Lên kế hoạch & chụp</span>
+          </div>
+        </div>
+        <div class="mn-item" onclick="openLayer(2);closeMobileNav()" style="margin-bottom:8px">
+          <span class="mn-item-idx">III</span>
+          <div class="mn-item-body">
+            <span class="mn-item-label">Ấn phẩm đầu ra</span>
+            <span class="mn-item-sub">Vật lý & kỹ thuật số</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9 Khuôn hình accordion -->
+    <div class="mn-section" id="mns-1">
+      <div class="mn-header" onclick="toggleMnSection(1)">
+        <div class="mn-header-left">
+          <span class="mn-title">9 Khuôn hình</span>
+          <span class="mn-count">9 loại</span>
+        </div>
+        <span class="mn-chevron">›</span>
+      </div>
+      <div class="mn-items">
+        <div class="mn-item" onclick="openShot(0);closeMobileNav()">
+          <span class="mn-item-idx">01</span>
+          <div class="mn-item-body"><span class="mn-item-label">Hero Context</span><span class="mn-item-sub">Không gian bạn sống</span></div>
+        </div>
+        <div class="mn-item" onclick="openShot(1);closeMobileNav()">
+          <span class="mn-item-idx">02</span>
+          <div class="mn-item-body"><span class="mn-item-label">Human Connection</span><span class="mn-item-sub">Tương tác & nghi thức</span></div>
+        </div>
+        <div class="mn-item" onclick="openShot(2);closeMobileNav()">
+          <span class="mn-item-idx">03</span>
+          <div class="mn-item-body"><span class="mn-item-label">Atmosphere</span><span class="mn-item-sub">Không khí & cảm xúc</span></div>
+        </div>
+        <div class="mn-item" onclick="openShot(3);closeMobileNav()">
+          <span class="mn-item-idx">04</span>
+          <div class="mn-item-body"><span class="mn-item-label">Micro Detail</span><span class="mn-item-sub">Cận cảnh chất liệu</span></div>
+        </div>
+        <div class="mn-item" onclick="openShot(4);closeMobileNav()">
+          <span class="mn-item-idx">05</span>
+          <div class="mn-item-body"><span class="mn-item-label">The Process</span><span class="mn-item-sub">Hậu trường sáng tạo</span></div>
+        </div>
+        <div class="mn-item" onclick="openShot(5);closeMobileNav()">
+          <span class="mn-item-idx">06</span>
+          <div class="mn-item-body"><span class="mn-item-label">The Unveiling</span><span class="mn-item-sub">Khoảnh khắc khai mở</span></div>
+        </div>
+        <div class="mn-item" onclick="openShot(6);closeMobileNav()">
+          <span class="mn-item-idx">07</span>
+          <div class="mn-item-body"><span class="mn-item-label">Architectural Portrait</span><span class="mn-item-sub">Chân dung trong kiến trúc</span></div>
+        </div>
+        <div class="mn-item" onclick="openShot(7);closeMobileNav()">
+          <span class="mn-item-idx">08</span>
+          <div class="mn-item-body"><span class="mn-item-label">Curated Still Life</span><span class="mn-item-sub">Sắp đặt đời sống</span></div>
+        </div>
+        <div class="mn-item" onclick="openShot(8);closeMobileNav()" style="margin-bottom:8px">
+          <span class="mn-item-idx">09</span>
+          <div class="mn-item-body"><span class="mn-item-label">The Soul Moment</span><span class="mn-item-sub">Khoảnh khắc tự nhiên</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Direct links -->
+    <div class="mn-direct" onclick="scrollTo('mat-sec');closeMobileNav()">
+      Chất liệu ấn phẩm
+      <span class="mn-direct-arr">→</span>
+    </div>
+    <div class="mn-direct" onclick="scrollTo('proc-sec');closeMobileNav()">
+      Quy trình 5 bước
+      <span class="mn-direct-arr">→</span>
+    </div>
+    <div class="mn-direct" onclick="scrollTo('faq-sec');closeMobileNav()">
+      Câu hỏi thường gặp
+      <span class="mn-direct-arr">→</span>
+    </div>
+  </div>
+
+  <!-- Footer CTA -->
+  <div class="mn-footer">
+    <button class="mn-cta" onclick="openContact();closeMobileNav()">Đặt lịch tư vấn miễn phí →</button>
+    <p class="mn-cta-note">Tối đa 4 khách hàng mới mỗi tháng</p>
+  </div>
+</div>
+
+<!-- ═══════ HERO ═══════ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-photo"></div>
+  <div class="hero-rule"></div>
+  <div class="hero-content">
+    <p class="hero-kicker">Nhận diện cá nhân · Hình ảnh doanh nghiệp · Portfolio đời sống</p>
+    <h1 class="hero-h">
+      <span class="ln">Bạn không thiếu</span>
+      <span class="ln">nội dung. Bạn thiếu</span>
+      <span class="ln"><em>ngôn ngữ hình ảnh.</em></span>
+    </h1>
+    <div class="hero-foot">
+      <p class="hero-sub">Chúng tôi xây toàn bộ hệ thống nhận diện — từ màu sắc và chất liệu đến khoảnh khắc và ấn phẩm — phản ánh đúng con người bạn là ai.</p>
+      <div class="hero-btns">
+        <button class="btn-p" onclick="scrollTo('mood-sec')">Xem demo</button>
+        <button class="btn-g" onclick="scrollTo('shots-sec')">9 khuôn hình →</button>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-n">9</div><div class="stat-l">Loại khuôn hình</div></div>
+      <div class="stat"><div class="stat-n">3</div><div class="stat-l">Lớp dịch vụ</div></div>
+      <div class="stat"><div class="stat-n">5</div><div class="stat-l">Chất liệu ấn phẩm</div></div>
+      <div class="stat"><div class="stat-n">4</div><div class="stat-l">Khách hàng / tháng</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ THREE WORLDS ═══════ -->
+<div class="worlds rv">
+  <div class="world" onclick="openWorld(0)">
+    <div class="w-num">Thế giới 01</div>
+    <div class="w-icon wi-space"></div>
+    <div class="w-title">Không gian bạn sống</div>
+    <div class="w-poem">Góc làm việc, nơi tiếp khách, căn phòng mỗi sáng thức dậy — những không gian này nói lên bạn là ai trước khi bạn kịp lên tiếng.</div>
+    <div class="w-tags"><span class="wtag">Văn phòng</span><span class="wtag">Studio</span><span class="wtag">Nhà riêng</span></div>
+    <span class="w-arrow">→</span>
+  </div>
+  <div class="world" onclick="openWorld(1)">
+    <div class="w-num">Thế giới 02</div>
+    <div class="w-icon wi-event"></div>
+    <div class="w-title">Sự kiện bạn tham gia</div>
+    <div class="w-poem">Hôn lễ, khai trương, buổi gặp mặt quan trọng — những khoảnh khắc chỉ xảy ra một lần và xứng đáng được ghi lại đúng cách.</div>
+    <div class="w-tags"><span class="wtag">Hôn lễ</span><span class="wtag">Khai trương</span><span class="wtag">Hội nghị</span></div>
+    <span class="w-arrow">→</span>
+  </div>
+  <div class="world" onclick="openWorld(2)">
+    <div class="w-num">Thế giới 03</div>
+    <div class="w-icon wi-life"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="w-title">Điều bạn yêu thích</div>
+    <div class="w-poem">Gốm, tranh, sách, ẩm thực, vải vóc — những đam mê định nghĩa gu thẩm mỹ và tạo nên tính cách trong từng khuôn hình.</div>
+    <div class="w-tags"><span class="wtag">Gốm thủ công</span><span class="wtag">Nghệ thuật</span><span class="wtag">Ẩm thực</span></div>
+    <span class="w-arrow">→</span>
+  </div>
+</div>
+
+<!-- ═══════ WHY SECTION ═══════ -->
+<section class="sec alt">
+  <p class="eyebrow rv">Tại sao cần hình ảnh chuyên nghiệp</p>
+  <h2 class="sec-h rv">Hình ảnh không chỉ để <em>đẹp.</em></h2>
+  <p class="sec-lead rv">Chúng làm việc 24/7 — đại diện cho bạn trong mọi cuộc gặp gỡ mà bạn không có mặt.</p>
+  <div class="why-grid rv">
+    <div class="why-card">
+      <div class="why-icon">①</div>
+      <div class="why-body">
+        <div class="why-title">Ấn tượng đầu tiên hình thành trong 0.05 giây</div>
+        <div class="why-desc">Trước khi ai đọc một chữ về bạn, họ đã cảm nhận xong rồi. Hình ảnh là thứ nói chuyện đầu tiên — và thường là thứ quyết định họ có tiếp tục đọc không.</div>
+      </div>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">②</div>
+      <div class="why-body">
+        <div class="why-title">Nhất quán tạo ra sự tin tưởng</div>
+        <div class="why-desc">Khi hình ảnh trên LinkedIn, website, và danh thiếp của bạn không nhận ra nhau — người ta không tin. Nhất quán không phải là xa xỉ, đó là điều kiện cơ bản.</div>
+      </div>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">③</div>
+      <div class="why-body">
+        <div class="why-title">Giảm thiểu giải thích, tăng tối đa cảm nhận</div>
+        <div class="why-desc">Một bức ảnh đúng chỗ thay được cả đoạn văn mô tả. Thay vì phải giải thích bạn là ai và bạn làm gì — hãy để hình ảnh làm điều đó.</div>
+      </div>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">④</div>
+      <div class="why-body">
+        <div class="why-title">Gu thẩm mỹ là tài sản kinh doanh</div>
+        <div class="why-desc">Khách hàng trả nhiều hơn cho người mà họ cảm thấy "có tầm". Hình ảnh chuyên nghiệp không phải chi phí — đó là đầu tư định giá bản thân.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ PERSONA — AI CẦN? ═══════ -->
+<section class="sec">
+  <p class="eyebrow rv">Dịch vụ này dành cho ai</p>
+  <h2 class="sec-h rv">Bạn có thấy mình<br>trong những <em>câu chuyện này</em> không?</h2>
+  <div class="persona-row rv">
+    <div class="persona" onclick="openPersona(0)">
+      <div class="p-num">01</div>
+      <div class="p-art pa-body" style="position:relative"><div style="position:absolute;width:18px;height:18px;border-radius:50%;background:rgba(194,160,96,.3);top:6px;left:13px"></div><div style="position:absolute;bottom:0;left:7px;right:7px;height:22px;background:rgba(194,160,96,.2);border-radius:50% 50% 0 0"></div></div>
+      <div class="p-name">Chủ doanh nghiệp & CEO</div>
+      <div class="p-desc">Đã gây dựng được thứ gì đó đáng tự hào — nhưng hình ảnh chưa phản ánh được tầm vóc đó. Muốn xuất hiện ở đúng chỗ với đúng hình ảnh.</div>
+      <div class="p-pain">"Tôi biết mình muốn gì nhưng không biết diễn đạt thành hình ảnh như thế nào."</div>
+    </div>
+    <div class="persona" onclick="openPersona(1)">
+      <div class="p-num">02</div>
+      <div class="p-art" style="position:relative"><div style="position:absolute;width:18px;height:18px;border-radius:50%;background:rgba(194,160,96,.3);top:6px;left:13px"></div><div style="position:absolute;bottom:0;left:7px;right:7px;height:22px;background:rgba(194,160,96,.2);border-radius:50% 50% 0 0"></div></div>
+      <div class="p-name">Nghệ sĩ & Người sáng tạo</div>
+      <div class="p-desc">Tác phẩm xuất sắc nhưng cách trình bày chưa xứng tầm. Cần hệ thống hình ảnh nhất quán để đưa tác phẩm đến đúng người.</div>
+      <div class="p-pain">"Tôi làm ra những thứ đẹp, nhưng ảnh chụp lại không đẹp bằng thứ thật."</div>
+    </div>
+    <div class="persona" onclick="openPersona(2)">
+      <div class="p-num">03</div>
+      <div class="p-art" style="position:relative"><div style="position:absolute;width:18px;height:18px;border-radius:50%;background:rgba(194,160,96,.3);top:6px;left:13px"></div><div style="position:absolute;bottom:0;left:7px;right:7px;height:22px;background:rgba(194,160,96,.2);border-radius:50% 50% 0 0"></div></div>
+      <div class="p-name">Cặp đôi & Gia đình</div>
+      <div class="p-desc">Sự kiện quan trọng sắp đến và muốn mọi thứ — từ thiệp mời đến ảnh lưu niệm — phản ánh đúng tinh thần và thẩm mỹ của hai người.</div>
+      <div class="p-pain">"Chúng tôi muốn ảnh cưới trông như ảnh trong tạp chí — không phải ảnh nhà hàng xóm."</div>
+    </div>
+    <div class="persona" onclick="openPersona(3)">
+      <div class="p-num">04</div>
+      <div class="p-art" style="position:relative"><div style="position:absolute;width:18px;height:18px;border-radius:50%;background:rgba(194,160,96,.3);top:6px;left:13px"></div><div style="position:absolute;bottom:0;left:7px;right:7px;height:22px;background:rgba(194,160,96,.2);border-radius:50% 50% 0 0"></div></div>
+      <div class="p-name">Chuyên gia & Tư vấn</div>
+      <div class="p-desc">Muốn hình ảnh cá nhân đủ mạnh để nói thay cho năng lực — cho dù là trên LinkedIn, báo chí, hay sân khấu hội thảo.</div>
+      <div class="p-pain">"Tôi thuyết trình tốt, nhưng ảnh đại diện của tôi không nói lên điều đó."</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ MOOD ═══════ -->
+<section class="sec alt" id="mood-sec">
+  <p class="eyebrow rv">Thử phong cách</p>
+  <h2 class="sec-h rv">Mỗi người có một<br><em>bầu không khí riêng.</em></h2>
+  <p class="sec-lead rv">Chọn một mood — toàn bộ màu sắc và chất liệu thay đổi theo. Đây chính xác là bước đầu tiên chúng tôi làm với mỗi khách hàng.</p>
+  <div class="rul rv"></div>
+  <div class="mood-tabs rv">
+    <button class="m-tab on" onclick="setMood('',this,'studio')">Studio</button>
+    <button class="m-tab" onclick="setMood('m-gom',this,'gom')">Gốm &amp; Đất</button>
+    <button class="m-tab" onclick="setMood('m-oil',this,'oil')">Nghệ thuật</button>
+    <button class="m-tab" onclick="setMood('m-wed',this,'wed')">Hôn lễ</button>
+  </div>
+  <div class="mood-stage rv">
+    <div class="mp mp-main"><div class="mp-bg" id="bgM"></div><div class="mp-veil"></div><div class="mp-in"><div class="mp-tag" id="mT">Không gian làm việc</div><div class="mp-title" id="mTi">Góc riêng của bạn — nơi gu thẩm mỹ lộ ra tự nhiên nhất</div><div class="mp-pal" id="mPal"></div></div></div>
+    <div class="mp mp-r1"><div class="mp-bg" id="bgS1"></div><div class="mp-veil"></div><div class="mp-in"><div class="mp-tag" id="mT1">Phông chữ</div><div class="mp-title" style="font-size:14px" id="mTi1">Cormorant · DM Sans</div></div></div>
+    <div class="mp mp-r2"><div class="mp-bg" id="bgS2"></div><div class="mp-veil"></div><div class="mp-in"><div class="mp-tag" id="mT2">Chất liệu</div><div class="mp-title" style="font-size:14px" id="mTi2">Giấy mỹ thuật · Gỗ sồi</div></div></div>
+  </div>
+</section>
+
+<!-- ═══════ MATERIALS ═══════ -->
+<section class="sec" id="mat-sec">
+  <p class="eyebrow rv">Chất liệu ấn phẩm</p>
+  <h2 class="sec-h rv">Bạn không chỉ nhìn —<br>bạn <em>sờ</em> vào từng ấn phẩm.</h2>
+  <p class="sec-lead rv">Cân nặng của tờ giấy, độ mềm của vải lanh, vân gỗ trên hộp quà — tất cả đều có ý nghĩa. Bấm vào từng chất liệu để xem cách dùng cụ thể.</p>
+  <div class="mat-strip rv">
+    <div class="mat" onclick="openMat(0)"><div class="mat-tex tex-paper"></div><div class="mat-overlay"></div><div class="mat-body"><div class="mat-name">Giấy Mỹ Thuật</div><div class="mat-use">Thiệp mời · Portfolio · Brand Guide</div></div></div>
+    <div class="mat" onclick="openMat(1)"><div class="mat-tex tex-linen"></div><div class="mat-overlay"></div><div class="mat-body"><div class="mat-name">Vải Lanh</div><div class="mat-use">Hộp quà · Bọc album · Prop chụp</div></div></div>
+    <div class="mat" onclick="openMat(2)"><div class="mat-tex tex-ceramic"></div><div class="mat-overlay"></div><div class="mat-body"><div class="mat-name">Bề Mặt Gốm</div><div class="mat-use">Nền chụp · Vật phẩm sự kiện</div></div></div>
+    <div class="mat" onclick="openMat(3)"><div class="mat-tex tex-wood"></div><div class="mat-overlay"></div><div class="mat-body"><div class="mat-name">Gỗ Sồi</div><div class="mat-use">Hộp kỷ niệm · Signage · Backdrop</div></div></div>
+    <div class="mat" onclick="openMat(4)"><div class="mat-tex tex-leather"></div><div class="mat-overlay"></div><div class="mat-body"><div class="mat-name">Da Thuộc</div><div class="mat-use">Bìa Portfolio · Hộp quà cao cấp</div></div></div>
+  </div>
+</section>
+
+<!-- ═══════ SHOTS ═══════ -->
+<section class="shots-outer" id="shots-sec">
+  <div class="shots-hdr">
+    <p class="eyebrow rv">9 Loại khuôn hình</p>
+    <h2 class="sec-h rv">Mỗi khuôn hình là<br>một <em>chương câu chuyện.</em></h2>
+    <p class="sec-lead rv">Kéo ngang. Bấm vào bất kỳ khuôn hình nào để đọc toàn bộ câu chuyện — bạn sẽ thấy mình ở trong đó.</p>
+  </div>
+  <div class="shots-track" id="shotsTrack"></div>
+  <div class="shots-foot rv">Kéo ngang để xem thêm</div>
+</section>
+
+<!-- ═══════ LAYERS ═══════ -->
+<section class="sec lift" id="layers-sec">
+  <p class="eyebrow rv">Ba gói dịch vụ</p>
+  <h2 class="sec-h rv">Ba lớp tạo nên<br>một <em>hệ sinh thái</em> hoàn chỉnh.</h2>
+  <p class="sec-lead rv">Không phải buổi chụp lẻ. Đây là hệ thống được xây để tồn tại và phát triển cùng bạn. Bấm vào từng lớp để xem phạm vi đầy đủ.</p>
+  <div class="layers-grid" id="layersGrid"></div>
+</section>
+
+<!-- ═══════ TESTIMONIALS ═══════ -->
+<section class="sec alt">
+  <p class="eyebrow rv">Cảm nhận khách hàng</p>
+  <h2 class="sec-h rv">Họ đã trải qua.<br>Họ <em>nói gì?</em></h2>
+  <div class="testi-strip rv">
+    <div class="testi">
+      <div class="testi-quote">Lần đầu tiên tôi nhìn vào website của mình và nghĩ: đúng rồi, đây mới là mình. Không phải mình cố gắng trông cho chuyên nghiệp — mà là mình thật sự.</div>
+      <div class="testi-author">
+        <div class="testi-avatar">N</div>
+        <div><div class="testi-name">Nguyễn Lan Anh</div><div class="testi-role">CEO · CRV Production</div></div>
+      </div>
+    </div>
+    <div class="testi">
+      <div class="testi-quote">Bộ ảnh chụp ra nhiều hơn tôi nghĩ. Tôi dùng mạng xã hội cả năm nay và vẫn chưa hết ảnh. Quan trọng hơn là mỗi ảnh đều nhận ra nhau.</div>
+      <div class="testi-author">
+        <div class="testi-avatar">M</div>
+        <div><div class="testi-name">Minh Trần</div><div class="testi-role">Founder · Gốm Thủ Công</div></div>
+      </div>
+    </div>
+    <div class="testi">
+      <div class="testi-quote">Thiệp mời được làm từ bộ quy tắc của chúng tôi — khách nhận lên cầm là hỏi ngay ai làm. Đó là lần đầu tiên tôi hiểu ấn phẩm vật lý có thể mạnh đến thế.</div>
+      <div class="testi-author">
+        <div class="testi-avatar">T</div>
+        <div><div class="testi-name">Thanh &amp; Hòa</div><div class="testi-role">Hôn lễ tháng 3 · 2025</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ PROCESS ═══════ -->
+<section class="sec" id="proc-sec">
+  <p class="eyebrow rv">Quy trình 5 bước</p>
+  <h2 class="sec-h rv">Từ cuộc trò chuyện đầu tiên<br>đến kho tài sản cuối cùng.</h2>
+  <div class="proc-grid rv">
+    <div class="ps"><div class="ps-dot">01</div><div class="ps-lbl">Khám phá</div><div class="ps-title">Nói chuyện</div><div class="ps-desc">Bảng câu hỏi 10 phút + gặp 60 phút. Không cần chuẩn bị gì trước.</div></div>
+    <div class="ps"><div class="ps-dot">02</div><div class="ps-lbl">Thiết kế</div><div class="ps-title">Lên bộ quy tắc</div><div class="ps-desc">Bảng màu, phông chữ, chất liệu, giọng văn — xác lập thành tài liệu PDF.</div></div>
+    <div class="ps"><div class="ps-dot">03</div><div class="ps-lbl">Demo</div><div class="ps-title">Nhìn trước</div><div class="ps-desc">Mood board + mockup ấn phẩm để bạn chốt look & feel trước khi sản xuất.</div></div>
+    <div class="ps"><div class="ps-dot">04</div><div class="ps-lbl">Sản xuất</div><div class="ps-title">Thực hiện</div><div class="ps-desc">Chụp ảnh, thiết kế, in ấn theo kế hoạch đã duyệt — không thêm không bớt.</div></div>
+    <div class="ps"><div class="ps-dot">05</div><div class="ps-lbl">Bàn giao</div><div class="ps-title">Đóng gói</div><div class="ps-desc">Toàn bộ file, ấn phẩm, brand kit vào archive có hệ thống. Dùng bất cứ lúc nào.</div></div>
+  </div>
+</section>
+
+<!-- ═══════ FAQ ═══════ -->
+<section class="sec alt" id="faq-sec">
+  <p class="eyebrow rv">Câu hỏi thường gặp</p>
+  <h2 class="sec-h rv">Bạn đang <em>thắc mắc</em><br>điều gì?</h2>
+  <div class="faq-list rv">
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)"><span>Tôi không biết mình muốn gì — có bắt đầu được không?</span><span class="faq-ico">+</span></button>
+      <div class="faq-a">Đây là trường hợp phổ biến nhất. Buổi Discovery 60 phút đầu tiên được thiết kế chính xác cho điều này — chúng tôi dẫn dắt cuộc trò chuyện với bộ câu hỏi thẩm mỹ được chuẩn bị sẵn. Bạn không cần chuẩn bị gì ngoài 10 phút điền bảng câu hỏi gửi trước.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)"><span>Mất bao lâu để hoàn thành một gói dịch vụ?</span><span class="faq-ico">+</span></button>
+      <div class="faq-a">Tùy theo gói: Bộ quy tắc hình ảnh mất 1–2 tuần. Một gói chụp ảnh đầy đủ (lên kế hoạch + chụp + hậu kỳ) thường mất 3–4 tuần. Ấn phẩm vật lý cần thêm 1–3 tuần in ấn. Nếu cần gấp cho sự kiện cụ thể, hãy cho chúng tôi biết ngay từ đầu để lên lịch phù hợp.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)"><span>Tôi đã có ảnh cũ — có dùng được không?</span><span class="faq-ico">+</span></button>
+      <div class="faq-a">Có. Chúng tôi sẽ đánh giá kho ảnh hiện tại của bạn trong buổi Discovery và xác định những gì có thể giữ lại, những gì cần chụp bổ sung. Điều này giúp tối ưu chi phí và thời gian sản xuất.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)"><span>Giá dịch vụ bắt đầu từ bao nhiêu?</span><span class="faq-ico">+</span></button>
+      <div class="faq-a">Chúng tôi không có gói cố định vì mỗi khách hàng có nhu cầu khác nhau. Sau buổi Discovery, chúng tôi sẽ gửi báo giá tổng thể được cá nhân hóa theo đúng phạm vi bạn cần — không nhiều hơn, không ít hơn. Buổi Discovery hoàn toàn miễn phí và không ràng buộc quyết định.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)"><span>Chụp ở đâu? Tôi ở ngoài Sài Gòn thì sao?</span><span class="faq-ico">+</span></button>
+      <div class="faq-a">Studio chính của chúng tôi ở Sài Gòn. Với khách ở ngoài, chúng tôi có thể làm việc online cho phần thiết kế và lên bộ quy tắc. Phần chụp ảnh có thể tổ chức tại địa điểm của bạn (có phụ phí di chuyển) hoặc kết hợp trong một chuyến bạn có mặt tại Sài Gòn.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)"><span>Sau khi bàn giao, tôi có được hỗ trợ tiếp không?</span><span class="faq-ico">+</span></button>
+      <div class="faq-a">Có. Sau khi bàn giao, chúng tôi giữ kết nối trong 30 ngày để giải đáp thắc mắc và hỗ trợ ứng dụng. Với các khách hàng muốn duy trì và cập nhật kho ảnh định kỳ (mỗi quý hoặc theo mùa), chúng tôi có gói retainer riêng.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ CTA ═══════ -->
+<section class="cta-sec">
+  <div class="cta-glow"></div>
+  <h2 class="cta-h rv">Bắt đầu bằng<br>một <em>buổi trò chuyện.</em></h2>
+  <p class="cta-note rv">Miễn phí &nbsp;·&nbsp; 60 phút &nbsp;·&nbsp; Không ràng buộc</p>
+  <div class="cta-row rv">
+    <button class="btn-p" onclick="openContact()">Đặt lịch ngay</button>
+    <button class="btn-g" onclick="scrollTo('faq-sec')">Xem câu hỏi thường gặp →</button>
+  </div>
+</section>
+
+<!-- ═══════ FOOTER ═══════ -->
+<footer>
+  <div class="f-logo">Atelier Identity</div>
+  <div class="f-mid">
+    <a class="f-link" onclick="openContact()">Liên hệ</a>
+    <a class="f-link" onclick="scrollTo('layers-sec')">Dịch vụ</a>
+    <a class="f-link" onclick="scrollTo('faq-sec')">FAQ</a>
+    <a class="f-link" onclick="scrollTo('proc-sec')">Quy trình</a>
+  </div>
+  <div class="f-copy">Sài Gòn · © 2025</div>
+</footer>
+
+<!-- OVERLAY + DRAWER -->
+<div class="ov" id="ov" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="dr-hero" id="drHeroWrap">
+    <div class="dr-img" id="drImg"></div>
+    <div class="dr-veil"></div>
+    <button class="dr-close" onclick="closeDrawer()">✕</button>
+    <div class="dr-label"><div class="dr-tag" id="drTag"></div><div class="dr-title" id="drTitle"></div></div>
+  </div>
+  <div class="dr-body" id="drBody"></div>
+</div>
+
+<script>
+/* ════ IMAGES ════ */
+const U='https://images.unsplash.com/photo-';
+const I={
+  stM:U+'1497366216548-37526070297c?auto=format&fit=crop&w=900&q=72',
+  stS1:U+'1544947950-fa07a98d237f?auto=format&fit=crop&w=600&q=72',
+  stS2:U+'1518455027220-b9dc6f0c0571?auto=format&fit=crop&w=600&q=72',
+  goM:U+'1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=900&q=72',
+  goS1:U+'1493106641515-5d5fe79ef5bc?auto=format&fit=crop&w=600&q=72',
+  goS2:U+'1558618666-fcd25c85cd64?auto=format&fit=crop&w=600&q=72',
+  oiM:U+'1541961017774-22349e4a1262?auto=format&fit=crop&w=900&q=72',
+  oiS1:U+'1579783902614-a3fb3927b6a5?auto=format&fit=crop&w=600&q=72',
+  oiS2:U+'1547826039-a01beba0a01d?auto=format&fit=crop&w=600&q=72',
+  weM:U+'1519225421980-9b4d52700e52?auto=format&fit=crop&w=900&q=72',
+  weS1:U+'1517760444733-c3b2c60bc2a0?auto=format&fit=crop&w=600&q=72',
+  weS2:U+'1521747116042-5a810fda9664?auto=format&fit=crop&w=600&q=72',
+  s:[0,1,2,3,4,5,6,7,8].map(i=>U+['1497366216548-37526070297c','1507003211169-0a1dd7228f2d','1519923834699-efcb9d5b4e40','1565193566173-7a0ee3dbe261','1464349153174-4b5d53f04a5b','1530103862676-de8c9debad1d','1531746020798-e6953c6e8e04','1511193311914-0346f16efe90','1506905925346-21bda4d32df4'][i]+'?auto=format&fit=crop&w=700&q=65'),
+};
+
+/* ════ MOOD ════ */
+const moods={
+  studio:{cls:'',m:I.stM,s1:I.stS1,s2:I.stS2,tag:'Không gian làm việc',ti:'Góc riêng của bạn — nơi gu thẩm mỹ lộ ra tự nhiên nhất',t1:'Phông chữ',ti1:'Cormorant · DM Sans',t2:'Chất liệu',ti2:'Giấy mỹ thuật · Gỗ sồi',pal:['#0B0A07','#C2A060','#EAE4D8','#7A7268']},
+  gom:{cls:'m-gom',m:I.goM,s1:I.goS1,s2:I.goS2,tag:'Gốm & thủ công',ti:'Chạm vào từng vân đất — cảm giác không thể giả',t1:'Phông chữ',ti1:'Playfair Display · Raleway',t2:'Chất liệu',ti2:'Đất nung · Vải lanh · Sồi thô',pal:['#130E06','#C08040','#EEE0CC','#8A7050']},
+  oil:{cls:'m-oil',m:I.oiM,s1:I.oiS1,s2:I.oiS2,tag:'Nghệ thuật',ti:'Xưởng vẽ — mỗi ngày là một tác phẩm sống',t1:'Phông chữ',ti1:'EB Garamond · Gill Sans',t2:'Chất liệu',ti2:'Canvas · Toan gỗ · Màu dầu',pal:['#080C12','#7AAABE','#D8E4EE','#4A6080']},
+  wed:{cls:'m-wed',m:I.weM,s1:I.weS1,s2:I.weS2,tag:'Hôn lễ tối giản',ti:'Buổi sáng trước lễ cưới — im lặng và trọn vẹn tuyệt đối',t1:'Phông chữ',ti1:'Didot · Futura Light',t2:'Chất liệu',ti2:'Lụa trắng · Giấy pearl · Sáp',pal:['#EEE8DC','#8A6438','#1A1408','#B8A88A']},
+};
+function setMood(cls,btn,key){
+  document.body.className=cls;
+  document.querySelectorAll('.m-tab').forEach(t=>t.classList.remove('on'));
+  if(btn&&btn.classList)btn.classList.add('on');
+  const m=moods[key];
+  const bg=(id,url)=>document.getElementById(id).style.backgroundImage=`url('${url}')`;
+  bg('bgM',m.m);bg('bgS1',m.s1);bg('bgS2',m.s2);
+  document.getElementById('mT').textContent=m.tag;
+  document.getElementById('mTi').textContent=m.ti;
+  document.getElementById('mT1').textContent=m.t1;
+  document.getElementById('mTi1').textContent=m.ti1;
+  document.getElementById('mT2').textContent=m.t2;
+  document.getElementById('mTi2').textContent=m.ti2;
+  document.getElementById('mPal').innerHTML=m.pal.map(c=>`<div class="pd" style="background:${c}"></div>`).join('');
+}
+setMood('',null,'studio');
+
+/* ════ SHOTS DATA ════ */
+const shots=[
+  {num:'01',name:'Hero Context',poem:'Không gian của bạn nói lên điều gì trước khi bạn kịp nói.',tag:'Bối cảnh & không gian chính',
+  ch1h:'Đây là khuôn hình đầu tiên người xem tiếp cận',ch1p:'Không có bạn trong ảnh — nhưng gu thẩm mỹ, sự lựa chọn, và tinh thần của bạn hiện ra ở khắp nơi: trong cách sắp xếp sách, màu sắc bạn chọn, những vật phẩm bạn giữ lại.',
+  senses:{see:'Không gian rộng, ánh sáng nghiêng, đồ vật có câu chuyện',touch:'Bề mặt gỗ, giấy, vải — kết cấu thật dưới ánh sáng thật',feel:'Cảm giác vừa quen vừa lạ — như vừa bước vào nhà ai đó'},
+  story:'Một bức ảnh góc làm việc đúng cách thay được cả trang giới thiệu bản thân. Đây là khuôn hình bạn dùng làm hero banner, LinkedIn cover, và điểm neo thẩm mỹ cho toàn bộ hệ thống hình ảnh.',
+  gets:['5–8 ảnh góc làm việc, kệ sách, hoặc không gian riêng','Ảnh không gian sự kiện trước khi khách đến','Ảnh góc trưng bày sưu tầm (gốm, sách, tranh)','File xuất đủ size cho mọi nền tảng'],
+  needs:['Không gian thực tế — văn phòng, nhà, hoặc studio của bạn','Danh sách vật phẩm muốn có trong ảnh','Tông màu ưa thích: tối / sáng / trung tính'],
+  uses:['Website hero banner','Ảnh bìa LinkedIn','Portfolio giới thiệu','Thumbnail bài viết'],
+  note:'Thường chụp kết hợp với Shot 08 (Still Life) trong cùng một buổi.'},
+  {num:'02',name:'Human Connection',poem:'Khoảnh khắc tay chạm vào tách cà phê — câu chuyện bắt đầu từ đó.',tag:'Tương tác & nghi thức',
+  ch1h:'Không phải pose. Là khoảnh khắc hành động thật.',ch1p:'Trao thiệp, ký kết, ngồi đối diện với người mình tin — những khoảnh khắc này bắt được điều mà không ảnh studio nào làm được: cảm giác của một người đang sống cuộc đời mình.',
+  senses:{see:'Đôi bàn tay, khoảng cách giữa hai người, ánh mắt đang nhìn',touch:'Cái bắt tay, tờ giấy, mặt bàn gỗ dưới lòng bàn tay',feel:'Cảm giác tin tưởng, kết nối, và sự hiện diện thật sự'},
+  story:'Những ảnh này cho người xem thấy bạn trong mối quan hệ với thế giới xung quanh. Gần gũi mà không mất sự chuyên nghiệp. Đây là loại ảnh dùng dần được lâu nhất trên mạng xã hội.',
+  gets:['Ảnh tay và cử chỉ đặc trưng của bạn','Ảnh tương tác 1-1 (gặp gỡ, bàn giao, ký kết)','Ảnh nghi thức hằng ngày (cà phê, đọc sách)','6–10 ảnh đã edit'],
+  needs:['Người hỗ trợ nếu cần ảnh tương tác','Vật phẩm gắn với thói quen hằng ngày','Trang phục đồng điệu tông màu'],
+  uses:['Instagram story series','Nội dung "ngày làm việc của tôi"','Bài viết LinkedIn','Trang About Me'],
+  note:'Mỗi ảnh là một khoảnh khắc khác nhau — không bao giờ nhàm dù dùng lâu.'},
+  {num:'03',name:'Atmosphere',poem:'Không có người. Chỉ có ánh sáng và khoảnh khắc đang thở.',tag:'Không khí & cảm xúc',
+  ch1h:'Khuôn hình không có người — và đó là điểm mạnh của nó',ch1p:'Buổi sáng sớm khi ánh nắng mới lọt qua rèm. Bàn tiệc sau khi khách về. Góc đọc sách vắng người. Những khuôn hình này tạo nhịp thở cho toàn bộ feed của bạn.',
+  senses:{see:'Ánh sáng dịch chuyển, bóng đổ dài, màu sắc ấm và tĩnh',touch:'Hơi ấm còn lại, mặt bàn ướt, rèm cửa khẽ lay',feel:'Cảm giác một buổi sáng được bắt đầu đúng cách — tĩnh lặng và đủ đầy'},
+  story:'Không có chúng, feed của bạn sẽ đặc và mệt. Đây là những khoảng dừng — cần thiết như dấu phẩy trong một câu văn dài.',
+  gets:['3–5 ảnh không khí theo từng thời điểm','Ảnh "sau sự kiện" — không gian lắng xuống','File chất lượng cao làm nền và header'],
+  needs:['Lên lịch đúng giờ vàng: 6–8h sáng hoặc 16–18h chiều','Không gian sạch, sắp xếp trước','Không cần người — chỉ cần không gian thật'],
+  uses:['Ảnh grid Instagram tạo nhịp điệu','Cover story','Nền cho slide thuyết trình','Album sự kiện'],
+  note:'1 buổi chụp Atmosphere thường ra 3–5 ảnh. Nên lên lịch theo mùa để đổi mới.'},
+  {num:'04',name:'Micro Detail',poem:'Vân gốm. Sớ giấy. Nét cọ. Những gì chỉ tay mới thấy.',tag:'Cận cảnh chất liệu',
+  ch1h:'Nơi gu thẩm mỹ hiện ra rõ ràng nhất',ch1p:'Một bức ảnh macro vào vân gốm thủ công nói nhiều hơn mười dòng mô tả về sự tinh tế và sự chú ý đến từng chi tiết nhỏ của chủ nhân.',
+  senses:{see:'Bề mặt không hoàn hảo, kết cấu hữu cơ, màu từ vật liệu thật',touch:'Độ thô mịn, trọng lượng, nhiệt độ của vật liệu',feel:'Cảm giác một thứ gì đó được làm ra bằng tay và bằng thời gian'},
+  story:'Những chi tiết này không ai chú ý bằng mắt thường hằng ngày — nhưng khi được chụp đúng, chúng tạo ra chiều sâu mà không loại ảnh nào khác làm được.',
+  gets:['8–12 ảnh macro chất liệu theo chủ đề','File gốc uncompressed cho in ấn','Bộ ảnh phân theo vật liệu'],
+  needs:['Danh sách vật phẩm muốn chụp cận','Ống kính macro — ekip chuẩn bị','Ánh sáng tự nhiên hoặc đèn directional'],
+  uses:['Nội dung về sưu tầm và đam mê','Caption "Những thứ tôi trân trọng"','Catalogue sản phẩm','Blog về craftsmanship'],
+  note:'Kết hợp tốt với Shot 08 (Still Life) trong cùng một buổi chụp.'},
+  {num:'05',name:'The Process',poem:'Bàn tay đang làm việc — khoảnh khắc trung thực nhất về con người bạn.',tag:'Hậu trường sáng tạo',
+  ch1h:'Hậu trường được chọn lọc — không phải mọi thứ',ch1p:'Chỉ những khoảnh khắc tiết lộ chiều sâu: sự chuẩn bị tỉ mỉ, sự tập trung, và cái giá của chất lượng. Người xem không chỉ muốn thấy kết quả — họ muốn thấy bạn làm việc.',
+  senses:{see:'Bàn tay đang làm việc, bề mặt chưa hoàn chỉnh, công cụ thật',touch:'Đất sét ẩm, cọ trên canvas, bút chì trên giấy',feel:'Cảm giác của một quá trình — không phải kết quả'},
+  story:'Những ảnh này tạo ra niềm tin — không phải vì chúng hoàn hảo, mà vì chúng thật. Đây là ROI truyền thông cao nhất với chủ doanh nghiệp sản xuất và sáng tạo.',
+  gets:['10–15 ảnh "đang làm" theo chủ đề','2–3 video ngắn 15–30 giây (Reels/Story)','Ảnh trước-sau của quá trình'],
+  needs:['1 hoạt động đặc trưng của bạn','Trang phục thoải mái, đồng điệu màu','Cho phép ekip di chuyển tự do'],
+  uses:['Instagram Reels & TikTok','LinkedIn "Day in the life"','Story series hằng tuần','Marketing cho workshop'],
+  note:'Loại ảnh có ROI truyền thông cao nhất với chủ doanh nghiệp sản xuất và sáng tạo.'},
+  {num:'06',name:'The Unveiling',poem:'Giây phút hộp quà được mở — thời gian ngừng lại.',tag:'Khoảnh khắc khai mở',
+  ch1h:'Những khoảnh khắc chỉ xảy ra một lần',ch1p:'Mở hộp quà. Cắt băng khai trương. Bàn giao tác phẩm. Những giây phút này chứa đựng cảm xúc nhiều nhất — và thường là điều được nhớ lâu nhất trong toàn bộ sự kiện.',
+  senses:{see:'Đôi tay đang mở, biểu cảm của người nhận, ánh sáng rơi vào vật phẩm',touch:'Nơ thiệp, nắp hộp, tờ giấy lụa bên trong',feel:'Sự mong đợi — rồi ngạc nhiên — rồi biết ơn. Theo thứ tự đó.'},
+  story:'Một khi bỏ lỡ khoảnh khắc này, không thể có lại. Khi được ghi lại đúng cách, chúng trở thành tài sản cảm xúc có giá trị nhất trong kho hình ảnh của bạn.',
+  gets:['Ảnh sequence: trước → trong → sau khoảnh khắc','Video highlight 30–60 giây','3–5 ảnh portrait cảm xúc của người liên quan'],
+  needs:['Thông báo trước về sự kiện — ít nhất 2 tuần','Ekip có mặt sớm để setup góc','Không can thiệp vào cảm xúc thật'],
+  uses:['Ảnh kỷ niệm sự kiện','Marketing dòng sản phẩm mới','Ảnh PR khánh thành','Post milestone'],
+  note:'Khoảnh khắc chỉ xảy ra một lần — đặt lịch trước ít nhất 2 tuần.'},
+  {num:'07',name:'Architectural Portrait',poem:'Bạn nhỏ trong một không gian lớn — và đó là khi tầm vóc hiện ra.',tag:'Chân dung trong kiến trúc',
+  ch1h:'Không phải ảnh chân dung studio truyền thống',ch1p:'Đây là ảnh đặt bạn trong mối tương quan với kiến trúc — hành lang, cầu thang, mặt tiền, cánh cửa cao. Perspective tạo chiều sâu, không gian tạo tầm vóc một cách tự nhiên.',
+  senses:{see:'Đường thẳng của kiến trúc tương phản với hình dáng con người',touch:'Bề mặt bê tông, đá marble, kính, sắt thép — cứng và thật',feel:'Cảm giác của người đứng vững trong thế giới của mình'},
+  story:'Đây là ảnh đại diện lâu dài nhất của bạn — ảnh dùng cho LinkedIn, press kit, speaker profile trong nhiều năm. Đáng đầu tư một buổi chụp riêng, tại địa điểm được chọn lọc kỹ.',
+  gets:['5–8 ảnh portrait trong bối cảnh kiến trúc','Ảnh đầy đủ và ảnh trung cảnh','Ảnh màu và đen trắng'],
+  needs:['Địa điểm: văn phòng, công trình bạn yêu thích, không gian có tính cách','Trang phục: tối giản, màu trung tính','Chụp lúc ít người: sáng sớm hoặc cuối ngày'],
+  uses:['Profile LinkedIn & Website','Press kit báo chí','Ảnh speaker hội thảo','Trang CEO / About Us'],
+  note:'Thường là ảnh đại diện lâu dài nhất — đáng đầu tư một buổi chụp riêng.'},
+  {num:'08',name:'Curated Still Life',poem:'Mỗi vật phẩm được chọn có lý do. Được đặt có chủ ý.',tag:'Sắp đặt đời sống',
+  ch1h:'Flatlay không phải là dump đồ vật ngẫu nhiên',ch1p:'Mỗi thứ được đặt vào vị trí vì mối quan hệ với những thứ xung quanh. Cùng nhau, chúng kể câu chuyện về con người bạn mà không cần một chữ mô tả.',
+  senses:{see:'Bố cục, khoảng trắng, màu sắc hài hòa của các vật phẩm',touch:'Kết cấu khác nhau cạnh nhau — mịn bên thô, nặng bên nhẹ',feel:'Cảm giác của người biết mình muốn gì và tại sao'},
+  story:'Đây là shot type được dùng nhiều nhất cho nội dung thường ngày. 1 buổi chụp có thể ra 3–4 tuần nội dung. Nếu bạn chỉ chọn được một shot type — bắt đầu từ đây.',
+  gets:['12–20 ảnh still life theo 3–5 chủ đề','Ảnh ngang và dọc đủ mọi format','Bộ ảnh theo palette màu đã xác lập'],
+  needs:['Danh sách vật phẩm theo chủ đề (công việc / sưu tầm / thói quen)','Nền chụp: vải lanh, bàn gỗ, bề mặt đặc trưng','Ekip mang props bổ sung nếu cần'],
+  uses:['Instagram grid hằng tuần','Pinterest boards','Ảnh kèm caption về đam mê','Nội dung thương mại'],
+  note:'1 buổi chụp Still Life có thể cho ra 3–4 tuần nội dung mạng xã hội.'},
+  {num:'09',name:'The Soul Moment',poem:'Bạn quên có máy ảnh. Và đó là lúc khoảnh khắc đẹp nhất xảy ra.',tag:'Khoảnh khắc tự nhiên',
+  ch1h:'Shot type này không thể dàn dựng hay yêu cầu',ch1p:'Chỉ có thể chờ và bắt lấy. Đây là lý do chúng tôi dành 30 phút đầu mỗi buổi chụp chỉ để trò chuyện — không chụp, không setup. Để bạn quen với sự hiện diện của ekip.',
+  senses:{see:'Biểu cảm thật: tiếng cười, ánh mắt suy nghĩ, im lặng',touch:'Không có gì — bạn đang ở trong thế giới của mình',feel:'Cảm giác được nhìn thấy — không phải được chụp'},
+  story:'Đây là bức ảnh mà sau 5 năm nhìn lại, bạn nói: "Đúng rồi. Đó là mình." Không phải đẹp nhất về kỹ thuật — mà là thật nhất về con người.',
+  gets:['5–8 ảnh khoảnh khắc tự nhiên','Ảnh màu và đen trắng','Ảnh portrait cảm xúc'],
+  needs:['30 phút đầu buổi chỉ để làm quen — không chụp','Chỉ ánh sáng tự nhiên hoặc đèn mềm','Không check ảnh liên tục'],
+  uses:['Profile cá nhân ấm áp nhất','Ảnh kỷ niệm gia đình','Ảnh kết nối bài viết cá nhân','Ảnh bìa sách / podcast'],
+  note:'Thường xuất hiện tự nhiên trong buổi chụp các shot type khác — ekip luôn sẵn sàng bắt lấy.'},
+];
+
+/* ════ LAYERS DATA ════ */
+const layers=[
+  {idx:'01',en:'Design Tokens',name:'Bộ quy tắc hình ảnh',sub:'Ngôn ngữ thị giác của con người bạn',img:I.s[6],
+  story:'Không có bộ quy tắc này, mỗi lần thuê ai thiết kế — bạn đều bắt đầu từ đầu. Với nó, mọi thứ có điểm xuất phát chung và bất kỳ ai cũng có thể thực hiện đúng ý bạn.',
+  desc:'Màu sắc, phông chữ, chất liệu, giọng văn — xác lập thành bộ quy tắc cố định. Áp dụng nhất quán trên mọi ấn phẩm, dù ai thực hiện.',
+  gets:['Bảng màu cá nhân: 4–6 màu và cách dùng','Bộ phông chữ: display + body + phụ đề','Quy chuẩn vật liệu ấn phẩm (giấy, vải, bề mặt)','Voice & Tone: cách viết caption, bio, lời mời','File PDF Brand Guide hoàn chỉnh'],
+  needs:['Buổi khảo sát thẩm mỹ 60–90 phút','3–5 ảnh tham chiếu bạn thấy đẹp','Mô tả ngắn về công việc và mục tiêu hình ảnh'],
+  timeline:'1–2 tuần',
+  tags:['Color System','Typography','Material Library','Voice & Tone','Brand Guide PDF'],
+  note:'Nền tảng cần có trước tất cả mọi thứ khác. Thiếu bước này mọi ấn phẩm sẽ rời rạc.'},
+  {idx:'02',en:'Visual Language',name:'9 khuôn hình chuẩn',sub:'Kho ảnh dùng được ngay, dùng được lâu',img:I.s[7],
+  story:'1 buổi chụp được lên kế hoạch tốt có thể cho ra kho ảnh đủ dùng 3–6 tháng. Đó là sự khác biệt giữa chụp ảnh và xây dựng ngân hàng hình ảnh.',
+  desc:'Thay vì chụp ngẫu hứng mỗi khi cần, bạn có ngân hàng hình ảnh phân loại sẵn theo 9 mục đích sử dụng khác nhau.',
+  gets:['Kế hoạch khuôn hình cá nhân hóa theo mục tiêu','Lịch chụp tối ưu (thường 1–2 buổi)','60–120 ảnh đã edit theo bộ quy tắc','2–5 video ngắn nếu chọn gói video','Kho ảnh phân loại theo 9 shot types — dùng dần 3–6 tháng'],
+  needs:['Bộ quy tắc hình ảnh (Lớp 01) hoặc ảnh hiện có làm tham chiếu','Danh sách không gian và vật phẩm tham gia','Trang phục: 2–3 bộ theo tông màu','Lịch rảnh: 1–2 buổi, mỗi buổi 3–4 tiếng'],
+  timeline:'Lên kế hoạch: 1 tuần · Chụp: 1–2 buổi · Hậu kỳ: 1–2 tuần',
+  tags:['Photography','Videography','Shot Planning','Content Calendar','Archive 3–6 tháng'],
+  note:'Kho ảnh sau buổi chụp thường đủ dùng 3–6 tháng nếu được lên kế hoạch đúng.'},
+  {idx:'03',en:'Physical & Digital Assets',name:'Ấn phẩm đầu ra',sub:'Những thứ bạn cầm, sờ, và gửi đi',img:I.s[5],
+  story:'Một thiệp mời được in trên giấy đúng chất liệu — người nhận cầm lên và cảm nhận được sự chú ý. Đó là điều ấn phẩm vật lý làm được mà digital không thay thế được.',
+  desc:'Mọi thứ để bạn xuất hiện chuyên nghiệp trong mọi ngữ cảnh — trực tuyến và ngoại tuyến — từ cùng một nguồn gốc thẩm mỹ.',
+  gets:['Portfolio PDF + Website cá nhân','Brand kit: avatar, banner, template post','Thiệp mời sự kiện (dập nổi / in nhũ / laser cut)','Memory Box: hộp kỷ niệm đựng ảnh in + vật phẩm','Kho caption template cho 3 tháng đầu'],
+  needs:['Bộ quy tắc hình ảnh + Kho ảnh — hoặc ảnh hiện có','Thông tin nội dung: bio, mô tả, câu chuyện','Timeline sự kiện nếu có','Ngân sách ấn phẩm vật lý — trao đổi khi báo giá'],
+  timeline:'Thiết kế: 1–2 tuần · In ấn vật lý: 1–3 tuần',
+  tags:['Brand Kit','Portfolio','Website','Event Design','Thiệp Dập Nổi','Memory Box'],
+  note:'Kỹ thuật đặc biệt (dập nổi, in nhũ, laser cut) cần đặt trước ít nhất 3 tuần.'},
+];
+
+/* ════ MATERIAL DATA ════ */
+const mats=[
+  {name:'Giấy Mỹ Thuật',tag:'Ấn phẩm giấy',
+  body:`<div class="ch-p">Giấy mỹ thuật khác giấy thường ở một điều: <em>cân nặng và kết cấu</em>. Khi người nhận cầm tờ thiệp lên, tay họ cảm nhận được sự khác biệt trước khi mắt đọc được chữ.<br><br>Chúng tôi làm việc với giấy từ <strong>120gsm đến 400gsm</strong> — nhám, mịn, vân vải, hoặc coating đặc biệt tùy theo tính cách ấn phẩm.</div>
+  <div class="dr-tags"><span class="dr-tag-pill">120–400gsm</span><span class="dr-tag-pill">Nhám / Mịn / Vân vải</span><span class="dr-tag-pill">Dập nổi được</span><span class="dr-tag-pill">In nhũ được</span></div>`,
+  uses:['Thiệp mời sự kiện dập nổi / in nhũ','Portfolio PDF in ra','Brand Guide booklet','Menu tiệc','Place card'],note:'Thời gian sản xuất: 5–10 ngày làm việc sau khi duyệt thiết kế.'},
+  {name:'Vải Lanh',tag:'Bao bì & đóng gói',
+  body:`<div class="ch-p">Vải lanh có đặc tính mà không vật liệu nào thay thế được: <em>cảm giác tự nhiên và thô ráp đúng cách</em>. Không hoàn hảo, không đồng đều — và đó chính xác là lý do nó đẹp.<br><br>Chúng tôi dùng vải lanh để bọc hộp, làm túi đựng, và tạo nền chụp ảnh — mang lại cảm giác <strong>hữu cơ, thủ công, và có linh hồn</strong>.</div>`,
+  uses:['Bọc Memory Box','Túi đựng album ảnh','Prop chụp Still Life','Bọc bìa portfolio'],note:'Màu tự nhiên: trắng ngà, be, xám nhạt, nâu nhạt.'},
+  {name:'Bề Mặt Gốm',tag:'Nền chụp & decor',
+  body:`<div class="ch-p">Không có hai mảnh gốm thủ công nào giống nhau. <em>Bề mặt không đều, màu sắc không đồng nhất, nét tay người thợ còn đó</em> — tất cả tạo ra chiều sâu mà vật liệu công nghiệp không có.<br><br>Chúng tôi dùng gốm cả như <strong>prop chụp ảnh</strong> và <strong>vật phẩm ấn phẩm</strong> (chén, đĩa khắc tên cho sự kiện).</div>`,
+  uses:['Nền chụp ảnh Still Life','Prop cho Shot Micro Detail','Chén/đĩa khắc tên cho tiệc','Quà tặng cao cấp có khắc'],note:'Gốm thủ công tùy chỉnh cần đặt trước 2–3 tuần.'},
+  {name:'Gỗ Sồi',tag:'Hộp & signage',
+  body:`<div class="ch-p">Gỗ sồi có <em>vân gỗ rõ, màu ấm, và trọng lượng đủ để tạo cảm giác bền vững</em>. Cầm trên tay một hộp gỗ sồi đựng ảnh — bạn biết ngay đây là thứ để giữ lại.<br><br>Chúng tôi dùng gỗ sồi cho <strong>Memory Box, signage sự kiện</strong>, và ấn phẩm đặc biệt cần trọng lượng và tính lâu dài.</div>`,
+  uses:['Memory Box đựng ảnh in','Signage sự kiện khai trương','Table number holder','Quà tặng VIP khắc tên'],note:'Gỗ sồi cần ít nhất 2 tuần sản xuất do gia công tỉ mỉ.'},
+  {name:'Da Thuộc',tag:'Bao bì cao cấp',
+  body:`<div class="ch-p">Da thuộc đạt đỉnh cao của cảm giác vật lý: <em>mùi đặc trưng, độ mềm tăng dần theo thời gian, cảm giác ổn định trong tay</em>.<br><br>Chúng tôi dùng da thuộc thực vật (vegetable-tanned) cho bìa portfolio và hộp đựng ấn phẩm cấp cao nhất — <strong>dùng càng lâu càng đẹp</strong>.</div>`,
+  uses:['Bìa Portfolio da','Hộp ấn phẩm VIP','Bao bì quà tặng cao cấp'],note:'Da thuộc thật cần 3–4 tuần sản xuất.'},
+];
+
+/* ════ WORLD DATA ════ */
+const worlds=[
+  {tag:'Thế giới 01',title:'Không gian bạn sống',img:I.s[0],
+  body:`<div class="ch-p">Chúng tôi bắt đầu từ <strong>những không gian thật</strong> của bạn — không phải studio thuê, không phải phông nền nhân tạo. Bởi vì gu thẩm mỹ của bạn đã có mặt ở đó rồi: trong cách bạn sắp xếp sách, trong màu sắc bạn chọn, trong những vật phẩm bạn giữ lại.<br><br>Chúng tôi chỉ cần giúp nó <em>hiện ra đúng cách</em>.</div>
+  <div class="dr-tags"><span class="dr-tag-pill">Văn phòng & Studio</span><span class="dr-tag-pill">Nhà riêng</span><span class="dr-tag-pill">Góc đọc sách</span><span class="dr-tag-pill">Không gian sáng tạo</span></div>`,
+  note:'Liên quan: Shot Type 01 (Hero Context), 03 (Atmosphere), 08 (Still Life).'},
+  {tag:'Thế giới 02',title:'Sự kiện bạn tham gia',img:I.s[5],
+  body:`<div class="ch-p">Một sự kiện đầu tư công sức chuẩn bị hàng tháng — nhưng nếu không được ghi lại đúng cách, chỉ còn lại <em>vài tấm ảnh mờ trên điện thoại</em>.<br><br>Chúng tôi có mặt trước, trong và sau — để toàn bộ câu chuyện của buổi đó được kể đầy đủ.</div>
+  <div class="dr-tags"><span class="dr-tag-pill">Hôn lễ</span><span class="dr-tag-pill">Khai trương</span><span class="dr-tag-pill">Hội nghị</span><span class="dr-tag-pill">Tiệc riêng tư</span></div>`,
+  note:'Liên quan: Shot Type 06 (The Unveiling), 02 (Human Connection).'},
+  {tag:'Thế giới 03',title:'Điều bạn yêu thích',img:I.s[3],
+  body:`<div class="ch-p">Điều bạn yêu thích không phải "sở thích phụ". Đó là <strong>cốt lõi của câu chuyện về bạn</strong>.<br><br>Khi chúng tôi hỏi bạn thích gì — chúng tôi hỏi vì <em>những thứ đó định nghĩa màu sắc, kết cấu, ánh sáng, và tinh thần</em> của toàn bộ ngôn ngữ hình ảnh của bạn.</div>
+  <div class="dr-tags"><span class="dr-tag-pill">Gốm thủ công</span><span class="dr-tag-pill">Nghệ thuật</span><span class="dr-tag-pill">Ẩm thực</span><span class="dr-tag-pill">Sách</span></div>`,
+  note:'Liên quan: Shot Type 04 (Micro Detail), 08 (Still Life), 09 (Soul Moment).'},
+];
+
+/* ════ PERSONA DATA ════ */
+const personas=[
+  {name:'Chủ doanh nghiệp & CEO',pain:'"Tôi biết mình muốn gì nhưng không biết diễn đạt thành hình ảnh."',
+  body:`<div class="ch-p">Bạn đã gây dựng được thứ gì đó đáng tự hào — nhưng hình ảnh chưa phản ánh được tầm vóc đó. Website trông bình thường. Ảnh LinkedIn trông như ảnh nhà hàng xóm.<br><br>Chúng tôi xây dựng hệ thống hình ảnh phản ánh đúng <strong>con người bạn thực sự là ai</strong> — không phải con người bạn cố gắng trông.</div>`,
+  shots:['Hero Context — không gian làm việc của bạn','Architectural Portrait — chân dung CEO đúng tầm','Human Connection — bạn trong vai trò lãnh đạo'],
+  layers:['Bộ quy tắc hình ảnh làm nền','9 khuôn hình cho cả năm nội dung','Brand kit và website cập nhật']},
+  {name:'Nghệ sĩ & Người sáng tạo',pain:'"Tôi làm ra những thứ đẹp, nhưng ảnh chụp lại không đẹp bằng thứ thật."',
+  body:`<div class="ch-p">Tác phẩm xuất sắc — nhưng cách trình bày chưa xứng tầm. Ảnh chụp vội bằng điện thoại không nói được câu chuyện đằng sau từng tác phẩm.<br><br>Chúng tôi xây dựng <strong>ngôn ngữ hình ảnh cho thế giới sáng tạo của bạn</strong> — từ xưởng làm việc đến thành phẩm.</div>`,
+  shots:['Micro Detail — vân gốm, nét cọ, sớ vải','The Process — hậu trường sáng tạo','Curated Still Life — sắp đặt tác phẩm'],
+  layers:['Bộ quy tắc hình ảnh cho portfolio','Kho ảnh phân loại theo tác phẩm','Catalogue vật lý và digital']},
+  {name:'Cặp đôi & Gia đình',pain:'"Chúng tôi muốn ảnh cưới trông như ảnh trong tạp chí."',
+  body:`<div class="ch-p">Sự kiện quan trọng nhất của cuộc đời — và bạn muốn mọi thứ phản ánh đúng tinh thần và thẩm mỹ của hai người.<br><br>Từ thiệp mời đến ảnh lưu niệm, từ menu tiệc đến memory box — <strong>tất cả phải nhận ra nhau và nhận ra hai bạn</strong>.</div>`,
+  shots:['The Unveiling — khoảnh khắc khai mở','Atmosphere — không khí buổi lễ','Soul Moment — khoảnh khắc tự nhiên nhất'],
+  layers:['Bộ thiệp mời và ấn phẩm sự kiện','Buổi chụp trước và trong ngày cưới','Memory Box và album ảnh in']},
+  {name:'Chuyên gia & Tư vấn',pain:'"Tôi thuyết trình tốt, nhưng ảnh đại diện không nói lên điều đó."',
+  body:`<div class="ch-p">Bạn muốn hình ảnh cá nhân đủ mạnh để nói thay cho năng lực — trên LinkedIn, trong báo chí, hay trên sân khấu hội thảo.<br><br>Một bức ảnh đại diện đúng chỗ <strong>thay được ba mươi lần giải thích</strong> về bạn là ai và bạn làm gì.</div>`,
+  shots:['Architectural Portrait — chân dung đẳng cấp','Hero Context — không gian làm việc','Human Connection — trong vai trò tư vấn'],
+  layers:['Bộ quy tắc hình ảnh cá nhân','Press kit và profile PDF','Ảnh speaker chuyên nghiệp']},
+];
+
+/* ════ RENDER SHOTS ════ */
+document.getElementById('shotsTrack').innerHTML=shots.map((s,i)=>`
+  <div class="sc" onclick="openShot(${i})">
+    <div class="sc-img" style="background-image:url('${I.s[i]}')"></div>
+    <div class="sc-veil"></div>
+    <div class="sc-body">
+      <div class="sc-num">— ${s.num}</div>
+      <div class="sc-name">${s.name}</div>
+      <div class="sc-poem">${s.poem}</div>
+      <div class="sc-hint">Đọc câu chuyện →</div>
+    </div>
+  </div>
+`).join('');
+
+/* ════ RENDER LAYERS ════ */
+document.getElementById('layersGrid').innerHTML=layers.map((l,i)=>`
+  <div class="lc rv" onclick="openLayer(${i})" style="transition-delay:${i*.08}s">
+    <div class="lc-wm">${l.idx}</div>
+    <div class="lc-tag">${l.en}</div>
+    <div class="lc-title">${l.name}</div>
+    <div class="lc-sub">${l.sub}</div>
+    <div class="lc-desc">${l.desc}</div>
+    <div class="lc-more">Xem phạm vi đầy đủ</div>
+  </div>
+`).join('');
+
+/* ════ DRAG SCROLL ════ */
+(function(){
+  const t=document.getElementById('shotsTrack');
+  let down=false,startX,sl;
+  t.addEventListener('mousedown',e=>{down=true;startX=e.pageX-t.offsetLeft;sl=t.scrollLeft;t.style.userSelect='none'});
+  ['mouseleave','mouseup'].forEach(ev=>t.addEventListener(ev,()=>{down=false;t.style.userSelect=''}));
+  t.addEventListener('mousemove',e=>{if(!down)return;e.preventDefault();t.scrollLeft=sl-(e.pageX-t.offsetLeft-startX)*1.2});
+})();
+
+/* ════ DRAWER ════ */
+function openDrawer(tag,title,imgUrl,body){
+  const hw=document.getElementById('drHeroWrap');
+  if(imgUrl){
+    hw.style.display='block';
+    document.getElementById('drImg').style.backgroundImage=`url('${imgUrl}')`;
+  }else{
+    hw.style.display='none';
+  }
+  document.getElementById('drTag').textContent=tag;
+  document.getElementById('drTitle').textContent=title;
+  document.getElementById('drBody').innerHTML=body;
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('ov').classList.add('open');
+  document.body.style.overflow='hidden';
+  document.getElementById('drawer').scrollTop=0;
+}
+function closeDrawer(){
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('ov').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer()});
+
+const li=(arr,ic)=>arr.map(x=>`<li data-i="${ic}">${x}</li>`).join('');
+const tags=arr=>arr.map(t=>`<span class="dr-tag-pill">${t}</span>`).join('');
+const cta=(l1,l1fn,l2,l2fn)=>`<div class="dr-cta"><a href="#" class="dr-lnk" onclick="event.preventDefault();closeDrawer();setTimeout(${l1fn},300)">${l1} →</a><a href="#" class="dr-lnk" onclick="event.preventDefault();closeDrawer();${l2fn}">${l2} →</a></div>`;
+
+function openShot(i){
+  const s=shots[i];
+  openDrawer(s.tag,s.name,I.s[i],`
+    <div class="chapter">
+      <div class="ch-head">I · Khoảnh khắc này</div>
+      <div class="ch-h">${s.ch1h}</div>
+      <div class="ch-p">${s.ch1p}</div>
+      <div class="sense-row">
+        <div class="sense"><span class="sense-ic">👁</span><div class="sense-lb">Nhìn</div><div class="sense-vl">${s.senses.see}</div></div>
+        <div class="sense"><span class="sense-ic">✋</span><div class="sense-lb">Chạm</div><div class="sense-vl">${s.senses.touch}</div></div>
+        <div class="sense"><span class="sense-ic">♡</span><div class="sense-lb">Cảm</div><div class="sense-vl">${s.senses.feel}</div></div>
+      </div>
+    </div>
+    <div class="chapter">
+      <div class="ch-head">II · Câu chuyện</div>
+      <div class="ch-p">${s.story}</div>
+    </div>
+    <div class="chapter">
+      <div class="ch-head">III · Bạn nhận được</div>
+      <ul class="dr-ul">${li(s.gets,'✦')}</ul>
+    </div>
+    <div class="chapter">
+      <div class="ch-head">IV · Cần chuẩn bị</div>
+      <ul class="dr-ul">${li(s.needs,'→')}</ul>
+    </div>
+    <div class="chapter">
+      <div class="ch-head">V · Dùng ở đâu</div>
+      <div class="dr-tags">${tags(s.uses)}</div>
+      <div class="dr-note">${s.note}</div>
+    </div>
+    ${cta('Đặt lịch chụp loại ảnh này','openContact','Xem các gói dịch vụ','scrollTo("layers-sec")')}
+  `);
+}
+
+function openLayer(i){
+  const l=layers[i];
+  openDrawer(`Lớp ${l.idx} · ${l.en}`,l.name,l.img,`
+    <div class="chapter">
+      <div class="ch-head">I · Tại sao cần</div>
+      <div class="ch-h">${l.sub}</div>
+      <div class="ch-p">${l.story}</div>
+    </div>
+    <div class="chapter">
+      <div class="ch-head">II · Mô tả</div>
+      <div class="ch-p">${l.desc}</div>
+    </div>
+    <div class="chapter">
+      <div class="ch-head">III · Bạn nhận được</div>
+      <ul class="dr-ul">${li(l.gets,'✦')}</ul>
+    </div>
+    <div class="chapter">
+      <div class="ch-head">IV · Cần chuẩn bị</div>
+      <ul class="dr-ul">${li(l.needs,'→')}</ul>
+    </div>
+    <div class="chapter">
+      <div class="ch-head">V · Thời gian & Phạm vi</div>
+      <ul class="dr-ul"><li data-i="◷">${l.timeline}</li></ul>
+      <div class="dr-tags" style="margin-top:10px">${tags(l.tags)}</div>
+      <div class="dr-note">${l.note}</div>
+    </div>
+    ${cta('Hỏi về gói này','openContact','Xem quy trình','scrollTo("proc-sec")')}
+  `);
+}
+
+function openWorld(i){
+  const w=worlds[i];
+  openDrawer(w.tag,w.title,w.img,`
+    <div class="chapter">
+      <div class="ch-head">I · Về thế giới này</div>
+      ${w.body}
+      <div class="dr-note">${w.note}</div>
+    </div>
+    ${cta('Nói chuyện về thế giới của bạn','openContact','Xem 9 khuôn hình','scrollTo("shots-sec")')}
+  `);
+}
+
+function openMat(i){
+  const m=mats[i];
+  openDrawer('Chất liệu ấn phẩm',m.name,null,`
+    <div class="chapter">
+      <div class="ch-head">I · Về chất liệu này</div>
+      <div class="ch-h">${m.tag}</div>
+      ${m.body}
+    </div>
+    <div class="chapter">
+      <div class="ch-head">II · Dùng cho</div>
+      <ul class="dr-ul">${li(m.uses,'✦')}</ul>
+      <div class="dr-note">${m.note}</div>
+    </div>
+    ${cta('Hỏi về ấn phẩm vật lý','openContact','Xem gói dịch vụ','openLayer(2)')}
+  `);
+}
+
+function openPersona(i){
+  const p=personas[i];
+  openDrawer('Đây có phải bạn?',p.name,null,`
+    <div class="chapter">
+      <div class="ch-head">I · Câu chuyện</div>
+      <div class="ch-h">${p.pain}</div>
+      ${p.body}
+    </div>
+    <div class="chapter">
+      <div class="ch-head">II · Shot types phù hợp nhất</div>
+      <ul class="dr-ul">${li(p.shots,'→')}</ul>
+    </div>
+    <div class="chapter">
+      <div class="ch-head">III · Hành trình gợi ý</div>
+      <ul class="dr-ul">${li(p.layers,'✦')}</ul>
+    </div>
+    ${cta('Bắt đầu buổi tư vấn','openContact','Xem các gói dịch vụ','scrollTo("layers-sec")')}
+  `);
+}
+
+function openContact(){
+  openDrawer('Bắt đầu','Đặt lịch tư vấn',null,`
+    <div class="chapter">
+      <div class="ch-head">I · Buổi Discovery</div>
+      <div class="ch-h">Miễn phí · 60 phút · Không ràng buộc</div>
+      <div class="ch-p">Chia sẻ với chúng tôi về bạn — công việc, đam mê, những gì bạn muốn người khác nhìn thấy. Không cần chuẩn bị gì. Chúng tôi dẫn dắt cuộc trò chuyện.</div>
+    </div>
+    <div class="chapter">
+      <div class="ch-head">II · Buổi gặp bao gồm</div>
+      <ul class="dr-ul">
+        <li data-i="01">Bảng câu hỏi thẩm mỹ gửi trước — hoàn thành trong 10 phút</li>
+        <li data-i="02">Gặp mặt 60 phút — tại studio Sài Gòn hoặc online</li>
+        <li data-i="03">Mood Board sơ bộ gửi trong 48 giờ sau buổi gặp</li>
+        <li data-i="04">Báo giá theo nhu cầu thực tế — không có gói cố định</li>
+      </ul>
+      <div class="dr-note">Chúng tôi nhận tối đa 4 khách hàng mới mỗi tháng để đảm bảo chất lượng và sự chú ý cần thiết.</div>
+    </div>
+    <div class="chapter">
+      <div class="ch-head">III · Liên hệ ngay</div>
+      <div class="dr-cta">
+        <a href="mailto:hello@atelieridentity.vn" class="dr-lnk" style="font-size:13px;letter-spacing:0;text-transform:none">hello@atelieridentity.vn →</a>
+        <a href="tel:+84901234567" class="dr-lnk" style="font-size:13px;letter-spacing:0;text-transform:none">+84 90 123 4567 →</a>
+      </div>
+    </div>
+  `);
+}
+
+/* ════ MOBILE NAV ════ */
+function toggleMobileNav(){
+  const nav=document.getElementById('mobileNav');
+  const burger=document.getElementById('burger');
+  const isOpen=nav.classList.toggle('open');
+  burger.classList.toggle('open',isOpen);
+  document.body.style.overflow=isOpen?'hidden':'';
+}
+function closeMobileNav(){
+  document.getElementById('mobileNav').classList.remove('open');
+  document.getElementById('burger').classList.remove('open');
+  document.body.style.overflow='';
+}
+function toggleMnSection(idx){
+  const sec=document.getElementById('mns-'+idx);
+  if(!sec)return;
+  const isOpen=sec.classList.toggle('open');
+  // Close others (accordion behavior)
+  document.querySelectorAll('.mn-section').forEach(s=>{
+    if(s!==sec)s.classList.remove('open');
+  });
+}
+
+/* ════ MOBILE SWIPE TO CLOSE ════ */
+(function(){
+  let startX=0,startY=0,isDragging=false;
+  const nav=document.getElementById('mobileNav');
+  nav.addEventListener('touchstart',e=>{
+    startX=e.touches[0].clientX;
+    startY=e.touches[0].clientY;
+    isDragging=false;
+  },{passive:true});
+  nav.addEventListener('touchmove',e=>{
+    const dx=e.touches[0].clientX-startX;
+    const dy=Math.abs(e.touches[0].clientY-startY);
+    if(dx>10&&dy<50){isDragging=true}
+  },{passive:true});
+  nav.addEventListener('touchend',e=>{
+    const dx=e.changedTouches[0].clientX-startX;
+    if(isDragging&&dx>60)closeMobileNav();
+    isDragging=false;
+  },{passive:true});
+})();
+
+/* ════ SCROLL NAV ════ */
+window.addEventListener('scroll',()=>{
+  document.getElementById('mainNav').classList.toggle('scrolled',window.scrollY>60);
+},{ passive:true });
+
+/* ════ FAQ ════ */
+function toggleFaq(btn){
+  const item=btn.closest('.faq-item');
+  const isOpen=item.classList.toggle('open');
+  document.querySelectorAll('.faq-item').forEach(el=>{
+    if(el!==item){el.classList.remove('open')}
+  });
+}
+
+/* ════ UTILS ════ */
+function scrollTo(id){
+  closeMobileNav();
+  const el=document.getElementById(id);
+  if(el)el.scrollIntoView({behavior:'smooth'});
+}
+
+/* ════ REVEAL ════ */
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}});
+},{threshold:.06});
+setTimeout(()=>document.querySelectorAll('.rv').forEach(el=>io.observe(el)),120);
+</script>
+</body>
+</html>
